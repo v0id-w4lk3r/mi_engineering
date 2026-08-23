@@ -1,22 +1,16 @@
 import os
 from pathlib import Path
 
-# BASE_DIR configured for settings/ subdirectory: settings/ -> project_app/ -> project_root/
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # Application definition
 INSTALLED_APPS = [
-    # Built-in Django apps
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    # Third-party apps (e.g., 'rest_framework', 'corsheaders')
-
-    # Local project apps (add your custom apps here)
+    'jazzmin',
+    'django.contrib.admin', 'django.contrib.auth',
+    'django.contrib.contenttypes', 'django.contrib.sessions',
+    'django.contrib.messages', 'django.contrib.staticfiles'
 ]
 
 MIDDLEWARE = [
@@ -26,7 +20,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'mi_engineering.urls'
@@ -34,7 +28,6 @@ ROOT_URLCONF = 'mi_engineering.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # Configured to look for a 'templates' folder at project root
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {

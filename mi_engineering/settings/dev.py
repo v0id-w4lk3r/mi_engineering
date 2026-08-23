@@ -1,10 +1,13 @@
+# import os
 from .base import *
-
-SECRET_KEY = 'django-insecure-k$ab5r24i-tr_0r15ihfn2p=)-=!h@t@lwu84=#bjw$)!y15n8'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Explicitly allow local development hosts
+ALLOWED_HOSTS = ['*']
+
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
+#                             'django-insecure-dev-key-change-in-production')
 
 MAILERS = {
     'default': {
