@@ -1,0 +1,137 @@
+{% if not request.htmx %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- SEO Core Meta Tags -->
+    <title>{% block title %}M.I. Engineering Works | Industrial Engineering Solutions{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}M.I. Engineering Works provides high-precision industrial components, engineering products, and technical manufacturing solutions tailored to exact specifications.{% endblock %}" />
+    <meta name="keywords" content="{% block meta_keywords %}engineering works, industrial manufacturing, precision components, technical hardware, industrial procurement, engineering solutions{% endblock %}" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{% block og_title %}M.I. Engineering Works{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}Quality and precision-driven industrial engineering components and solutions.{% endblock %}" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:site_name" content="M.I. Engineering Works" />
+    {% block og_image %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}/static/images/og-image.jpg" />
+    {% endblock %}
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{% block twitter_title %}M.I. Engineering Works{% endblock %}" />
+    <meta name="twitter:description" content="{% block twitter_description %}High-precision industrial components and custom engineering solutions.{% endblock %}" />
+
+    <!-- Schema.org Structured Data (JSON-LD for SEO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "M.I. Engineering Works",
+      "url": "{{ request.scheme }}://{{ request.get_host }}",
+      "logo": "{{ request.scheme }}://{{ request.get_host }}/static/images/logo.png",
+      "description": "Manufacturer and provider of industrial engineering solutions and precision components.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "info@miengineeringworks.com"
+      }
+    }
+    </script>
+
+    <!-- Tailwind CSS with Custom Color Config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                bg: '#FFFFFF',
+                secondaryBg: '#F8FAFC',
+                sectionBg: '#F1F5F9',
+                primary: '#0F2744',
+                primaryHover: '#091B30',
+                accent: '#2563EB',
+                accentHover: '#1D4ED8',
+                heading: '#0F172A',
+                body: '#475569',
+                muted: '#64748B',
+                border: '#E2E8F0',
+                success: '#16A34A',
+                warning: '#D97706',
+                error: '#DC2626',
+              }
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Alpine.js CDN -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- HTMX CDN & CSRF Setup -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="bg-brand-secondaryBg text-brand-body flex flex-col min-h-screen font-sans" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+    <!-- Navbar -->
+    {% if not hide_navbar %}
+        {% block navbar %}
+            {% include 'Navbar.html' %}
+        {% endblock %}
+    {% endif %}
+
+    <!-- Global Toast / Flash Messages -->
+    {% if messages %}
+        <div class="fixed top-20 right-5 z-50 space-y-2">
+            {% for message in messages %}
+                <div x-data="{ show: true }"
+                     x-init="setTimeout(() => show = false, 4000)"
+                     x-show="show"
+                     x-transition.opacity.duration.500ms
+                     class="px-4 py-3 rounded-xl shadow-lg text-sm font-medium border
+                     {% if message.tags == 'error' %} bg-red-50 text-brand-error border-red-200
+                     {% elif message.tags == 'success' %} bg-green-50 text-brand-success border-green-200
+                     {% elif message.tags == 'warning' %} bg-amber-50 text-brand-warning border-amber-200
+                     {% else %} bg-blue-50 text-brand-accent border-blue-200
+                     {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content Target Container for HTMX Swaps -->
+    <main id="main-content" class="flex-grow container mx-auto px-4 py-8">
+{% endif %}
+
+        {% block content %}{% endblock %}
+
+{% if not request.htmx %}
+    </main>
+
+    <!-- Footer -->
+    {% block footer %}
+        {% include 'Footer.html' %}
+    {% endblock %}
+
+    {% block extra_scripts %}{% endblock %}
+
+</body>
+</html>
+{% endif %}

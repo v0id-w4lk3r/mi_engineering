@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - M.I. Engineering Works{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto py-8 px-4">
+    <div class="bg-brand-primary text-white rounded-3xl p-8 md:p-12 mb-10 shadow-xl">
+        <span class="text-brand-accent font-semibold tracking-wider text-sm uppercase">About M.I. Engineering Works</span>
+        <h1 class="text-3xl md:text-5xl font-bold mt-2 mb-4 leading-tight">
+            Engineering Solutions Built Around Your Requirements
+        </h1>
+        <p class="text-slate-200 text-lg leading-relaxed">
+            M.I. ENGINEERING WORKS serves industrial customers with engineering products and solutions focused on quality, reliability, and technical specifications.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div class="bg-white p-8 rounded-2xl border border-brand-border shadow-sm">
+            <div class="h-12 w-12 bg-blue-50 text-brand-accent rounded-xl flex items-center justify-center text-xl mb-4">
+                <i class="fas fa-microscope"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-brand-heading">Technical Standards & Precision</h3>
+            <p class="text-brand-body leading-relaxed text-sm">
+                Industrial procurement requires accuracy. Material grades, dimensions, standards, quantities, applications, documentation, and delivery schedules are all critical parameters we uphold.
+            </p>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl border border-brand-border shadow-sm">
+            <div class="h-12 w-12 bg-blue-50 text-brand-accent rounded-xl flex items-center justify-center text-xl mb-4">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-brand-heading">Customer-Centric Procurement</h3>
+            <p class="text-brand-body leading-relaxed text-sm">
+                Our workflow starts with analyzing customer specs to deliver matching product catalogs, precise quotes, and complete technical compliance documentation.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
