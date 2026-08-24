@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Account | M.I. Engineering Works{% endblock %}
+
+{% block content %}
+<!-- Full-width edge-to-edge background section -->
+<section 
+  class="relative w-full py-16 min-h-[calc(100vh-80px)] flex items-center justify-center bg-cover bg-center bg-no-repeat"
+  style="background-image: linear-gradient(to bottom, rgba(24, 24, 27, 0.65), rgba(24, 24, 27, 0.75)), url('{% static "img/bg/login_bg.jpg" %}');"
+>
+  <div class="max-w-5xl w-full mx-auto px-4 sm:px-6 relative z-10">
+    <div class="bg-[#FFFFFF] p-8 sm:p-12 rounded-2xl border border-[#E4E4E7] shadow-xl">
+      
+      <!-- Header -->
+      <div class="text-center mb-10">
+        <span class="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#C62828] block mb-2">Get Started</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-[#18181B] tracking-tight">Create an Account</h1>
+        <p class="text-sm sm:text-base text-[#71717A] mt-2">Join M.I. Engineering Works to submit and manage your client portal orders.</p>
+      </div>
+
+      <!-- Flash Messages -->
+      {% if messages %}
+        <div class="mb-8 space-y-3">
+          {% for message in messages %}
+            <div class="p-4 rounded-xl text-sm font-medium border flex items-center gap-3 {% if message.tags == 'error' %}bg-red-50 text-[#C62828] border-red-200{% else %}bg-emerald-50 text-emerald-800 border-emerald-200{% endif %}">
+              <svg class="w-5 h-5 shrink-0 fill-current" viewBox="0 0 20 20">
+                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-9h2v5H9V9zm0-3h2v2H9V6z"/>
+              </svg>
+              <span>{{ message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Horizontal Form -->
+      <form method="post" class="space-y-6" novalidate>
+        {% csrf_token %}
+        
+        <!-- Non-Field Errors (Form-wide validation issues) -->
+        {% if form.non_field_errors %}
+          <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-[#C62828] text-sm font-medium space-y-1">
+            {% for error in form.non_field_errors %}
+              <div class="flex items-center gap-2">
+                <i class="fas fa-exclamation-circle shrink-0"></i>
+                <span>{{ error }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
+          {% for field in form %}
+            <div class="{% if field.help_text or field.name == 'email' %}md:col-span-2{% else %}col-span-1{% endif %} flex flex-col justify-start">
+              <div class="flex items-center justify-between mb-2">
+                <label for="{{ field.id_for_label }}" class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-[#18181B]">
+                  {{ field.label }}
+                  {% if field.field.required %}
+                    <span class="text-[#C62828] font-bold ml-0.5" title="Required field">*</span>
+                  {% endif %}
+                </label>
+              </div>
+
+              <!-- Input field dynamically changes border and background when invalid -->
+              <input 
+                type="{{ field.field.widget.input_type|default:'text' }}" 
+                name="{{ field.html_name }}" 
+                id="{{ field.id_for_label }}" 
+                value="{{ field.value|default_if_none:'' }}"
+                {% if field.field.required %}required{% endif %} 
+                class="w-full px-4 py-3 rounded-xl border text-base text-[#18181B] transition focus:outline-none focus:ring-2 
+                       {% if field.errors %}border-[#C62828] bg-red-50/30 focus:border-[#C62828] focus:ring-[#C62828]/20{% else %}border-[#E4E4E7] bg-[#FAFAF9] focus:bg-[#FFFFFF] focus:border-[#C62828] focus:ring-[#C62828]/20{% endif %}"
+              >
+
+              <!-- Help Text -->
+              {% if field.help_text %}
+                <div class="mt-2.5 p-3 rounded-lg bg-[#F4F4F5] border-l-4 border-[#C62828] text-xs leading-relaxed text-[#52525B]">
+                  {{ field.help_text|safe }}
+                </div>
+              {% endif %}
+
+              <!-- Individual Field Errors -->
+              {% if field.errors %}
+                <div class="mt-2 space-y-1">
+                  {% for error in field.errors %}
+                    <p class="text-xs sm:text-sm text-[#C62828] font-semibold flex items-center gap-1.5">
+                      <i class="fas fa-exclamation-triangle text-xs shrink-0"></i>
+                      <span>{{ error }}</span>
+                    </p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-[#C62828] text-white text-base font-bold hover:bg-[#A61F1F] active:scale-[0.99] transition shadow-md mt-8">
+          Create Account
+        </button>
+      </form>
+
+      <!-- Data Privacy Note -->
+      <div class="mt-8 p-3.5 rounded-xl bg-[#FAFAF9] border border-[#E4E4E7] text-center">
+        <p class="text-xs text-[#71717A] flex items-center justify-center gap-2">
+          <svg class="w-4 h-4 text-[#52525B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          Your privacy matters. We never share your personal information or company data with third parties.
+        </p>
+      </div>
+
+      <!-- Sign In Redirect -->
+      <div class="mt-8 pt-6 border-t border-[#E4E4E7] text-center">
+        <p class="text-sm text-[#71717A]">
+          Already registered? 
+          <a href="{% url 'accounts:login' %}" 
+             hx-get="{% url 'accounts:login' %}" 
+             hx-target="#main-content" 
+             hx-push-url="true" 
+             class="text-[#C62828] font-bold hover:underline">
+             Sign In to Client Portal
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

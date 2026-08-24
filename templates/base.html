@@ -28,7 +28,7 @@
     <meta name="twitter:title" content="{% block twitter_title %}M.I. Engineering Works{% endblock %}" />
     <meta name="twitter:description" content="{% block twitter_description %}High-precision industrial components and custom engineering solutions.{% endblock %}" />
 
-    <!-- Schema.org Structured Data (JSON-LD for SEO) -->
+    <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -54,16 +54,17 @@
             colors: {
               brand: {
                 bg: '#FFFFFF',
-                secondaryBg: '#F8FAFC',
-                sectionBg: '#F1F5F9',
-                primary: '#0F2744',
-                primaryHover: '#091B30',
-                accent: '#2563EB',
-                accentHover: '#1D4ED8',
-                heading: '#0F172A',
-                body: '#475569',
-                muted: '#64748B',
-                border: '#E2E8F0',
+                secondaryBg: '#F7F7F5',
+                card: '#FAFAF9',
+                primary: '#202124',
+                primaryHover: '#151515',
+                accent: '#C62828',
+                accentHover: '#A61F1F',
+                heading: '#18181B',
+                body: '#52525B',
+                muted: '#71717A',
+                border: '#E4E4E7',
+                lightAccentBg: '#FFF5F5',
                 success: '#16A34A',
                 warning: '#D97706',
                 error: '#DC2626',
@@ -108,7 +109,7 @@
                      {% if message.tags == 'error' %} bg-red-50 text-brand-error border-red-200
                      {% elif message.tags == 'success' %} bg-green-50 text-brand-success border-green-200
                      {% elif message.tags == 'warning' %} bg-amber-50 text-brand-warning border-amber-200
-                     {% else %} bg-blue-50 text-brand-accent border-blue-200
+                     {% else %} bg-brand-lightAccentBg text-brand-accent border-brand-accent/20
                      {% endif %}">
                     {{ message }}
                 </div>
@@ -116,13 +117,13 @@
         </div>
     {% endif %}
 
-    <!-- Main Content Target Container for HTMX Swaps -->
-    <main id="main-content" class="flex-grow container mx-auto px-4 py-8">
-{% endif %}
+    <!-- Main Content Container -->
+    <main id="main-content" class="w-full flex-grow">
+    {% endif %}
 
         {% block content %}{% endblock %}
 
-{% if not request.htmx %}
+    {% if not request.htmx %}
     </main>
 
     <!-- Footer -->

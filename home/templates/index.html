@@ -1,301 +1,471 @@
 {% extends 'base.html' %}
 
-{% block title %}M.I. Engineering Works | Industrial Precision Engineering Solutions{% endblock %}
+{% block title %}M.I. Engineering Works | Industrial Fasteners & Precision Engineering{% endblock %}
 
 {% block content %}
-<div class="space-y-16 py-4">
+<div class="space-y-24 py-4 font-sans text-brand-body">
 
-    <!-- 1. HERO SECTION: Main Company Positioning -->
-    <section class="relative bg-brand-primary text-white rounded-3xl p-8 md:p-16 overflow-hidden shadow-xl border border-brand-primaryHover">
-        <div class="max-w-3xl relative z-10">
-            <span class="inline-block px-4 py-1.5 rounded-full bg-brand-accent/20 text-brand-accent text-sm font-semibold mb-6 border border-brand-accent/30">
-                Precision Manufacturing & Fabrication
-            </span>
-            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6">
-                Engineered for Performance. Built for Scale.
-            </h1>
-            <p class="text-slate-300 text-lg md:text-xl leading-relaxed mb-8">
-                M.I. Engineering Works provides high-precision industrial components, technical hardware, and structural fabrication tailored strictly to your engineering specifications.
-            </p>
-            <div class="flex flex-wrap gap-4">
-                <a href="{% url 'home:contact-us' %}" 
-                   hx-get="{% url 'home:contact-us' %}" 
-                   hx-target="#main-content" 
-                   hx-push-url="true"
-                   class="bg-brand-accent hover:bg-brand-accentHover text-white font-semibold px-8 py-4 rounded-xl shadow-lg transition flex items-center gap-3">
-                    <i class="fas fa-file-alt"></i> Request a Quote
-                </a>
+    <!-- 1. HERO SECTION -->
+    <section class="py-6 md:py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative bg-brand-primary text-white rounded-3xl p-8 md:p-16 overflow-hidden shadow-xl border border-brand-primaryHover">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+                    <div>
+                        <span class="text-white font-bold uppercase text-xs tracking-widest bg-brand-accent px-3.5 py-1.5 rounded-full inline-block mb-4 shadow-sm">
+                            Precision Engineering. Built for Industry.
+                        </span>
+                        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-6 text-white">
+                            Reliable Industrial Fasteners & Engineering Components
+                        </h1>
+                        <p class="text-zinc-300 text-base md:text-lg leading-relaxed mb-4">
+                            Manufactured to meet demanding specifications, applications, and industry requirements.
+                        </p>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-8">
+                            From standard products to custom requirements, M.I. ENGINEERING WORKS delivers engineering solutions with a focus on precision, quality, and dependable service.
+                        </p>
+                        <div class="flex flex-wrap gap-4 mb-8">
+                            <a href="{% url 'home:contact-us' %}" 
+                            hx-get="{% url 'home:contact-us' %}" 
+                            hx-target="#main-content" 
+                            hx-push-url="true"
+                            class="bg-brand-accent hover:bg-brand-accentHover text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg transition duration-150">
+                                Request a Quote
+                            </a>
+                            <a href="#products" 
+                            class="bg-brand-primaryHover hover:bg-black text-zinc-200 font-semibold px-8 py-3.5 rounded-xl border border-zinc-700 transition duration-150">
+                                Explore Products
+                            </a>
+                        </div>
+                        <p class="text-xs text-zinc-400 font-medium border-t border-zinc-800 pt-4">
+                            Standard & Custom Solutions • Multiple Materials & Grades • Built to Specification
+                        </p>
+                    </div>
+                    <!-- Hero Image -->
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-zinc-800">
+                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80" 
+                            alt="M.I. Engineering Works Industrial Manufacturing" 
+                            class="w-full h-80 md:h-96 object-cover" />
+                    </div>
+                </div>
+                <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. ABOUT SECTION -->
+    <section class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="relative rounded-3xl overflow-hidden border border-brand-border shadow-sm order-2 lg:order-1 bg-brand-card">
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1000&q=80" 
+                     alt="About M.I. Engineering Works Factory Floor" 
+                     class="w-full h-80 lg:h-full object-cover" />
+            </div>
+            <div class="order-1 lg:order-2">
+                <span class="text-brand-accent font-bold uppercase text-xs tracking-wider">About M.I. Engineering Works</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2 mb-6 leading-tight">
+                    Engineering Solutions Built Around Your Requirements
+                </h2>
+                <p class="text-brand-body leading-relaxed mb-4">
+                    M.I. ENGINEERING WORKS specializes in engineering products and industrial components designed for reliable performance across demanding applications.
+                </p>
+                <p class="text-brand-body leading-relaxed mb-4">
+                    We understand that every requirement is different. Material, grade, dimensions, standards, quantity, finish, and operating conditions can all influence the right product selection.
+                </p>
+                <p class="text-brand-body leading-relaxed mb-8">
+                    Our approach is simple — understand the requirement, provide the right engineering solution, maintain consistent quality, and support our customers from initial enquiry through final supply.
+                </p>
                 <a href="{% url 'home:about-us' %}" 
                    hx-get="{% url 'home:about-us' %}" 
                    hx-target="#main-content" 
                    hx-push-url="true"
-                   class="bg-brand-primaryHover hover:bg-slate-800 text-slate-200 font-semibold px-8 py-4 rounded-xl border border-slate-700 transition flex items-center gap-3">
-                    <i class="fas fa-building"></i> Learn About Us
+                   class="inline-flex items-center gap-2 text-brand-accent font-bold hover:text-brand-accentHover transition">
+                    Learn More About Us <i class="fas fa-arrow-right text-sm"></i>
                 </a>
             </div>
         </div>
-        <!-- Decorative Background Accent -->
-        <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none"></div>
     </section>
 
-    <!-- 2. COMPANY INTRO: Short About Us -->
-    <section class="max-w-6xl mx-auto px-4">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-                <span class="text-brand-accent font-bold uppercase text-sm tracking-wider">About Our Operation</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2 mb-6">
-                    A Legacy of Engineering Excellence and Technical Precision
-                </h2>
-                <p class="text-brand-body leading-relaxed mb-4">
-                    Founded with a commitment to industrial reliability, M.I. Engineering Works delivers end-to-end manufacturing, precision machining, and custom component design.
-                </p>
-                <p class="text-brand-body leading-relaxed mb-6">
-                    We bridge the gap between technical drawings and finished products, adhering to rigorous material grade inspections, dimensional accuracy, and strict delivery timelines.
-                </p>
-                <div class="grid grid-cols-2 gap-4 border-t border-brand-border pt-6">
-                    <div>
-                        <h4 class="font-bold text-brand-heading text-lg">ISO Compliant</h4>
-                        <p class="text-xs text-brand-muted">Strict Quality Standards</p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-brand-heading text-lg">Custom Specs</h4>
-                        <p class="text-xs text-brand-muted">Tailored Machining</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-brand-sectionBg rounded-3xl p-8 border border-brand-border shadow-sm flex flex-col justify-between h-full">
-                <div class="space-y-6">
-                    <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-brand-primary text-white flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-drafting-table"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-brand-heading text-lg">Spec Analysis</h3>
-                            <p class="text-sm text-brand-body">Detailed review of customer engineering blueprints prior to production.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-brand-accent text-white flex items-center justify-center text-xl shrink-0">
-                            <i class="fas fa-cogs"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-brand-heading text-lg">Machining Capability</h3>
-                            <p class="text-sm text-brand-body">Heavy-duty turning, milling, and precision structural fabrication.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. PRODUCT CATEGORIES: Main Products / Categories -->
-    <section class="max-w-6xl mx-auto px-4">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <span class="text-brand-accent font-bold uppercase text-sm tracking-wider">Core Offerings</span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2">Product & Service Categories</h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white rounded-2xl p-6 border border-brand-border shadow-sm hover:border-brand-accent transition">
-                <div class="w-14 h-14 bg-brand-sectionBg text-brand-primary rounded-xl flex items-center justify-center text-2xl mb-6">
-                    <i class="fas fa-industry"></i>
-                </div>
-                <h3 class="text-xl font-bold text-brand-heading mb-3">Industrial Machinery Parts</h3>
-                <p class="text-brand-body text-sm leading-relaxed">Precision shafts, gears, bushings, and heavy-duty structural mechanical components.</p>
-            </div>
-            <div class="bg-white rounded-2xl p-6 border border-brand-border shadow-sm hover:border-brand-accent transition">
-                <div class="w-14 h-14 bg-brand-sectionBg text-brand-primary rounded-xl flex items-center justify-center text-2xl mb-6">
-                    <i class="fas fa-hammer"></i>
-                </div>
-                <h3 class="text-xl font-bold text-brand-heading mb-3">Custom Metal Fabrication</h3>
-                <p class="text-brand-body text-sm leading-relaxed">Structural frames, welded assemblies, and custom-engineered sheet metal work.</p>
-            </div>
-            <div class="bg-white rounded-2xl p-6 border border-brand-border shadow-sm hover:border-brand-accent transition">
-                <div class="w-14 h-14 bg-brand-sectionBg text-brand-primary rounded-xl flex items-center justify-center text-2xl mb-6">
-                    <i class="fas fa-screwdriver-wrench"></i>
-                </div>
-                <h3 class="text-xl font-bold text-brand-heading mb-3">Precision Machined Fittings</h3>
-                <p class="text-brand-body text-sm leading-relaxed">High-tolerance flanges, threaded connectors, and specialized hardware fittings.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. WHY CHOOSE US: Reasons to Work With Company -->
-    <section class="bg-brand-sectionBg rounded-3xl p-8 md:p-12 border border-brand-border">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <span class="text-brand-accent font-bold uppercase text-sm tracking-wider">The Engineering Advantage</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2">Why Work With M.I. Engineering?</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-white p-6 rounded-2xl border border-brand-border shadow-sm">
-                    <i class="fas fa-microscope text-brand-accent text-3xl mb-4"></i>
-                    <h4 class="font-bold text-brand-heading text-lg mb-2">Material Integrity</h4>
-                    <p class="text-xs text-brand-body leading-relaxed">Tested alloy steel, stainless, brass, and carbon steel grades with mill certificates.</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl border border-brand-border shadow-sm">
-                    <i class="fas fa-ruler-combined text-brand-accent text-3xl mb-4"></i>
-                    <h4 class="font-bold text-brand-heading text-lg mb-2">Micron Accuracy</h4>
-                    <p class="text-xs text-brand-body leading-relaxed">Strict dimensional tolerances guaranteed via advanced measuring tools.</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl border border-brand-border shadow-sm">
-                    <i class="fas fa-truck-fast text-brand-accent text-3xl mb-4"></i>
-                    <h4 class="font-bold text-brand-heading text-lg mb-2">On-Time Procurement</h4>
-                    <p class="text-xs text-brand-body leading-relaxed">Reliable production schedules aligned with your industrial timelines.</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl border border-brand-border shadow-sm">
-                    <i class="fas fa-file-contract text-brand-accent text-3xl mb-4"></i>
-                    <h4 class="font-bold text-brand-heading text-lg mb-2">Transparent Quotes</h4>
-                    <p class="text-xs text-brand-body leading-relaxed">Detailed technical breakdowns with competitive industrial pricing.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. INDUSTRIES SECTION: Industries / Applications Served -->
-    <section class="max-w-6xl mx-auto px-4">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <span class="text-brand-accent font-bold uppercase text-sm tracking-wider">Applications</span>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2">Industries We Serve</h2>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div class="p-6 bg-white rounded-2xl border border-brand-border shadow-sm">
-                <i class="fas fa-oil-well text-3xl text-brand-primary mb-3"></i>
-                <h4 class="font-bold text-brand-heading text-base">Oil & Gas</h4>
-            </div>
-            <div class="p-6 bg-white rounded-2xl border border-brand-border shadow-sm">
-                <i class="fas fa-bolt text-3xl text-brand-primary mb-3"></i>
-                <h4 class="font-bold text-brand-heading text-base">Power Generation</h4>
-            </div>
-            <div class="p-6 bg-white rounded-2xl border border-brand-border shadow-sm">
-                <i class="fas fa-car text-3xl text-brand-primary mb-3"></i>
-                <h4 class="font-bold text-brand-heading text-base">Automotive & OEM</h4>
-            </div>
-            <div class="p-6 bg-white rounded-2xl border border-brand-border shadow-sm">
-                <i class="fas fa-warehouse text-3xl text-brand-primary mb-3"></i>
-                <h4 class="font-bold text-brand-heading text-base">Heavy Infrastructure</h4>
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. QUALITY SECTION: Quality / Certification Messaging -->
-    <section class="bg-brand-primary text-white rounded-3xl p-8 md:p-12 shadow-md">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="space-y-4">
-                <span class="text-brand-accent font-semibold text-sm uppercase">Quality Assurance Guarantee</span>
-                <h2 class="text-2xl md:text-3xl font-bold">Uncompromising Quality Control at Every Stage</h2>
-                <p class="text-slate-300 text-sm max-w-2xl leading-relaxed">
-                    Every batch undergoes comprehensive quality checks including chemical composition verification, hardness testing, and coordinate measuring machine (CMM) inspections.
-                </p>
-            </div>
-            <div class="shrink-0 bg-brand-primaryHover p-6 rounded-2xl border border-slate-700 text-center">
-                <i class="fas fa-award text-4xl text-brand-accent mb-2"></i>
-                <h4 class="font-bold text-white text-base">100% Quality Tested</h4>
-                <p class="text-xs text-slate-400">Zero Defects Target</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 7. FEATURED PRODUCTS: Popular Products Preview -->
-    <section class="max-w-6xl mx-auto px-4">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
-            <div>
-                <span class="text-brand-accent font-bold uppercase text-sm tracking-wider">Catalog Highlights</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2">Featured Products</h2>
-            </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white rounded-2xl border border-brand-border overflow-hidden shadow-sm">
-                <div class="h-48 bg-brand-sectionBg flex items-center justify-center text-brand-muted text-4xl">
-                    <i class="fas fa-cog"></i>
-                </div>
-                <div class="p-6">
-                    <h3 class="font-bold text-brand-heading text-lg mb-2">High-Precision Gears</h3>
-                    <p class="text-brand-body text-xs mb-4">Custom spur, helical, and bevel gears designed for industrial power transmission.</p>
-                    <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-brand-muted">Carbon / Alloy Steel</span>
-                </div>
-            </div>
-            <div class="bg-white rounded-2xl border border-brand-border overflow-hidden shadow-sm">
-                <div class="h-48 bg-brand-sectionBg flex items-center justify-center text-brand-muted text-4xl">
-                    <i class="fas fa-[#2563EB] fa-ring"></i>
-                </div>
-                <div class="p-6">
-                    <h3 class="font-bold text-brand-heading text-lg mb-2">Heavy Duty Flanges</h3>
-                    <p class="text-brand-body text-xs mb-4">ANSI & DIN standard high-pressure pipe flanges for process piping.</p>
-                    <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-brand-muted">Stainless Steel 316/304</span>
-                </div>
-            </div>
-            <div class="bg-white rounded-2xl border border-brand-border overflow-hidden shadow-sm">
-                <div class="h-48 bg-brand-sectionBg flex items-center justify-center text-brand-muted text-4xl">
-                    <i class="fas fa-cubes"></i>
-                </div>
-                <div class="p-6">
-                    <h3 class="font-bold text-brand-heading text-lg mb-2">Machined Shafts</h3>
-                    <p class="text-brand-body text-xs mb-4">Drive shafts and turned spindles tailored to exact length and tolerance.</p>
-                    <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-brand-muted">Precision Turned</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 8. STATS SECTION: Company Metrics -->
-    <section class="max-w-6xl mx-auto px-4 py-6">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 bg-white p-8 rounded-3xl border border-brand-border shadow-sm text-center">
-            <div>
-                <h3 class="text-3xl md:text-4xl font-extrabold text-brand-primary">15+</h3>
-                <p class="text-xs text-brand-muted mt-1 font-medium">Years Experience</p>
-            </div>
-            <div>
-                <h3 class="text-3xl md:text-4xl font-extrabold text-brand-primary">500+</h3>
-                <p class="text-xs text-brand-muted mt-1 font-medium">Projects Delivered</p>
-            </div>
-            <div>
-                <h3 class="text-3xl md:text-4xl font-extrabold text-brand-primary">99.8%</h3>
-                <p class="text-xs text-brand-muted mt-1 font-medium">Precision Accuracy</p>
-            </div>
-            <div>
-                <h3 class="text-3xl md:text-4xl font-extrabold text-brand-primary">100+</h3>
-                <p class="text-xs text-brand-muted mt-1 font-medium">Industrial Clients</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 9. CERTIFICATES PREVIEW: Compliance & Certificates -->
-    <section class="max-w-6xl mx-auto px-4">
-        <div class="bg-brand-sectionBg rounded-3xl p-8 border border-brand-border">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-brand-accent text-2xl shadow-sm border border-brand-border">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-brand-heading text-lg">Standards & Certifications Compliance</h4>
-                        <p class="text-xs text-brand-body">Our products conform to ISO standard material and technical documentation.</p>
-                    </div>
-                </div>
-                <div class="flex gap-4">
-                    <span class="px-4 py-2 bg-white rounded-xl text-xs font-bold text-brand-heading border border-brand-border shadow-sm">ISO 9001 Compliant</span>
-                    <span class="px-4 py-2 bg-white rounded-xl text-xs font-bold text-brand-heading border border-brand-border shadow-sm">MTC Provided</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 10. ENQUIRY CTA: Strong Request Quote Section -->
-    <section class="bg-gradient-to-br from-brand-primary to-brand-primaryHover text-white rounded-3xl p-8 md:p-14 text-center shadow-xl">
-        <div class="max-w-3xl mx-auto space-y-6">
-            <h2 class="text-3xl md:text-5xl font-extrabold leading-tight">Ready to Start Your Engineering Procurement?</h2>
-            <p class="text-slate-300 text-base md:text-lg leading-relaxed">
-                Send us your drawings, material standards, and quantities for a detailed commercial and technical quotation.
+    <!-- 3. PRODUCTS SECTION (Category Cards with Uniform Industrial Red Accents) -->
+    <section id="products" class="max-w-6xl mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <span class="text-brand-accent font-bold uppercase text-xs tracking-widest">Our Products</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2 mb-4">
+                Engineered for Strength. Manufactured for Reliability.
+            </h2>
+            <p class="text-brand-body leading-relaxed">
+                Explore our range of industrial fasteners and engineering components available across different materials, grades, sizes, standards, and specifications.
             </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <!-- Bolts -->
+            <div class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm">
+                <div class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform">
+                    <i class="fas fa-bolt-lightning text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-brand-heading text-base mb-1">Bolts</h3>
+                    <p class="text-xs text-brand-muted leading-snug">Multiple grades & specs</p>
+                </div>
+            </div>
+
+            <!-- Nuts -->
+            <div class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm">
+                <div class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform">
+                    <i class="fas fa-cog text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-brand-heading text-base mb-1">Nuts</h3>
+                    <p class="text-xs text-brand-muted leading-snug">Dependable fastening</p>
+                </div>
+            </div>
+
+            <!-- Studs & Rods -->
+            <div class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm">
+                <div class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform">
+                    <i class="fas fa-grip-lines-vertical text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-brand-heading text-base mb-1">Studs & Rods</h3>
+                    <p class="text-xs text-brand-muted leading-snug">Structural threading</p>
+                </div>
+            </div>
+
+            <!-- Washers -->
+            <div class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm">
+                <div class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform">
+                    <i class="fas fa-circle-notch text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-brand-heading text-base mb-1">Washers</h3>
+                    <p class="text-xs text-brand-muted leading-snug">Load distribution</p>
+                </div>
+            </div>
+
+            <!-- Anchor Bolts -->
+            <div class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm">
+                <div class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform">
+                    <i class="fas fa-anchor text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-brand-heading text-base mb-1">Anchor Bolts</h3>
+                    <p class="text-xs text-brand-muted leading-snug">Heavy structural use</p>
+                </div>
+            </div>
+
+            <!-- Custom Parts -->
+            <div class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm">
+                <div class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform">
+                    <i class="fas fa-drafting-compass text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-brand-heading text-base mb-1">Custom Parts</h3>
+                    <p class="text-xs text-brand-muted leading-snug">Drawing-based</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="{% url 'home:contact-us' %}" 
+               hx-get="{% url 'home:contact-us' %}" 
+               hx-target="#main-content" 
+               hx-push-url="true"
+               class="inline-flex items-center gap-2 bg-brand-primary text-white font-bold px-8 py-3.5 rounded-xl hover:bg-brand-primaryHover transition shadow-md">
+                View All Products <i class="fas fa-arrow-right text-sm"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- 4. CAPABILITIES & STANDARDS (Refined Industrial Badge Badging) -->
+    <section class="max-w-6xl mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <span class="text-brand-accent font-bold uppercase text-xs tracking-widest">Our Capabilities</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2 mb-4">
+                From Standard Requirements to Custom Engineering
+            </h2>
+            <p class="text-brand-body text-sm leading-relaxed">
+                Every project has different technical requirements. Our capabilities are focused on providing products according to the specifications that matter to your application.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- ISO Badge Card -->
+            <div class="bg-brand-card rounded-2xl p-6 border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="w-10 h-10 rounded-lg bg-brand-primary text-white font-black flex items-center justify-center text-xs shadow-sm">ISO</span>
+                        <span class="bg-brand-secondaryBg text-brand-heading border border-brand-border text-xs font-semibold px-2.5 py-1 rounded-full">Global Standard</span>
+                    </div>
+                    <h4 class="font-bold text-brand-heading text-lg">Grades & Standards</h4>
+                    <p class="text-xs text-brand-muted mt-1 mb-4">Support for different product grades and applicable national or international standards based on customer requirements.</p>
+                </div>
+                <div class="border-t border-brand-border pt-3">
+                    <span class="text-xs text-brand-muted font-medium block mb-2">Popular Standards:</span>
+                    <div class="flex flex-wrap gap-1.5 text-xs font-semibold text-brand-heading">
+                        <span class="bg-brand-bg border border-brand-border px-2 py-0.5 rounded">ISO 4014</span>
+                        <span class="bg-brand-bg border border-brand-border px-2 py-0.5 rounded">ISO 4032</span>
+                        <span class="bg-brand-bg border border-brand-border px-2 py-0.5 rounded">IS 1363</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIN Badge Card -->
+            <div class="bg-brand-card rounded-2xl p-6 border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="w-10 h-10 rounded-lg bg-brand-accent text-white font-black flex items-center justify-center text-xs shadow-sm">DIN</span>
+                        <span class="bg-brand-secondaryBg text-brand-heading border border-brand-border text-xs font-semibold px-2.5 py-1 rounded-full">German Specs</span>
+                    </div>
+                    <h4 class="font-bold text-brand-heading text-lg">Multiple Materials</h4>
+                    <p class="text-xs text-brand-muted mt-1 mb-4">Products can be offered across suitable materials depending on the required mechanical properties, environment, and application.</p>
+                </div>
+                <div class="border-t border-brand-border pt-3">
+                    <span class="text-xs text-brand-muted font-medium block mb-2">Popular Standards:</span>
+                    <div class="flex flex-wrap gap-1.5 text-xs font-semibold text-brand-heading">
+                        <span class="bg-brand-bg border border-brand-border px-2 py-0.5 rounded">DIN 931</span>
+                        <span class="bg-brand-bg border border-brand-border px-2 py-0.5 rounded">DIN 933</span>
+                        <span class="bg-brand-bg border border-brand-border px-2 py-0.5 rounded">DIN 912</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ASTM Badge Card -->
+            <div class="bg-brand-card rounded-2xl p-6 border border-brand-border shadow-sm flex flex-col justify-between hover:shadow-md transition">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="w-10 h-10 rounded-lg bg-brand-primary text-white font-black flex items-center justify-center text-xs shadow-sm">ASTM</span>
+                        <span class="bg-brand-secondaryBg text-brand-heading border border-brand-border text-xs font-semibold px-2.5 py-1 rounded-full">American Standard</span>
+                    </div>
+                    <h4 class="font-bold text-brand-heading text-lg">Custom Sizes & Drawings</h4>
+                    <p class="text-xs text-brand-muted mt-1 mb-4">Share your technical drawing, PDF, image, or specification sheet with us for review of specific dimensions and parameters.</p>
+                </div>
+                <div class="border-t border-brand-border pt-3">
+                    <span class="text-xs text-brand-muted font-medium block mb-2">Popular Standards:</span>
+                    <div class="flex flex-wrap gap-1.5 text-xs font-semibold text-brand-heading">
+                        <span class="bg-brand-bg border border-brand-border px-2 py-0.5 rounded">A193</span>
+                        <span class="bg-brand-bg border border-brand-border px-2 py-0.5 rounded">A194</span>
+                        <span class="bg-brand-bg border border-brand-border px-2 py-0.5 rounded">A325</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="{% url 'home:contact-us' %}" 
+               hx-get="{% url 'home:contact-us' %}" 
+               hx-target="#main-content" 
+               hx-push-url="true"
+               class="inline-flex items-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-white font-bold px-8 py-3.5 rounded-xl transition">
+                Discuss Your Requirement <i class="fas fa-comments text-sm"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- 5. INDUSTRIES WE SERVE -->
+    <section class="max-w-6xl mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-brand-accent font-bold uppercase text-xs tracking-wider">Industries We Serve</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2 mb-4">
+                Engineering Products for Demanding Applications
+            </h2>
+            <p class="text-brand-body text-sm leading-relaxed">
+                Our engineering products can support requirements across a wide range of industrial applications.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="p-6 bg-brand-card rounded-2xl border border-brand-border shadow-sm hover:border-brand-accent transition">
+                <i class="fas fa-industry text-3xl text-brand-accent mb-4"></i>
+                <h4 class="font-bold text-brand-heading text-lg mb-2">Manufacturing</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Components and fastening solutions for production and industrial equipment.</p>
+            </div>
+            <div class="p-6 bg-brand-card rounded-2xl border border-brand-border shadow-sm hover:border-brand-accent transition">
+                <i class="fas fa-building text-3xl text-brand-accent mb-4"></i>
+                <h4 class="font-bold text-brand-heading text-lg mb-2">Construction & Infrastructure</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Products for structural, fabrication, and infrastructure requirements.</p>
+            </div>
+            <div class="p-6 bg-brand-card rounded-2xl border border-brand-border shadow-sm hover:border-brand-accent transition">
+                <i class="fas fa-cogs text-3xl text-brand-accent mb-4"></i>
+                <h4 class="font-bold text-brand-heading text-lg mb-2">Machinery & Equipment</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Engineering components for machinery, assemblies, and equipment manufacturers.</p>
+            </div>
+            <div class="p-6 bg-brand-card rounded-2xl border border-brand-border shadow-sm hover:border-brand-accent transition">
+                <i class="fas fa-car text-3xl text-brand-accent mb-4"></i>
+                <h4 class="font-bold text-brand-heading text-lg mb-2">Automotive</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Fastening and engineering components for automotive-related applications.</p>
+            </div>
+            <div class="p-6 bg-brand-card rounded-2xl border border-brand-border shadow-sm hover:border-brand-accent transition">
+                <i class="fas fa-bolt text-3xl text-brand-accent mb-4"></i>
+                <h4 class="font-bold text-brand-heading text-lg mb-2">Power & Energy</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Solutions for equipment and infrastructure used across the energy sector.</p>
+            </div>
+            <div class="p-6 bg-brand-card rounded-2xl border border-brand-border shadow-sm hover:border-brand-accent transition">
+                <i class="fas fa-weight-hanging text-3xl text-brand-accent mb-4"></i>
+                <h4 class="font-bold text-brand-heading text-lg mb-2">Heavy Engineering</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Components designed for demanding industrial and engineering applications.</p>
+            </div>
+        </div>
+
+        <div class="text-center mt-8">
+            <a href="{% url 'home:contact-us' %}" 
+               hx-get="{% url 'home:contact-us' %}" 
+               hx-target="#main-content" 
+               hx-push-url="true"
+               class="inline-flex items-center gap-2 text-brand-accent font-bold hover:text-brand-accentHover transition">
+                Explore Industries <i class="fas fa-arrow-right text-sm"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- 6. QUALITY SECTION -->
+    <section class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-brand-primary text-white rounded-3xl p-8 md:p-12 shadow-xl border border-brand-primaryHover">
+            <div class="space-y-4">
+                <span class="text-white font-bold uppercase text-xs tracking-wider bg-brand-accent px-3 py-1 rounded-full inline-block">Quality & Precision</span>
+                <h2 class="text-3xl md:text-4xl font-bold leading-tight text-white">Quality You Can Measure</h2>
+                <p class="text-zinc-300 text-sm leading-relaxed">
+                    Quality in engineering begins with the right material and continues through dimensional accuracy, manufacturing consistency, inspection, and final verification.
+                </p>
+                <p class="text-zinc-300 text-sm leading-relaxed">
+                    At M.I. ENGINEERING WORKS, our objective is to ensure that supplied products meet the agreed specifications and customer requirements.
+                </p>
+                <p class="text-zinc-400 text-xs leading-relaxed">
+                    Depending on the product and requirement, relevant technical or quality documentation can also be provided where applicable.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="{% url 'home:contact-us' %}" class="bg-brand-accent text-white px-5 py-2.5 rounded-xl font-semibold text-xs hover:bg-brand-accentHover transition">
+                        View Certificates
+                    </a>
+                    <a href="{% url 'home:contact-us' %}" class="bg-brand-primaryHover text-zinc-200 px-5 py-2.5 rounded-xl font-semibold text-xs border border-zinc-700 hover:bg-black transition">
+                        View Technical Documents
+                    </a>
+                </div>
+            </div>
+            <div class="relative rounded-2xl overflow-hidden border border-zinc-800 shadow-xl">
+                <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1000&q=80" 
+                     alt="Dimensional Inspection & Quality Assurance" 
+                     class="w-full h-80 object-cover" />
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CUSTOM REQUIREMENTS SECTION -->
+    <section class="bg-brand-card rounded-3xl p-8 md:p-12 border border-brand-border max-w-6xl mx-auto shadow-sm">
+        <div class="max-w-4xl mx-auto text-center space-y-6">
+            <span class="text-brand-accent font-bold uppercase text-xs tracking-wider">Custom Engineering</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading">Can't Find the Exact Product You Need?</h2>
+            <p class="text-brand-body text-sm leading-relaxed">
+                Industrial requirements don't always fit into a standard catalogue. If you require a specific material, grade, size, standard, finish, quantity, or drawing-based component, send us your complete requirement.
+            </p>
+            <div class="flex flex-wrap justify-center gap-2 pt-2 text-xs font-semibold text-brand-heading">
+                <span class="bg-brand-bg px-3.5 py-2 rounded-xl border border-brand-border shadow-sm">Technical Drawings</span>
+                <span class="bg-brand-bg px-3.5 py-2 rounded-xl border border-brand-border shadow-sm">PDF Specifications</span>
+                <span class="bg-brand-bg px-3.5 py-2 rounded-xl border border-brand-border shadow-sm">Product Images</span>
+                <span class="bg-brand-bg px-3.5 py-2 rounded-xl border border-brand-border shadow-sm">Required Dimensions</span>
+                <span class="bg-brand-bg px-3.5 py-2 rounded-xl border border-brand-border shadow-sm">Material & Grade</span>
+                <span class="bg-brand-bg px-3.5 py-2 rounded-xl border border-brand-border shadow-sm">Required Standard</span>
+                <span class="bg-brand-bg px-3.5 py-2 rounded-xl border border-brand-border shadow-sm">Quantity</span>
+                <span class="bg-brand-bg px-3.5 py-2 rounded-xl border border-brand-border shadow-sm">Other Documents</span>
+            </div>
             <div class="pt-4">
                 <a href="{% url 'home:contact-us' %}" 
                    hx-get="{% url 'home:contact-us' %}" 
                    hx-target="#main-content" 
                    hx-push-url="true"
-                   class="inline-flex items-center gap-3 bg-brand-accent hover:bg-brand-accentHover text-white text-lg font-bold px-10 py-4 rounded-xl shadow-xl transition">
-                    <i class="fas fa-paper-plane"></i> Submit Requirements
+                   class="inline-flex items-center gap-2 bg-brand-accent hover:bg-brand-accentHover text-white font-bold px-8 py-3.5 rounded-xl shadow-md transition">
+                    Send Your Requirement <i class="fas fa-paper-plane text-sm"></i>
                 </a>
             </div>
+        </div>
+    </section>
+
+    <!-- 8. HOW WE WORK SECTION -->
+    <section class="max-w-6xl mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-brand-accent font-bold uppercase text-xs tracking-wider">From Requirement to Solution</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2">A Simple, Transparent Enquiry Process</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-brand-card p-6 rounded-2xl border border-brand-border shadow-sm relative">
+                <span class="text-3xl font-extrabold text-brand-accent/40 block mb-2">01</span>
+                <h4 class="font-bold text-brand-heading text-base mb-2">Share Your Requirement</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Select a product or send us your technical requirement along with material, grade, size, quantity, or drawings.</p>
+            </div>
+            <div class="bg-brand-card p-6 rounded-2xl border border-brand-border shadow-sm relative">
+                <span class="text-3xl font-extrabold text-brand-accent/40 block mb-2">02</span>
+                <h4 class="font-bold text-brand-heading text-base mb-2">Technical Review</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Our team reviews your enquiry and may contact you through the chat if additional info is required.</p>
+            </div>
+            <div class="bg-brand-card p-6 rounded-2xl border border-brand-border shadow-sm relative">
+                <span class="text-3xl font-extrabold text-brand-accent/40 block mb-2">03</span>
+                <h4 class="font-bold text-brand-heading text-base mb-2">Receive Your Quotation</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Once understood, the relevant quotation and supporting documents are shared directly through your account.</p>
+            </div>
+            <div class="bg-brand-card p-6 rounded-2xl border border-brand-border shadow-sm relative">
+                <span class="text-3xl font-extrabold text-brand-accent/40 block mb-2">04</span>
+                <h4 class="font-bold text-brand-heading text-base mb-2">Stay Connected</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Track your enquiry, communicate with our team, and access quotations and invoices from one place.</p>
+            </div>
+        </div>
+        <div class="text-center mt-8">
+            <a href="{% url 'home:contact-us' %}" 
+               hx-get="{% url 'home:contact-us' %}" 
+               hx-target="#main-content" 
+               hx-push-url="true"
+               class="inline-flex items-center gap-2 bg-brand-primary hover:bg-brand-primaryHover text-white font-bold px-8 py-3.5 rounded-xl transition">
+                Start an Enquiry <i class="fas fa-arrow-right text-sm"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- 9. CERTIFICATES & RESOURCES -->
+    <section class="max-w-6xl mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-brand-accent font-bold uppercase text-xs tracking-wider">Certifications & Resources</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2 mb-4">Documentation When You Need It</h2>
+            <p class="text-brand-body text-sm">Access available certificates, company documents, product catalogues, and technical resources directly.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 bg-brand-card rounded-2xl border border-brand-border shadow-sm">
+                <i class="fas fa-certificate text-3xl text-brand-accent mb-4"></i>
+                <h4 class="font-bold text-brand-heading text-lg mb-2">Certificates</h4>
+                <p class="text-xs text-brand-body leading-relaxed">View available company and quality certifications.</p>
+            </div>
+            <div class="p-6 bg-brand-card rounded-2xl border border-brand-border shadow-sm">
+                <i class="fas fa-book-open text-3xl text-brand-accent mb-4"></i>
+                <h4 class="font-bold text-brand-heading text-lg mb-2">Catalogues</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Explore downloadable product and company catalogues.</p>
+            </div>
+            <div class="p-6 bg-brand-card rounded-2xl border border-brand-border shadow-sm">
+                <i class="fas fa-file-code text-3xl text-brand-accent mb-4"></i>
+                <h4 class="font-bold text-brand-heading text-lg mb-2">Technical Documents</h4>
+                <p class="text-xs text-brand-body leading-relaxed">Access available product and engineering documentation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. FINAL CTA -->
+    <section class="bg-brand-primary text-white rounded-3xl p-8 md:p-14 text-center shadow-xl border border-brand-primaryHover max-w-6xl mx-auto">
+        <div class="max-w-3xl mx-auto space-y-6">
+            <h2 class="text-3xl md:text-5xl font-extrabold leading-tight text-white">Have an Engineering Requirement?</h2>
+            <p class="text-zinc-300 text-base md:text-lg leading-relaxed">
+                Tell us what you need. Share the product, material, grade, standard, size, quantity, drawing, or technical specifications with our team.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 pt-4">
+                <a href="{% url 'home:contact-us' %}" 
+                   hx-get="{% url 'home:contact-us' %}" 
+                   hx-target="#main-content" 
+                   hx-push-url="true"
+                   class="bg-brand-accent hover:bg-brand-accentHover text-white text-base font-bold px-8 py-3.5 rounded-xl shadow-lg transition">
+                    Request a Quote
+                </a>
+                <a href="#products" class="bg-brand-primaryHover hover:bg-black text-zinc-200 font-bold px-8 py-3.5 rounded-xl border border-zinc-700 transition">
+                    Explore Products
+                </a>
+            </div>
+            <p class="text-xs text-zinc-400 pt-2">
+                Already submitted an enquiry? <a href="{% url 'home:contact-us' %}" class="text-brand-accent hover:underline font-semibold">Sign in to track its status.</a>
+            </p>
         </div>
     </section>
 

@@ -1,4 +1,5 @@
-<nav class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-[#E2E8F0]" x-data="{ open: false }">
+<!-- Navbar -->
+<nav class="bg-[#FFFFFF]/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-[#E4E4E7]" x-data="{ open: false }">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
         <!-- Company Logo -->
@@ -7,23 +8,23 @@
            hx-target="#main-content" 
            hx-push-url="true" 
            class="flex items-center space-x-3">
-            <div class="h-10 w-10 flex items-center justify-center rounded-xl bg-[#0F2744] text-white shadow-md">
+            <div class="h-10 w-10 flex items-center justify-center rounded-xl bg-[#202124] text-[#FAFAF9] shadow-md">
                 <i class="fas fa-cogs text-lg"></i>
             </div>
             <div class="flex flex-col">
-                <span class="font-bold text-lg text-[#0F172A] leading-none">M.I. ENGINEERING</span>
-                <span class="text-xs text-[#64748B] font-medium tracking-wider uppercase">Works</span>
+                <span class="font-bold text-lg text-[#18181B] leading-none">M.I. ENGINEERING</span>
+                <span class="text-xs text-[#71717A] font-medium tracking-wider uppercase">Works</span>
             </div>
         </a>
 
-        <!-- Desktop Navigation (HTMX Integrated) -->
-        <div class="hidden md:flex items-center space-x-8 text-[#475569] font-medium">
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-8 text-[#52525B] font-medium">
 
             <a href="{% url 'home:homepage' %}" 
                hx-get="{% url 'home:homepage' %}" 
                hx-target="#main-content" 
                hx-push-url="true"
-               class="flex items-center gap-2 hover:text-[#2563EB] transition {% if request.path == '/' %}text-[#2563EB] font-semibold{% endif %}">
+               class="flex items-center gap-2 hover:text-[#C62828] transition {% if request.path == '/' %}text-[#C62828] font-semibold{% endif %}">
                 <i class="fas fa-home"></i> Home
             </a>
 
@@ -31,7 +32,7 @@
                hx-get="{% url 'home:about-us' %}" 
                hx-target="#main-content" 
                hx-push-url="true"
-               class="flex items-center gap-2 hover:text-[#2563EB] transition {% if '/about' in request.path %}text-[#2563EB] font-semibold{% endif %}">
+               class="flex items-center gap-2 hover:text-[#C62828] transition {% if '/about' in request.path %}text-[#C62828] font-semibold{% endif %}">
                 <i class="fas fa-building"></i> About Us
             </a>
 
@@ -39,64 +40,111 @@
                hx-get="{% url 'home:contact-us' %}" 
                hx-target="#main-content" 
                hx-push-url="true"
-               class="flex items-center gap-2 hover:text-[#2563EB] transition {% if '/contact' in request.path %}text-[#2563EB] font-semibold{% endif %}">
+               class="flex items-center gap-2 hover:text-[#C62828] transition {% if '/contact' in request.path %}text-[#C62828] font-semibold{% endif %}">
                 <i class="fas fa-envelope"></i> Contact Us
             </a>
 
-            <!-- Auth Buttons -->
+            <!-- Auth Controls -->
             {% if request.user.is_authenticated %}
-                <a href="#" 
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#F1F5F9] text-[#0F172A] hover:bg-red-50 hover:text-[#DC2626] transition border border-[#E2E8F0]">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            {% else %}
-                <a href="#" 
-                   class="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0F2744] text-white hover:bg-[#091B30] transition shadow-sm">
-                    <i class="fas fa-sign-in-alt"></i> Client Login
-                </a>
-            {% endif %}
+                <div class="flex items-center space-x-4 pl-4 border-l border-[#E4E4E7]">
+                    <!-- User Profile Info -->
+                    <div class="flex items-center gap-2 text-sm">
+                        <div class="w-8 h-8 rounded-full bg-[#C62828]/10 text-[#C62828] font-bold flex items-center justify-center">
+                            {{ request.user.username|slice:":1"|upper }}
+                        </div>
+                        <span class="font-semibold text-[#18181B] max-w-[120px] truncate">
+                            {{ request.user.get_full_name|default:request.user.username }}
+                        </span>
+                    </div>
 
+                    <!-- Logout Button -->
+                    <a href="{% url 'accounts:logout' %}" 
+                       class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#F7F7F5] text-[#18181B] hover:bg-[#FFF5F5] hover:text-[#C62828] transition border border-[#E4E4E7] text-sm font-semibold">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            {% else %}
+
+                    <!-- Client Login -->
+                    <a href="{% url 'accounts:login' %}" 
+                       hx-get="{% url 'accounts:login' %}" 
+                       hx-target="#main-content" 
+                       hx-push-url="true"
+                       class="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#202124] text-[#FAFAF9] hover:bg-[#151515] transition shadow-sm text-sm font-semibold">
+                        <i class="fas fa-sign-in-alt"></i> Client Login
+                    </a>
+                </div>
+            {% endif %}
         </div>
 
         <!-- Mobile Menu Toggle Button -->
-        <button @click="open = !open" class="md:hidden text-[#0F172A] focus:outline-none">
+        <button @click="open = !open" class="md:hidden text-[#18181B] focus:outline-none">
             <i class="fas fa-bars text-xl"></i>
         </button>
 
     </div>
 
     <!-- Mobile Dropdown Menu -->
-    <div x-show="open" x-transition @click.away="open = false" class="md:hidden bg-white border-t border-[#E2E8F0]">
-        <div class="px-4 py-4 space-y-2 text-[#475569]">
+    <div x-show="open" x-transition @click.away="open = false" class="md:hidden bg-[#FFFFFF] border-t border-[#E4E4E7]">
+        <div class="px-4 py-4 space-y-2 text-[#52525B]">
+            
+            {% if request.user.is_authenticated %}
+                <div class="flex items-center gap-3 px-3 py-2 border-b border-[#E4E4E7] mb-2 pb-3">
+                    <div class="w-8 h-8 rounded-full bg-[#C62828]/10 text-[#C62828] font-bold flex items-center justify-center">
+                        {{ request.user.username|slice:":1"|upper }}
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-bold text-[#18181B] text-sm">
+                            {{ request.user.get_full_name|default:request.user.username }}
+                        </span>
+                        <span class="text-[10px] uppercase font-semibold text-[#C62828] tracking-wider">
+                            {{ request.user.role|default:"Client" }}
+                        </span>
+                    </div>
+                </div>
+            {% endif %}
+
             <a href="{% url 'home:homepage' %}" 
                hx-get="{% url 'home:homepage' %}" 
                hx-target="#main-content" 
                hx-push-url="true" 
                @click="open = false" 
-               class="block px-3 py-2 rounded-lg hover:bg-[#F1F5F9] hover:text-[#2563EB]">
+               class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if request.path == '/' %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}">
                <i class="fas fa-home mr-2"></i>Home
             </a>
+
             <a href="{% url 'home:about-us' %}" 
                hx-get="{% url 'home:about-us' %}" 
                hx-target="#main-content" 
                hx-push-url="true" 
                @click="open = false" 
-               class="block px-3 py-2 rounded-lg hover:bg-[#F1F5F9] hover:text-[#2563EB]">
+               class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if '/about' in request.path %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}">
                <i class="fas fa-building mr-2"></i>About Us
             </a>
+
             <a href="{% url 'home:contact-us' %}" 
                hx-get="{% url 'home:contact-us' %}" 
                hx-target="#main-content" 
                hx-push-url="true" 
                @click="open = false" 
-               class="block px-3 py-2 rounded-lg hover:bg-[#F1F5F9] hover:text-[#2563EB]">
+               class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if '/contact' in request.path %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}">
                <i class="fas fa-envelope mr-2"></i>Contact Us
             </a>
             
             {% if request.user.is_authenticated %}
-                <a href="#" class="block px-3 py-2 rounded-lg hover:bg-red-50 text-[#DC2626]"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+                <a href="{% url 'accounts:logout' %}" 
+                   class="block px-3 py-2 rounded-lg hover:bg-[#FFF5F5] text-[#C62828] font-semibold">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </a>
             {% else %}
-                <a href="#" class="block px-3 py-2 rounded-lg bg-[#0F2744] text-white text-center hover:bg-[#091B30]"><i class="fas fa-sign-in-alt mr-2"></i>Client Login</a>
+                <a href="{% url 'accounts:login' %}" 
+                   hx-get="{% url 'accounts:login' %}" 
+                   hx-target="#main-content" 
+                   hx-push-url="true" 
+                   @click="open = false" 
+                   class="block px-3 py-2 rounded-lg bg-[#202124] text-[#FAFAF9] text-center hover:bg-[#151515] font-semibold">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Client Login
+                </a>
             {% endif %}
         </div>
     </div>

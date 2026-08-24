@@ -9,7 +9,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 INSTALLED_APPS = [
     'jazzmin', 'django_htmx', 'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
-    'django.contrib.messages', 'django.contrib.staticfiles', 'home'
+    'django.contrib.messages', 'django.contrib.staticfiles', 'home', 'accounts',
 ]
 
 MIDDLEWARE = [
@@ -24,6 +24,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mi_engineering.urls'
+
+AUTH_USER_MODEL = "accounts.User"
 
 TEMPLATES = [
     {
