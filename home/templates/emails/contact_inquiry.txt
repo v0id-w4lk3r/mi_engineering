@@ -1,0 +1,9 @@
+New Industrial Inquiry Received
+
+From: {{ full_name }} ({{ email }})
+
+Message / Specifications:
+{{ message }}
+
+--
+Sent via M.I. Engineering Works Web Portal

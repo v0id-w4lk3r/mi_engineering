@@ -186,3 +186,5 @@ cython_debug/
 *.bak
 *.orig
 *~
+migrations/
+*/migrations/
