@@ -65,17 +65,25 @@
       <!-- Auth Controls -->
       {% if request.user.is_authenticated %}
       <div class="flex items-center space-x-4 pl-4 border-l border-[#E4E4E7]">
-        <!-- User Profile Info -->
-        <div class="flex items-center gap-2 text-sm">
+        <!-- User Profile Link -->
+        <a
+          href="{% url 'accounts:profile' %}"
+          hx-get="{% url 'accounts:profile' %}"
+          hx-target="#main-content"
+          hx-push-url="true"
+          class="flex items-center gap-2 text-sm hover:text-[#C62828] transition group {% if '/accounts/profile' in request.path %}text-[#C62828] font-semibold{% endif %}"
+        >
           <div
-            class="w-8 h-8 rounded-full bg-[#C62828]/10 text-[#C62828] font-bold flex items-center justify-center"
+            class="w-8 h-8 rounded-full bg-[#C62828]/10 text-[#C62828] font-bold flex items-center justify-center group-hover:bg-[#C62828] group-hover:text-white transition"
           >
             {{ request.user.username|slice:":1"|upper }}
           </div>
-          <span class="font-semibold text-[#18181B] max-w-[120px] truncate">
+          <span
+            class="font-semibold text-[#18181B] group-hover:text-[#C62828] max-w-[120px] truncate transition"
+          >
             {{ request.user.get_full_name|default:request.user.username }}
           </span>
-        </div>
+        </a>
 
         <!-- Desktop Logout Form (POST method required in Django 5.0+) -->
         <form action="{% url 'accounts:logout' %}" method="post" class="inline">
@@ -122,8 +130,14 @@
   >
     <div class="px-4 py-4 space-y-2 text-[#52525B]">
       {% if request.user.is_authenticated %}
-      <div
-        class="flex items-center gap-3 px-3 py-2 border-b border-[#E4E4E7] mb-2 pb-3"
+      <!-- Mobile Profile Badge Link -->
+      <a
+        href="{% url 'accounts:profile' %}"
+        hx-get="{% url 'accounts:profile' %}"
+        hx-target="#main-content"
+        hx-push-url="true"
+        @click="open = false"
+        class="flex items-center gap-3 px-3 py-2 border-b border-[#E4E4E7] mb-2 pb-3 rounded-lg hover:bg-[#F7F7F5] transition"
       >
         <div
           class="w-8 h-8 rounded-full bg-[#C62828]/10 text-[#C62828] font-bold flex items-center justify-center"
@@ -137,10 +151,10 @@
           <span
             class="text-[10px] uppercase font-semibold text-[#C62828] tracking-wider"
           >
-            {{ request.user.role|default:"Client" }}
+            {{ request.user.role|default:"Client" }} &bull; View Profile
           </span>
         </div>
-      </div>
+      </a>
       {% endif %}
 
       <a
@@ -177,6 +191,17 @@
       </a>
 
       {% if request.user.is_authenticated %}
+      <a
+        href="{% url 'accounts:profile' %}"
+        hx-get="{% url 'accounts:profile' %}"
+        hx-target="#main-content"
+        hx-push-url="true"
+        @click="open = false"
+        class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if '/accounts/profile' in request.path %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}"
+      >
+        <i class="fas fa-user-circle mr-2"></i>My Profile & Dashboard
+      </a>
+
       <!-- Mobile Logout Form (POST method required in Django 5.0+) -->
       <form action="{% url 'accounts:logout' %}" method="post">
         {% csrf_token %}
