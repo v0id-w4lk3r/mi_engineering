@@ -15,10 +15,10 @@ class User(AbstractUser):
     company_name = models.CharField(max_length=255, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
 
-    def is_client(self):
+    def is_client(self) -> bool:
         return self.role == self.Role.CLIENT
 
-    def is_staff_member(self):
+    def is_staff_member(self) -> bool:
         return self.role in [self.Role.STAFF, self.Role.ADMIN]
 
     def save(self, *args, **kwargs):
@@ -31,4 +31,5 @@ class User(AbstractUser):
         elif self.role == self.Role.CLIENT:
             self.is_staff = False
             self.is_superuser = False
+
         super().save(*args, **kwargs)

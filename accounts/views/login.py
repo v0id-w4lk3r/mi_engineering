@@ -9,7 +9,7 @@ class UserLoginView(AnonymousRequiredMixin, LoginView):
     template_name = "login.html"
 
     def get_success_url(self):
-        return reverse_lazy("home:index")
+        return reverse_lazy("home:homepage")
 
     def form_valid(self, form):
         messages.success(self.request,
