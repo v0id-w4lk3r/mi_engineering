@@ -14,7 +14,7 @@ INSTALLED_APPS = [
     'jazzmin', 'django_htmx', 'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'home',
-    'accounts', 'gallery'
+    'accounts', 'gallery', 'products'
 ]
 
 MIDDLEWARE = [

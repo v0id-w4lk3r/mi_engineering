@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('home.urls', namespace='home')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('gallery/', include('gallery.urls', namespace='gallery')),
+    path('products/', include('products.urls', namespace='products')),
 ]
 
 if settings.DEBUG:

@@ -1,11 +1,9 @@
 {% load static %}
-<!-- Navbar -->
 <nav
   class="bg-[#FFFFFF]/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-[#E4E4E7]"
   x-data="{ open: false }"
 >
   <div class="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
-    <!-- Company Logo -->
     <a
       href="{% url 'home:homepage' %}"
       hx-get="{% url 'home:homepage' %}"
@@ -20,7 +18,6 @@
       />
     </a>
 
-    <!-- Desktop Navigation -->
     <div
       class="hidden md:flex items-center space-x-8 text-[#52525B] font-medium"
     >
@@ -44,7 +41,16 @@
         <i class="fas fa-building"></i> About Us
       </a>
 
-      <!-- Gallery Link -->
+      <a
+        href="{% url 'products:product_list' %}"
+        hx-get="{% url 'products:product_list' %}"
+        hx-target="#main-content"
+        hx-push-url="true"
+        class="flex items-center gap-2 hover:text-[#C62828] transition {% if '/products' in request.path %}text-[#C62828] font-semibold{% endif %}"
+      >
+        <i class="fas fa-boxes"></i> Products
+      </a>
+
       <a
         href="{% url 'gallery:gallery_list' %}"
         hx-get="{% url 'gallery:gallery_list' %}"
@@ -65,10 +71,8 @@
         <i class="fas fa-envelope"></i> Contact Us
       </a>
 
-      <!-- Auth Controls -->
       {% if request.user.is_authenticated %}
       <div class="flex items-center space-x-4 pl-4 border-l border-[#E4E4E7]">
-        <!-- Admin Panel Link (Visible only to Staff / Admins) -->
         {% if request.user.is_staff or request.user.is_superuser %}
         <a
           href="{% url 'admin:index' %}"
@@ -80,7 +84,6 @@
         </a>
         {% endif %}
 
-        <!-- User Profile Link -->
         <a
           href="{% url 'accounts:profile' %}"
           hx-get="{% url 'accounts:profile' %}"
@@ -100,7 +103,6 @@
           </span>
         </a>
 
-        <!-- Desktop Logout Form -->
         <form action="{% url 'accounts:logout' %}" method="post" class="inline">
           {% csrf_token %}
           <button
@@ -113,7 +115,6 @@
       </div>
       {% else %}
       <div class="flex items-center space-x-4 pl-4 border-l border-[#E4E4E7]">
-        <!-- Client Login -->
         <a
           href="{% url 'accounts:login' %}"
           hx-get="{% url 'accounts:login' %}"
@@ -127,7 +128,6 @@
       {% endif %}
     </div>
 
-    <!-- Mobile Menu Toggle Button -->
     <button
       @click="open = !open"
       class="md:hidden text-[#18181B] focus:outline-none"
@@ -136,7 +136,6 @@
     </button>
   </div>
 
-  <!-- Mobile Dropdown Menu -->
   <div
     x-show="open"
     x-transition
@@ -145,7 +144,6 @@
   >
     <div class="px-4 py-4 space-y-2 text-[#52525B]">
       {% if request.user.is_authenticated %}
-      <!-- Mobile Profile Badge Link -->
       <a
         href="{% url 'accounts:profile' %}"
         hx-get="{% url 'accounts:profile' %}"
@@ -194,7 +192,17 @@
         <i class="fas fa-building mr-2"></i>About Us
       </a>
 
-      <!-- Mobile Gallery Link -->
+      <a
+        href="{% url 'products:product_list' %}"
+        hx-get="{% url 'products:product_list' %}"
+        hx-target="#main-content"
+        hx-push-url="true"
+        @click="open = false"
+        class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if '/products' in request.path %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}"
+      >
+        <i class="fas fa-boxes mr-2"></i>Products
+      </a>
+
       <a
         href="{% url 'gallery:gallery_list' %}"
         hx-get="{% url 'gallery:gallery_list' %}"
@@ -218,7 +226,6 @@
       </a>
 
       {% if request.user.is_authenticated %}
-      <!-- Mobile Admin Panel Link -->
       {% if request.user.is_staff or request.user.is_superuser %}
       <a
         href="{% url 'admin:index' %}"
@@ -241,7 +248,6 @@
         <i class="fas fa-user-circle mr-2"></i>My Profile & Dashboard
       </a>
 
-      <!-- Mobile Logout Form -->
       <form action="{% url 'accounts:logout' %}" method="post">
         {% csrf_token %}
         <button

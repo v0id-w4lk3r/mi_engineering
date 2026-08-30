@@ -1,0 +1,224 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block title %}Products & Engineering Solutions - M.I. Engineering Works{% endblock %} 
+{% block content %}
+
+
+<div class="bg-[#F7F7F5] min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Page Header -->
+    <div
+      class="bg-white rounded-2xl shadow-sm border border-[#E4E4E7] p-8 mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+    >
+      <div>
+        <span
+          class="inline-block px-3 py-1 bg-[#C62828]/10 text-[#C62828] text-xs font-semibold rounded-full uppercase tracking-wider mb-2"
+        >
+          Industrial Catalog
+        </span>
+        <h1 class="text-3xl font-extrabold text-[#18181B] tracking-tight">
+          Engineering Products
+        </h1>
+        <p class="mt-1 text-sm text-[#52525B]">
+          Explore our range of precision-manufactured components and custom
+          solutions.
+        </p>
+      </div>
+
+      <!-- Quick Search Bar -->
+      <div class="w-full md:w-72">
+        <div class="relative">
+          <input
+            type="text"
+            placeholder="Search products..."
+            class="w-full pl-10 pr-4 py-2 text-sm bg-[#F7F7F5] border border-[#E4E4E7] rounded-xl focus:outline-none focus:border-[#C62828] transition-colors"
+          />
+          <i
+            class="fas fa-search absolute left-3.5 top-3 text-[#71717A] text-xs"
+          ></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <!-- Category Filter Sidebar -->
+      <aside class="space-y-4">
+        <div class="bg-white rounded-2xl border border-[#E4E4E7] p-6 shadow-sm">
+          <h3
+            class="text-sm font-bold text-[#18181B] uppercase tracking-wider mb-4 pb-2 border-b border-[#E4E4E7]"
+          >
+            Categories
+          </h3>
+          <ul class="space-y-1.5 text-sm">
+            <li>
+              <a
+                href="{% url 'products:product_list' %}"
+                hx-get="{% url 'products:product_list' %}"
+                hx-target="#main-content"
+                hx-push-url="true"
+                class="block px-3 py-2 rounded-lg transition-colors {% if not selected_category %}bg-[#C62828] text-white font-semibold{% else %}text-[#52525B] hover:bg-[#F7F7F5]{% endif %}"
+              >
+                All Products
+              </a>
+            </li>
+            {% for category in categories %}
+            <li>
+              <a
+                href="{% url 'products:category_product_list' category.slug %}"
+                hx-get="{% url 'products:category_product_list' category.slug %}"
+                hx-target="#main-content"
+                hx-push-url="true"
+                class="flex items-center justify-between px-3 py-2 rounded-lg transition-colors {% if selected_category == category.slug %}bg-[#C62828] text-white font-semibold{% else %}text-[#52525B] hover:bg-[#F7F7F5]{% endif %}"
+              >
+                <span>{{ category.name }}</span>
+                <span class="text-xs opacity-75"
+                  >({{ category.products.count }})</span
+                >
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Products Grid -->
+      <main class="lg:col-span-3">
+        {% if products %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for product in products %}
+          <div
+            class="bg-white rounded-2xl border border-[#E4E4E7] overflow-hidden shadow-sm hover:shadow-md transition duration-200 flex flex-col"
+          >
+            <!-- Product Image -->
+            <a
+              href="{% url 'products:product_detail' product.slug %}"
+              hx-get="{% url 'products:product_detail' product.slug %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              class="aspect-square bg-[#F7F7F5] border-b border-[#E4E4E7] flex items-center justify-center p-4 relative group overflow-hidden"
+            >
+              {% with product.images.first as primary_image %} {% if primary_image %}
+              <img
+                src="{{ primary_image.image.url }}"
+                alt="{{ product.title }}"
+                class="w-full h-full object-contain group-hover:scale-105 transition duration-300"
+              />
+              {% else %}
+              <div class="text-center text-[#71717A]">
+                <i class="fas fa-cubes text-3xl mb-1"></i>
+                <p class="text-xs">No Image</p>
+              </div>
+              {% endif %} {% endwith %}
+            </a>
+
+            <!-- Product Info -->
+            <div class="p-5 flex-1 flex flex-col justify-between">
+              <div>
+                <span
+                  class="text-[10px] font-bold text-[#C62828] uppercase tracking-wider block mb-1"
+                >
+                  {{ product.category.name }}
+                </span>
+                <h2
+                  class="text-base font-bold text-[#18181B] hover:text-[#C62828] transition-colors mb-2"
+                >
+                  <a
+                    href="{% url 'products:product_detail' product.slug %}"
+                    hx-get="{% url 'products:product_detail' product.slug %}"
+                    hx-target="#main-content"
+                    hx-push-url="true"
+                  >
+                    {{ product.title }}
+                  </a>
+                </h2>
+                <p
+                  class="text-xs text-[#52525B] line-clamp-2 mb-4 leading-relaxed"
+                >
+                  {{ product.short_description }}
+                </p>
+              </div>
+
+              <!-- Spec Badges & Button -->
+              <div>
+                <div class="flex flex-wrap gap-1.5 mb-4 text-[11px]">
+                  {% if product.material %}
+                  <span
+                    class="px-2 py-0.5 bg-[#F7F7F5] border border-[#E4E4E7] rounded text-[#52525B]"
+                  >
+                    {{ product.material }}
+                  </span>
+                  {% endif %} {% if product.grade %}
+                  <span
+                    class="px-2 py-0.5 bg-[#F7F7F5] border border-[#E4E4E7] rounded text-[#52525B]"
+                  >
+                    {{ product.grade }}
+                  </span>
+                  {% endif %}
+                </div>
+
+                <a
+                  href="{% url 'products:product_detail' product.slug %}"
+                  hx-get="{% url 'products:product_detail' product.slug %}"
+                  hx-target="#main-content"
+                  hx-push-url="true"
+                  class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#202124] text-white rounded-xl text-xs font-bold hover:bg-[#C62828] transition-colors"
+                >
+                  View Specifications
+                  <i class="fas fa-arrow-right text-[10px]"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="mt-8 flex justify-center gap-2">
+          {% if page_obj.has_previous %}
+          <a
+            href="?page={{ page_obj.previous_page_number }}"
+            hx-get="?page={{ page_obj.previous_page_number }}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            class="px-3 py-1.5 rounded-lg border border-[#E4E4E7] bg-white text-xs font-semibold text-[#52525B] hover:bg-[#F7F7F5]"
+          >
+            Previous
+          </a>
+          {% endif %}
+
+          <span
+            class="px-3 py-1.5 rounded-lg bg-[#202124] text-white text-xs font-semibold"
+          >
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+          </span>
+
+          {% if page_obj.has_next %}
+          <a
+            href="?page={{ page_obj.next_page_number }}"
+            hx-get="?page={{ page_obj.next_page_number }}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            class="px-3 py-1.5 rounded-lg border border-[#E4E4E7] bg-white text-xs font-semibold text-[#52525B] hover:bg-[#F7F7F5]"
+          >
+            Next
+          </a>
+          {% endif %}
+        </div>
+        {% endif %} {% else %}
+        <!-- Empty State -->
+        <div
+          class="bg-white rounded-2xl border border-[#E4E4E7] p-12 text-center"
+        >
+          <i class="fas fa-boxes text-4xl text-[#71717A] mb-3"></i>
+          <h3 class="text-lg font-bold text-[#18181B]">No products found</h3>
+          <p class="text-xs text-[#52525B] mt-1">
+            There are currently no active products in this category.
+          </p>
+        </div>
+        {% endif %}
+      </main>
+    </div>
+  </div>
+</div>
+{% endblock %}
