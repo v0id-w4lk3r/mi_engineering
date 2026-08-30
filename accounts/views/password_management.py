@@ -6,12 +6,12 @@ from django.contrib.auth.views import (
     PasswordResetConfirmView,
     PasswordResetView,
 )
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from accounts.views.mixins import AnonymousRequiredMixin
 
 
-# 1. Password Change 
+# 1. Password Change
 class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     """
     Allows authenticated users to change their password.
@@ -27,7 +27,7 @@ class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
         return super().form_valid(form)
 
 
-# 2. Password Reset Request 
+# 2. Password Reset Request
 class CustomPasswordResetView(AnonymousRequiredMixin, PasswordResetView):
     """
     Step 1 of password reset flow.
@@ -35,20 +35,30 @@ class CustomPasswordResetView(AnonymousRequiredMixin, PasswordResetView):
     """
 
     template_name = "password_reset.html"
-    email_template_name = "emails/password_reset_email.html"
+    email_template_name = "emails/password_reset_email.txt"
+    html_email_template_name = "emails/password_reset_email.html"
     subject_template_name = "emails/password_reset_subject.txt"
     success_url = reverse_lazy("accounts:login")
 
     def form_valid(self, form: Any) -> HttpResponse:
-        response = super().form_valid(form)
+        opts = {
+            "use_https": self.request.is_secure(),
+            "token_generator": self.token_generator,
+            "from_email": self.from_email,
+            "email_template_name": self.email_template_name,
+            "subject_template_name": self.subject_template_name,
+            "html_email_template_name": self.html_email_template_name,
+            "request": self.request,
+        }
+        form.save(**opts)
         messages.info(
             self.request,
             "If an account exists with that email address, password reset instructions have been sent.",
         )
-        return response
+        return HttpResponseRedirect(self.get_success_url())
 
 
-# 3. Password Reset Confirm 
+# 3. Password Reset Confirm
 class CustomPasswordResetConfirmView(AnonymousRequiredMixin,
                                      PasswordResetConfirmView):
     """

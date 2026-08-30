@@ -16,5 +16,4 @@ def validate_not_disposable_email(email: Optional[str]) -> None:
     if domain in blocklist:
         raise ValidationError(
             "Temporary or disposable email addresses are not allowed. Please use a valid email address.",
-            code="disposable_email_not_allowed",
-        )
+            code="disposable_email_not_allowed")

@@ -59,7 +59,7 @@ class ClientProfileForm(forms.ModelForm):
             "city",
             "state",
             "postal_code",
-            "country",
+            "country"
         ]
         widgets = {
             "tax_id":

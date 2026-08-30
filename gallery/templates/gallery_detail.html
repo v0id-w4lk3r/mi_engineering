@@ -1,0 +1,100 @@
+{% extends 'base.html' %} 
+{% block title %} {{ item.title }} - M.I. Engineering Gallery {% endblock %} 
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+  <!-- Back Button -->
+  <a
+    href="{% url 'gallery:gallery_list' %}"
+    hx-get="{% url 'gallery:gallery_list' %}"
+    hx-target="#main-content"
+    hx-push-url="true"
+    class="inline-flex items-center gap-2 text-xs font-bold text-[#71717A] hover:text-[#C62828] transition mb-6"
+  >
+    <i class="fas fa-arrow-left"></i> Back to Gallery
+  </a>
+
+  <div
+    class="bg-white rounded-2xl border border-[#E4E4E7] overflow-hidden shadow-sm"
+  >
+    <!-- Media Viewer Header -->
+    <div
+      class="bg-[#18181B] flex items-center justify-center p-2 sm:p-4 min-h-[350px] sm:min-h-[500px]"
+    >
+      {% if item.media_type == 'IMAGE' and item.image %}
+      <img
+        src="{{ item.image.url }}"
+        alt="{{ item.title }}"
+        class="max-h-[600px] w-auto max-w-full object-contain rounded-lg shadow-md"
+      />
+      {% elif item.media_type == 'VIDEO' %} {% if item.video %}
+      <video
+        controls
+        class="w-full max-h-[550px] rounded-lg shadow-md bg-black"
+      >
+        <source src="{{ item.video.url }}" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      {% elif item.video_url %}
+      <div class="w-full aspect-video rounded-lg overflow-hidden shadow-md">
+        <iframe
+          src="{{ item.video_url }}"
+          class="w-full h-full border-0"
+          allow="
+            accelerometer;
+            autoplay;
+            clipboard-write;
+            encrypted-media;
+            gyroscope;
+            picture-in-picture;
+          "
+          allowfullscreen
+        ></iframe>
+      </div>
+      {% endif %} {% endif %}
+    </div>
+
+    <!-- Media Info Footer -->
+    <div class="p-6 sm:p-8">
+      <div
+        class="flex flex-wrap items-center justify-between gap-4 border-b border-[#E4E4E7] pb-4 mb-6"
+      >
+        <div>
+          {% if item.category %}
+          <span
+            class="text-xs font-bold uppercase tracking-wider text-[#C62828] bg-[#C62828]/10 px-3 py-1 rounded-md"
+          >
+            {{ item.category.name }}
+          </span>
+          {% endif %}
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-[#18181B] mt-2">
+            {{ item.title }}
+          </h1>
+        </div>
+
+        <div class="text-xs text-[#71717A] text-right">
+          <p>
+            <i class="far fa-calendar-alt mr-1"></i> Uploaded: {{
+            item.uploaded_at|date:"F d, Y" }}
+          </p>
+          <p class="mt-1 font-semibold text-[#18181B]">
+            Type: {{ item.media_type_label }}
+          </p>
+        </div>
+      </div>
+
+      {% if item.description %}
+      <div class="prose max-w-none text-[#52525B] text-sm leading-relaxed">
+        <h3
+          class="text-xs font-bold uppercase tracking-wider text-[#18181B] mb-2"
+        >
+          Description
+        </h3>
+        <p class="whitespace-pre-line">{{ item.description }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

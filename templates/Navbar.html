@@ -1,31 +1,23 @@
+{% load static %}
 <!-- Navbar -->
 <nav
   class="bg-[#FFFFFF]/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-[#E4E4E7]"
   x-data="{ open: false }"
 >
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
     <!-- Company Logo -->
     <a
       href="{% url 'home:homepage' %}"
       hx-get="{% url 'home:homepage' %}"
       hx-target="#main-content"
       hx-push-url="true"
-      class="flex items-center space-x-3"
+      class="flex items-center space-x-3 group"
     >
-      <div
-        class="h-10 w-10 flex items-center justify-center rounded-xl bg-[#202124] text-[#FAFAF9] shadow-md"
-      >
-        <i class="fas fa-cogs text-lg"></i>
-      </div>
-      <div class="flex flex-col">
-        <span class="font-bold text-lg text-[#18181B] leading-none"
-          >M.I. ENGINEERING</span
-        >
-        <span
-          class="text-xs text-[#71717A] font-medium tracking-wider uppercase"
-          >Works</span
-        >
-      </div>
+      <img
+        src="{% static 'img/logo/logo.png' %}"
+        alt="M.I. Engineering Works Logo"
+        class="h-16 md:h-20 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+      />
     </a>
 
     <!-- Desktop Navigation -->
@@ -52,6 +44,17 @@
         <i class="fas fa-building"></i> About Us
       </a>
 
+      <!-- Gallery Link -->
+      <a
+        href="{% url 'gallery:gallery_list' %}"
+        hx-get="{% url 'gallery:gallery_list' %}"
+        hx-target="#main-content"
+        hx-push-url="true"
+        class="flex items-center gap-2 hover:text-[#C62828] transition {% if '/gallery' in request.path %}text-[#C62828] font-semibold{% endif %}"
+      >
+        <i class="fas fa-images"></i> Gallery
+      </a>
+
       <a
         href="{% url 'home:contact-us' %}"
         hx-get="{% url 'home:contact-us' %}"
@@ -65,6 +68,18 @@
       <!-- Auth Controls -->
       {% if request.user.is_authenticated %}
       <div class="flex items-center space-x-4 pl-4 border-l border-[#E4E4E7]">
+        <!-- Admin Panel Link (Visible only to Staff / Admins) -->
+        {% if request.user.is_staff or request.user.is_superuser %}
+        <a
+          href="{% url 'admin:index' %}"
+          target="_blank"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#202124] text-[#FAFAF9] hover:bg-[#151515] transition text-xs font-semibold shadow-sm"
+          title="Open Admin Panel"
+        >
+          <i class="fas fa-user-shield text-xs"></i> Admin Panel
+        </a>
+        {% endif %}
+
         <!-- User Profile Link -->
         <a
           href="{% url 'accounts:profile' %}"
@@ -85,7 +100,7 @@
           </span>
         </a>
 
-        <!-- Desktop Logout Form (POST method required in Django 5.0+) -->
+        <!-- Desktop Logout Form -->
         <form action="{% url 'accounts:logout' %}" method="post" class="inline">
           {% csrf_token %}
           <button
@@ -179,6 +194,18 @@
         <i class="fas fa-building mr-2"></i>About Us
       </a>
 
+      <!-- Mobile Gallery Link -->
+      <a
+        href="{% url 'gallery:gallery_list' %}"
+        hx-get="{% url 'gallery:gallery_list' %}"
+        hx-target="#main-content"
+        hx-push-url="true"
+        @click="open = false"
+        class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if '/gallery' in request.path %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}"
+      >
+        <i class="fas fa-images mr-2"></i>Gallery
+      </a>
+
       <a
         href="{% url 'home:contact-us' %}"
         hx-get="{% url 'home:contact-us' %}"
@@ -191,6 +218,18 @@
       </a>
 
       {% if request.user.is_authenticated %}
+      <!-- Mobile Admin Panel Link -->
+      {% if request.user.is_staff or request.user.is_superuser %}
+      <a
+        href="{% url 'admin:index' %}"
+        target="_blank"
+        @click="open = false"
+        class="block px-3 py-2 rounded-lg bg-[#202124] text-[#FAFAF9] font-semibold text-center hover:bg-[#151515] transition"
+      >
+        <i class="fas fa-user-shield mr-2"></i>Admin Panel
+      </a>
+      {% endif %}
+
       <a
         href="{% url 'accounts:profile' %}"
         hx-get="{% url 'accounts:profile' %}"
@@ -202,7 +241,7 @@
         <i class="fas fa-user-circle mr-2"></i>My Profile & Dashboard
       </a>
 
-      <!-- Mobile Logout Form (POST method required in Django 5.0+) -->
+      <!-- Mobile Logout Form -->
       <form action="{% url 'accounts:logout' %}" method="post">
         {% csrf_token %}
         <button

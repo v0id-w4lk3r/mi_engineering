@@ -1,3 +1,4 @@
+{% load static %}
 <!-- Footer -->
 <footer
   class="bg-[#151515] text-[#FAFAF9] py-16 mt-auto border-t border-[#202124]"
@@ -6,6 +7,20 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
       <!-- About & Brand Profile -->
       <div>
+        <!-- Company Logo (Bigger Height & Color Intact) -->
+        <a
+          href="{% url 'home:homepage' %}"
+          hx-get="{% url 'home:homepage' %}"
+          hx-target="#main-content"
+          hx-push-url="true"
+          class="inline-block mb-4"
+        >
+          <img
+            src="{% static 'img/logo/logo.png' %}"
+            alt="M.I. Engineering Works Logo"
+            class="h-16 md:h-20 w-auto object-contain transition-transform duration-200 hover:scale-105"
+          />
+        </a>
         <h4
           class="text-lg font-bold text-white mb-4 relative after:content-[''] after:block after:w-12 after:h-0.5 after:bg-[#C62828] after:mt-2"
         >
@@ -47,13 +62,23 @@
             >
           </li>
           <li>
-            <a href="#" class="hover:text-white transition-colors"
-              >Material & Technical Specs</a
+            <a
+              href="{% url 'gallery:gallery_list' %}"
+              hx-get="{% url 'gallery:gallery_list' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              class="hover:text-white transition-colors"
+              >Product Gallery</a
             >
           </li>
           <li>
-            <a href="#" class="hover:text-white transition-colors"
-              >Quality Assurance</a
+            <a
+              href="{% url 'home:contact-us' %}"
+              hx-get="{% url 'home:contact-us' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              class="hover:text-white transition-colors"
+              >Contact & Location</a
             >
           </li>
         </ul>
@@ -78,17 +103,32 @@
             >
           </li>
           <li>
-            <a href="#" class="hover:text-white transition-colors"
-              >Documentation & Compliance</a
+            <a
+              href="{% url 'home:terms-of-service' %}"
+              hx-get="{% url 'home:terms-of-service' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              class="hover:text-white transition-colors"
+              >Terms of Service</a
             >
           </li>
           <li>
-            <a href="#" class="hover:text-white transition-colors"
-              >Delivery Options</a
+            <a
+              href="{% url 'home:privacy-policy' %}"
+              hx-get="{% url 'home:privacy-policy' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              class="hover:text-white transition-colors"
+              >Privacy Policy</a
             >
           </li>
           <li>
-            <a href="#" class="hover:text-white transition-colors"
+            <a
+              href="{% url 'home:contact-us' %}"
+              hx-get="{% url 'home:contact-us' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              class="hover:text-white transition-colors"
               >Customer Support</a
             >
           </li>
@@ -125,10 +165,20 @@
     >
       <p>© 2026 M.I. ENGINEERING WORKS. All rights reserved.</p>
       <div class="flex space-x-6 mt-4 md:mt-0">
-        <a href="#" class="hover:text-white transition-colors"
+        <a
+          href="{% url 'home:privacy-policy' %}"
+          hx-get="{% url 'home:privacy-policy' %}"
+          hx-target="#main-content"
+          hx-push-url="true"
+          class="hover:text-white transition-colors"
           >Privacy Policy</a
         >
-        <a href="#" class="hover:text-white transition-colors"
+        <a
+          href="{% url 'home:terms-of-service' %}"
+          hx-get="{% url 'home:terms-of-service' %}"
+          hx-target="#main-content"
+          hx-push-url="true"
+          class="hover:text-white transition-colors"
           >Terms of Service</a
         >
       </div>
