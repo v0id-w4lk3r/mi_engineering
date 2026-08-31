@@ -115,8 +115,10 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS",
                           "True").lower() in ("true", "1", "t")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL",
-                               f"M.I. Engineering Works <{EMAIL_HOST_USER}>")
+
+# Wrap display name in double quotes to prevent 'period in phrase' header parsing error
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL", f'"M.I. Engineering Works" <{EMAIL_HOST_USER}>')
 
 # Clean up MAILERS at the VERY END of base settings
 if "MAILERS" in globals():
