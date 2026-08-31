@@ -1,0 +1,46 @@
+<div class="space-y-6">
+  {% if enquiries %}
+    <div class="bg-white rounded-2xl border border-[#E4E4E7] overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-[#F7F7F5] border-b border-[#E4E4E7] text-[#18181B] font-bold">
+            <tr>
+              <th class="py-3.5 px-4">Date</th>
+              <th class="py-3.5 px-4">Product / Item Requested</th>
+              <th class="py-3.5 px-4">Material / Specs</th>
+              <th class="py-3.5 px-4">Status</th>
+              <th class="py-3.5 px-4 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#E4E4E7]">
+            {% for req in enquiries %}
+            <tr class="hover:bg-[#F7F7F5]/50 transition">
+              <td class="py-3.5 px-4 font-semibold text-[#71717A] whitespace-nowrap">{{ req.created_at|date:"M d, Y" }}</td>
+              <td class="py-3.5 px-4 font-bold text-[#18181B]">{{ req.product.title|default:req.subject|default:"Custom Component RFQ" }}</td>
+              <td class="py-3.5 px-4 text-[#52525B]">{{ req.material|default:"Standard Specifications" }}</td>
+              <td class="py-3.5 px-4">
+                {% if req.status == 'QUOTED' %}
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Quotation Ready</span>
+                {% elif req.status == 'IN_REVIEW' %}
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">In Review</span>
+                {% else %}
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Submitted</span>
+                {% endif %}
+              </td>
+              <td class="py-3.5 px-4 text-right">
+                <a href="{% url 'home:contact-us' %}" class="text-[#C62828] font-bold hover:underline">Follow Up &rarr;</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <div class="bg-white rounded-2xl border border-[#E4E4E7] p-12 text-center">
+      <i class="fas fa-paper-plane text-4xl text-[#A1A1AA] mb-3"></i>
+      <h3 class="text-base font-bold text-[#18181B]">No Enquiries Submitted</h3>
+      <p class="text-xs text-[#71717A] mt-1 max-w-sm mx-auto">Looking for custom precision machining or specialized parts? Request a quote directly from product pages.</p>
+    </div>
+  {% endif %}
+</div>

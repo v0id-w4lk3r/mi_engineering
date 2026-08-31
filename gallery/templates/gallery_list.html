@@ -171,8 +171,7 @@
           class="mt-4 pt-3 border-t border-[#E4E4E7] flex items-center justify-between text-xs text-[#71717A]"
         >
           <span
-            ><i class="far fa-calendar-alt mr-1"></i> {{
-            item.uploaded_at|date:"M d, Y" }}</span
+            ><i class="far fa-calendar-alt mr-1"></i> {{ item.uploaded_at|date:"M d, Y" }}</span
           >
           <a
             href="{% url 'gallery:gallery_detail' item.pk %}"

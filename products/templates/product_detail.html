@@ -1,189 +1,327 @@
-{% extends 'base.html' %} 
-{% load static %} 
-{% block title %}{{ product.title }} - M.I. Engineering Works{% endblock %} 
-{% block content %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ product.title }} - M.I. Engineering Works{% endblock %}
 
+{% block content %}
 <div class="bg-[#F7F7F5] min-h-screen py-10 px-4 sm:px-6 lg:px-8">
   <div class="max-w-7xl mx-auto">
+
     <!-- Breadcrumb -->
-    <nav class="flex text-xs text-[#71717A] mb-6">
-      <a
-        href="{% url 'home:homepage' %}"
-        hx-get="{% url 'home:homepage' %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        class="hover:text-[#C62828]"
-        >Home</a
-      >
+    <nav class="flex text-xs text-[#71717A] mb-6 overflow-x-auto whitespace-nowrap pb-1">
+      <a href="{% url 'home:homepage' %}" hx-get="{% url 'home:homepage' %}" hx-target="#main-content"
+        hx-push-url="true" class="hover:text-[#C62828] transition-colors">Home</a>
       <span class="mx-2">/</span>
-      <a
-        href="{% url 'products:product_list' %}"
-        hx-get="{% url 'products:product_list' %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        class="hover:text-[#C62828]"
-        >Products</a
-      >
+      <a href="{% url 'products:product_list' %}" hx-get="{% url 'products:product_list' %}" hx-target="#main-content"
+        hx-push-url="true" class="hover:text-[#C62828] transition-colors">Products</a>
       <span class="mx-2">/</span>
       <span class="text-[#18181B] font-semibold">{{ product.title }}</span>
     </nav>
 
     <!-- Main Product Section -->
-    <div
-      class="bg-white rounded-2xl shadow-sm border border-[#E4E4E7] overflow-hidden p-6 lg:p-10 mb-10"
-    >
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        <!-- Image Preview -->
-        <div>
+    <div class="bg-white rounded-2xl shadow-sm border border-[#E4E4E7] overflow-hidden p-6 lg:p-10 mb-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+        <!-- Image Gallery Section (Left - 5 Cols) -->
+        <div class="lg:col-span-5 flex flex-col">
+          {% with product.images.all as images %}
+          <!-- Primary Image Showcase -->
           <div
-            class="aspect-square bg-[#F7F7F5] rounded-xl overflow-hidden border border-[#E4E4E7] flex items-center justify-center mb-4 p-4"
-          >
-            {% with product.images.first as primary_image %} {% if primary_image %}
-            <img
-              src="{{ primary_image.image.url }}"
-              alt="{{ product.title }}"
-              class="w-full h-full object-contain"
-            />
+            class="aspect-square bg-[#F7F7F5] rounded-xl overflow-hidden border border-[#E4E4E7] flex items-center justify-center p-6 mb-4 relative group">
+            {% if images %}
+            <img id="main-product-image" src="{{ images.0.image.url }}"
+              alt="{{ images.0.alt_text|default:product.title }}"
+              class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105" />
             {% else %}
             <div class="text-center text-[#71717A]">
-              <i class="fas fa-boxes text-4xl mb-2"></i>
-              <p class="text-xs">No Image Available</p>
+              <i class="fas fa-boxes text-5xl mb-3 text-[#A1A1AA]"></i>
+              <p class="text-xs font-medium">No Image Available</p>
             </div>
-            {% endif %} {% endwith %}
+            {% endif %}
           </div>
+
+          <!-- Thumbnail Navigation Strip -->
+          {% if images|length > 1 %}
+          <div class="grid grid-cols-4 gap-3">
+            {% for img in images %}
+            <button type="button"
+              onclick="document.getElementById('main-product-image').src='{{ img.image.url }}'; document.querySelectorAll('.thumb-btn').forEach(b => b.classList.remove('border-[#C62828]')); this.classList.add('border-[#C62828]')"
+              class="thumb-btn aspect-square rounded-lg border-2 {% if forloop.first %}border-[#C62828]{% else %}border-[#E4E4E7]{% endif %} overflow-hidden bg-[#F7F7F5] p-1 transition focus:outline-none">
+              <img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.title }}"
+                class="w-full h-full object-contain" />
+            </button>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endwith %}
         </div>
 
-        <!-- Details & Pre-filled Enquiry Button -->
-        <div class="flex flex-col justify-between space-y-6">
+        <!-- Details & Pre-filled Enquiry Button (Right - 7 Cols) -->
+        <div class="lg:col-span-7 flex flex-col justify-between space-y-6">
           <div>
-            <span
-              class="inline-block px-3 py-1 bg-[#C62828]/10 text-[#C62828] text-xs font-semibold rounded-full uppercase mb-3"
-            >
-              {{ product.category.name }}
-            </span>
-            <h1
-              class="text-2xl sm:text-3xl font-extrabold text-[#18181B] tracking-tight mb-3"
-            >
+            <div class="flex items-center gap-2 mb-3">
+              <span
+                class="inline-block px-3 py-1 bg-[#C62828]/10 text-[#C62828] text-xs font-semibold rounded-full uppercase tracking-wider">
+                {{ product.category.name }}
+              </span>
+              {% if product.is_featured %}
+              <span
+                class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full uppercase tracking-wider">
+                Featured
+              </span>
+              {% endif %}
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#18181B] tracking-tight mb-3">
               {{ product.title }}
             </h1>
-            <p class="text-sm text-[#52525B] leading-relaxed mb-6">
+
+            <p class="text-sm sm:text-base text-[#52525B] leading-relaxed mb-6">
               {{ product.short_description }}
             </p>
 
-            <!-- Key Features Box -->
+            <!-- Key Specs Summary Grid -->
             <div
-              class="grid grid-cols-2 gap-4 p-4 rounded-xl bg-[#F7F7F5] border border-[#E4E4E7] text-xs mb-6"
-            >
-              <div>
-                <span class="block text-[#71717A] uppercase font-semibold"
-                  >Material</span
-                >
-                <span class="font-bold text-[#18181B]"
-                  >{{ product.material|default:"N/A" }}</span
-                >
+              class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-xl bg-[#F7F7F5] border border-[#E4E4E7] text-xs mb-6">
+              <div class="p-2">
+                <span class="block text-[#71717A] uppercase font-semibold mb-1">Material</span>
+                <span class="font-bold text-[#18181B] text-sm">{{ product.material|default:"N/A" }}</span>
               </div>
-              <div>
-                <span class="block text-[#71717A] uppercase font-semibold"
-                  >Grade</span
-                >
-                <span class="font-bold text-[#18181B]"
-                  >{{ product.grade|default:"N/A" }}</span
-                >
+              <div class="p-2 border-l border-[#E4E4E7]">
+                <span class="block text-[#71717A] uppercase font-semibold mb-1">Grade</span>
+                <span class="font-bold text-[#18181B] text-sm">{{ product.grade|default:"N/A" }}</span>
               </div>
-              <div>
-                <span class="block text-[#71717A] uppercase font-semibold"
-                  >Standard</span
-                >
-                <span class="font-bold text-[#18181B]"
-                  >{{ product.standard|default:"N/A" }}</span
-                >
+              <div class="p-2 border-l border-[#E4E4E7]">
+                <span class="block text-[#71717A] uppercase font-semibold mb-1">Standard</span>
+                <span class="font-bold text-[#18181B] text-sm">{{ product.standard|default:"N/A" }}</span>
               </div>
-              <div>
-                <span class="block text-[#71717A] uppercase font-semibold"
-                  >Size Range</span
-                >
-                <span class="font-bold text-[#18181B]"
-                  >{{ product.size_range|default:"Custom" }}</span
-                >
+              <div class="p-2 border-l border-[#E4E4E7]">
+                <span class="block text-[#71717A] uppercase font-semibold mb-1">Size Range</span>
+                <span class="font-bold text-[#18181B] text-sm">{{ product.size_range|default:"Custom" }}</span>
+              </div>
+            </div>
+
+            <!-- Value Highlights -->
+            <div class="space-y-2 mb-6">
+              <div class="flex items-center gap-2 text-xs text-[#52525B]">
+                <i class="fas fa-check-circle text-emerald-600"></i>
+                <span>Tested to international standard compliance</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-[#52525B]">
+                <i class="fas fa-check-circle text-emerald-600"></i>
+                <span>Custom dimensions and bulk orders available</span>
               </div>
             </div>
           </div>
 
-          <!-- Product to Enquiry Action Link -->
-          <div class="pt-4 border-t border-[#E4E4E7]">
-            <a
-              href="{% url 'home:contact-us' %}?product={{ product.title|urlencode }}&material={{ product.material|urlencode }}&grade={{ product.grade|urlencode }}"
-              hx-get="{% url 'home:contact-us' %}?product={{ product.title|urlencode }}&material={{ product.material|urlencode }}&grade={{ product.grade|urlencode }}"
-              hx-target="#main-content"
-              hx-push-url="true"
-              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#C62828] text-white font-bold text-sm hover:bg-[#b71c1c] transition shadow-md"
-            >
-              <i class="fas fa-paper-plane"></i> Send Enquiry For This Product
+          <!-- Product to Enquiry CTA -->
+<div class="pt-6 border-t border-[#E4E4E7]">
+  {% if request.user.is_authenticated %}
+    <!-- Authenticated CTA -->
+    <div class="flex flex-col sm:flex-row items-center gap-4">
+      <a href="{% url 'home:contact-us' %}?product={{ product.title|urlencode }}&material={{ product.material|urlencode }}&grade={{ product.grade|urlencode }}"
+        hx-get="{% url 'home:contact-us' %}?product={{ product.title|urlencode }}&material={{ product.material|urlencode }}&grade={{ product.grade|urlencode }}"
+        hx-target="#main-content" hx-push-url="true"
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-[#C62828] text-white font-bold text-sm hover:bg-[#b71c1c] transition shadow-md hover:shadow-lg">
+        <i class="fas fa-paper-plane"></i> Send Enquiry For This Product
+      </a>
+      <span class="text-xs text-[#71717A]">Fast response within 24 hours</span>
+    </div>
+      {% else %}
+        <!-- Unauthenticated CTA Banner & Login Redirect -->
+        <div class="bg-[#F7F7F5] border border-[#E4E4E7] rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-[#C62828]/10 text-[#C62828] flex items-center justify-center shrink-0">
+              <i class="fas fa-lock text-sm"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-[#18181B]">Account Required for RFQ</h4>
+              <p class="text-[11px] text-[#71717A] mt-0.5">Please sign in to request custom quotations and technical datasheets.</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <a href="{% url 'accounts:login' %}?next={% url 'home:contact-us' %}?product={{ product.title|urlencode }}%26material={{ product.material|urlencode }}%26grade={{ product.grade|urlencode }}"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#18181B] text-white font-bold text-xs rounded-xl hover:bg-[#27272A] transition shadow-sm whitespace-nowrap">
+              <i class="fas fa-sign-in-alt text-xs"></i> Sign In to Enquire
             </a>
           </div>
         </div>
+      {% endif %}
+    </div>
+        </div>
       </div>
 
-      <!-- Technical Specifications Table -->
-      <div class="mt-12 border-t border-[#E4E4E7] pt-8">
-        <h3 class="text-lg font-bold text-[#18181B] mb-4">
-          Technical Specifications
-        </h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm border-collapse">
-            <tbody>
-              <tr class="border-b border-[#E4E4E7]">
-                <td
-                  class="py-2.5 px-4 font-semibold text-[#52525B] bg-[#F7F7F5] w-1/3"
-                >
-                  Detailed Overview
-                </td>
-                <td class="py-2.5 px-4 text-[#18181B]">
-                  {{ product.description }}
-                </td>
-              </tr>
-              {% for spec in product.specifications.all %}
-              <tr class="border-b border-[#E4E4E7]">
-                <td
-                  class="py-2.5 px-4 font-semibold text-[#52525B] bg-[#F7F7F5]"
-                >
-                  {{ spec.key }}
-                </td>
-                <td class="py-2.5 px-4 text-[#18181B]">{{ spec.value }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+      <!-- Tabbed Specifications & Technical Information Section -->
+      <div class="mt-12 border-t border-[#E4E4E7] pt-8" x-data="{ activeTab: 'overview' }">
+        <!-- Tab Headers -->
+        <div class="flex border-b border-[#E4E4E7] overflow-x-auto gap-8 mb-6">
+          <button @click="activeTab = 'overview'"
+            :class="{ 'border-[#C62828] text-[#C62828]': activeTab === 'overview', 'border-transparent text-[#71717A] hover:text-[#18181B]': activeTab !== 'overview' }"
+            class="pb-3 text-sm font-bold border-b-2 transition whitespace-nowrap focus:outline-none">
+            Detailed Overview
+          </button>
+
+          <button @click="activeTab = 'specs'"
+            :class="{ 'border-[#C62828] text-[#C62828]': activeTab === 'specs', 'border-transparent text-[#71717A] hover:text-[#18181B]': activeTab !== 'specs' }"
+            class="pb-3 text-sm font-bold border-b-2 transition whitespace-nowrap focus:outline-none flex items-center gap-2">
+            Technical Specifications
+            <span class="px-2 py-0.5 rounded-full bg-[#F7F7F5] border text-[10px] text-[#52525B]">
+              {{ product.specifications.all|length }}
+            </span>
+          </button>
+
+          {% if product.chemical_composition %}
+          <button @click="activeTab = 'chemical'"
+            :class="{ 'border-[#C62828] text-[#C62828]': activeTab === 'chemical', 'border-transparent text-[#71717A] hover:text-[#18181B]': activeTab !== 'chemical' }"
+            class="pb-3 text-sm font-bold border-b-2 transition whitespace-nowrap focus:outline-none">
+            Chemical Composition
+          </button>
+          {% endif %}
+
+          {% if product.mechanical_properties %}
+          <button @click="activeTab = 'mechanical'"
+            :class="{ 'border-[#C62828] text-[#C62828]': activeTab === 'mechanical', 'border-transparent text-[#71717A] hover:text-[#18181B]': activeTab !== 'mechanical' }"
+            class="pb-3 text-sm font-bold border-b-2 transition whitespace-nowrap focus:outline-none">
+            Mechanical Properties
+          </button>
+          {% endif %}
+        </div>
+
+        <!-- Tab Contents -->
+        <div>
+          <!-- Overview Panel -->
+          <div x-show="activeTab === 'overview'" class="prose max-w-none text-sm text-[#52525B] leading-relaxed">
+            {% if product.description %}
+            {{ product.description|safe }}
+            {% else %}
+            <p class="text-[#71717A] italic">No detailed overview provided for this product.</p>
+            {% endif %}
+          </div>
+
+          <!-- Specs Panel -->
+          <div x-show="activeTab === 'specs'" style="display: none;">
+            {% if product.specifications.all %}
+            <div class="overflow-x-auto rounded-lg border border-[#E4E4E7]">
+              <table class="w-full text-left text-sm">
+                <tbody>
+                  {% for spec in product.specifications.all %}
+                  <tr class="border-b last:border-b-0 border-[#E4E4E7] hover:bg-[#F7F7F5]/50 transition">
+                    <td
+                      class="py-3 px-4 font-semibold text-[#52525B] bg-[#F7F7F5] w-1/3 sm:w-1/4 border-r border-[#E4E4E7]">
+                      {{ spec.key }}
+                    </td>
+                    <td class="py-3 px-4 text-[#18181B] font-medium">{{ spec.value }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <p class="text-[#71717A] text-sm italic">No additional technical specifications listed.</p>
+            {% endif %}
+          </div>
+
+          <!-- Chemical Composition Panel -->
+          {% if product.chemical_composition %}
+          <div x-show="activeTab === 'chemical'" style="display: none;">
+            <div class="overflow-x-auto rounded-lg border border-[#E4E4E7]">
+              <table class="w-full text-left text-sm">
+                <thead>
+                  <tr class="bg-[#F7F7F5] border-b border-[#E4E4E7]">
+                    <th class="py-3 px-4 font-bold text-[#18181B] border-r border-[#E4E4E7] w-1/2">Element</th>
+                    <th class="py-3 px-4 font-bold text-[#18181B]">Value / Percentage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for element, value in product.chemical_composition.items %}
+                  <tr class="border-b last:border-b-0 border-[#E4E4E7] hover:bg-[#F7F7F5]/50 transition">
+                    <td class="py-3 px-4 font-semibold text-[#52525B] border-r border-[#E4E4E7]">{{ element }}</td>
+                    <td class="py-3 px-4 text-[#18181B] font-medium">{{ value }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Mechanical Properties Panel -->
+          {% if product.mechanical_properties %}
+          <div x-show="activeTab === 'mechanical'" style="display: none;">
+            <div class="overflow-x-auto rounded-lg border border-[#E4E4E7]">
+              <table class="w-full text-left text-sm">
+                <thead>
+                  <tr class="bg-[#F7F7F5] border-b border-[#E4E4E7]">
+                    <th class="py-3 px-4 font-bold text-[#18181B] border-r border-[#E4E4E7] w-1/2">Property</th>
+                    <th class="py-3 px-4 font-bold text-[#18181B]">Specification</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for prop_name, prop_val in product.mechanical_properties.items %}
+                  <tr class="border-b last:border-b-0 border-[#E4E4E7] hover:bg-[#F7F7F5]/50 transition">
+                    <td class="py-3 px-4 font-semibold text-[#52525B] border-r border-[#E4E4E7]">{{ prop_name }}</td>
+                    <td class="py-3 px-4 text-[#18181B] font-medium">{{ prop_val }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
 
-    <!-- Related Products -->
+    <!-- Related Products Section -->
     {% if related_products %}
-    <div>
-      <h3 class="text-lg font-bold text-[#18181B] mb-4">Related Solutions</h3>
+    <div class="mt-12">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-extrabold text-[#18181B] tracking-tight">Related Solutions</h3>
+        <a href="{% url 'products:product_list' %}" hx-get="{% url 'products:product_list' %}" hx-target="#main-content"
+          hx-push-url="true" class="text-xs font-bold text-[#C62828] hover:underline flex items-center gap-1">
+          View All <i class="fas fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {% for rel in related_products %}
         <div
-          class="bg-white rounded-xl border border-[#E4E4E7] p-4 shadow-sm hover:shadow-md transition"
-        >
-          <h4 class="font-bold text-sm text-[#18181B] mb-1">
-            <a
-              href="{% url 'products:product_detail' rel.slug %}"
-              hx-get="{% url 'products:product_detail' rel.slug %}"
-              hx-target="#main-content"
-              hx-push-url="true"
-              class="hover:text-[#C62828]"
-            >
-              {{ rel.title }}
+          class="bg-white rounded-xl border border-[#E4E4E7] p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+          <div>
+            <!-- Thumbnail preview if exists -->
+            <div
+              class="aspect-video bg-[#F7F7F5] rounded-lg border border-[#E4E4E7] overflow-hidden mb-3 flex items-center justify-center">
+              {% with rel.images.first as rel_img %}
+              {% if rel_img %}
+              <img src="{{ rel_img.image.url }}" alt="{{ rel.title }}"
+                class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform" />
+              {% else %}
+              <i class="fas fa-boxes text-2xl text-[#A1A1AA]"></i>
+              {% endif %}
+              {% endwith %}
+            </div>
+
+            <h4 class="font-bold text-sm text-[#18181B] mb-1 group-hover:text-[#C62828] transition-colors">
+              <a href="{% url 'products:product_detail' rel.slug %}"
+                hx-get="{% url 'products:product_detail' rel.slug %}" hx-target="#main-content" hx-push-url="true">
+                {{ rel.title }}
+              </a>
+            </h4>
+            <p class="text-xs text-[#52525B] line-clamp-2 mb-4 leading-relaxed">
+              {{ rel.short_description }}
+            </p>
+          </div>
+
+          <div class="pt-3 border-t border-[#E4E4E7] flex items-center justify-between">
+            <span class="text-[11px] font-semibold text-[#C62828] bg-[#C62828]/5 px-2 py-0.5 rounded">
+              {{ rel.material|default:"Industrial Grade" }}
+            </span>
+            <a href="{% url 'products:product_detail' rel.slug %}" hx-get="{% url 'products:product_detail' rel.slug %}"
+              hx-target="#main-content" hx-push-url="true"
+              class="text-xs font-bold text-[#18181B] hover:text-[#C62828] transition">
+              Details &rarr;
             </a>
-          </h4>
-          <p class="text-xs text-[#52525B] line-clamp-2 mb-3">
-            {{ rel.short_description }}
-          </p>
-          <span class="text-[11px] font-semibold text-[#C62828]"
-            >{{ rel.material }}</span
-          >
+          </div>
         </div>
         {% endfor %}
       </div>

@@ -1,0 +1,10 @@
+Dear {{ full_name }},
+
+Thank you for reaching out to M.I. Engineering Works. We have successfully received your message:
+
+"{{ message }}"
+
+Our team will review your inquiry and get back to you as soon as possible.
+
+Best regards,
+M.I. Engineering Works Team

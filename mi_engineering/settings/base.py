@@ -11,10 +11,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # Application definition
 INSTALLED_APPS = [
-    'jazzmin', 'django_htmx', 'django.contrib.admin', 'django.contrib.auth',
-    'django.contrib.contenttypes', 'django.contrib.sessions',
-    'django.contrib.messages', 'django.contrib.staticfiles', 'home',
-    'accounts', 'gallery', 'products'
+    'jazzmin', 'django_htmx', 'django_ckeditor_5', 'django.contrib.admin',
+    'django.contrib.auth', 'django.contrib.contenttypes',
+    'django.contrib.sessions', 'django.contrib.messages',
+    'django.contrib.staticfiles', 'home', 'accounts', 'gallery', 'products'
 ]
 
 MIDDLEWARE = [

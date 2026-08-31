@@ -1,6 +1,8 @@
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import AbstractBaseUser
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView
@@ -25,13 +27,21 @@ class PrivacyPolicyView(TemplateView):
     template_name = "privacy_policy.html"
 
 
-class ContactView(FormView):
+class ContactView(LoginRequiredMixin, FormView):
     template_name = "contact.html"
     form_class = ContactForm
     success_url = reverse_lazy("home:contact-us")
 
+    # Redirect unauthenticated users to login with next parameter
+    login_url = reverse_lazy("accounts:login")
+
     def get_initial(self) -> dict[str, Any]:
         initial = super().get_initial()
+
+        # Explicitly narrow type for Pylance using cast
+        user = cast(Any, self.request.user)
+        initial["email"] = user.email
+        initial["full_name"] = user.get_full_name() or user.username
 
         # Capture URL parameter inputs from product detail page redirect
         product = self.request.GET.get("product")
@@ -47,7 +57,6 @@ class ContactView(FormView):
 
             spec_details = f" ({', '.join(specs)})" if specs else ""
 
-            # Pre-fill the contact message field
             initial["message"] = (
                 f"I am interested in receiving a quote for: {product}{spec_details}.\n\n"
                 f"Please provide pricing, delivery timeline, and minimum order quantity."
@@ -56,7 +65,9 @@ class ContactView(FormView):
         return initial
 
     def form_valid(self, form: ContactForm) -> HttpResponse:
-        inquiry = form.save()
+        inquiry = form.save(commit=False)
+        inquiry.user = self.request.user  # Associate inquiry with the logged-in user
+        inquiry.save()
 
         admin_email: str = getattr(settings, "DEFAULT_FROM_EMAIL",
                                    "webmaster@localhost")

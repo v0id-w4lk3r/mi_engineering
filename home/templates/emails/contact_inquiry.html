@@ -1,22 +1,64 @@
 <!doctype html>
 <html>
-  <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333">
-    <h2 style="color: #202124">New Industrial Inquiry Received</h2>
-    <p><strong>From:</strong> {{ full_name }} ({{ email }})</p>
-    <hr style="border: 0; border-top: 1px solid #e4e4e7" />
-    <h3>Message / Specifications:</h3>
-    <blockquote
-      style="
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #18181b;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        border: 1px solid #e4e4e7;
+        border-radius: 8px;
+        padding: 24px;
+      }
+      .header {
+        font-size: 18px;
+        font-weight: bold;
+        color: #c62828;
+        margin-bottom: 16px;
+      }
+      .meta-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      .meta-table td {
+        padding: 8px 0;
+        border-bottom: 1px solid #f4f4f5;
+      }
+      .label {
+        font-weight: bold;
+        width: 120px;
+        color: #52525b;
+      }
+      .message-box {
         background: #f7f7f5;
-        padding: 12px 16px;
-        border-left: 4px solid #c62828;
-        margin: 0;
-      "
-    >
-      {{ message|linebreaksbr }}
-    </blockquote>
-    <p style="font-size: 12px; color: #71717a; margin-top: 24px">
-      Sent via M.I. Engineering Works Web Portal
-    </p>
+        padding: 16px;
+        border-radius: 6px;
+        white-space: pre-line;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">New Contact Inquiry Received</div>
+      <table class="meta-table">
+        <tr>
+          <td class="label">Name:</td>
+          <td>{{ full_name }}</td>
+        </tr>
+        <tr>
+          <td class="label">Email:</td>
+          <td><a href="mailto:{{ email }}">{{ email }}</a></td>
+        </tr>
+      </table>
+      <strong>Message:</strong>
+      <div class="message-box">{{ message }}</div>
+    </div>
   </body>
 </html>

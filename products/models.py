@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Category(models.Model):
@@ -30,24 +31,49 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     short_description = models.CharField(
         max_length=500, help_text="Summary shown on product cards")
-    description = models.TextField(
-        help_text="Detailed overview on product page")
+
+    # Rich Text Editor Field for detailed descriptions
+    description = CKEditor5Field(
+        "Description",
+        config_name="extends",
+        help_text="Detailed overview with formatting, lists, and images",
+    )
 
     # Common Industrial Attributes
     material = models.CharField(
         max_length=150, help_text="e.g. Stainless Steel, Mild Steel, Brass")
-    grade = models.CharField(max_length=150,
-                             blank=True,
-                             null=True,
-                             help_text="e.g. SS304, SS316, Grade 8.8")
-    standard = models.CharField(max_length=150,
-                                blank=True,
-                                null=True,
-                                help_text="e.g. ISO 9001, DIN 933, ASTM A193")
-    size_range = models.CharField(max_length=150,
-                                  blank=True,
-                                  null=True,
-                                  help_text="e.g. M3 to M64 / 1/2' to 4'")
+    grade = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True,
+        help_text="e.g. SS304, SS316, Grade 8.8",
+    )
+    standard = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True,
+        help_text="e.g. ISO 9001, DIN 933, ASTM A193",
+    )
+    size_range = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True,
+        help_text="e.g. M3 to M64 / 1/2' to 4'",
+    )
+
+    # Structured Technical Data (JSON)
+    chemical_composition = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text=
+        'JSON format, e.g., {"Carbon (C)": "0.08%", "Chromium (Cr)": "18.00%"}',
+    )
+    mechanical_properties = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text=
+        'JSON format, e.g., {"Tensile Strength": "515 MPa", "Yield Strength": "205 MPa"}',
+    )
 
     is_featured = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -80,6 +106,7 @@ class ProductImage(models.Model):
 
 class ProductSpecification(models.Model):
     """Dynamic key-value technical specs (e.g., Tensile Strength: 800 MPa)"""
+
     product = models.ForeignKey(Product,
                                 on_delete=models.CASCADE,
                                 related_name="specifications")
@@ -87,7 +114,8 @@ class ProductSpecification(models.Model):
                            help_text="Property Name (e.g., Surface Finish)")
     value = models.CharField(
         max_length=255,
-        help_text="Property Value (e.g., Galvanized / Mirror Polish)")
+        help_text="Property Value (e.g., Galvanized / Mirror Polish)",
+    )
 
     def __str__(self):
         return f"{self.key}: {self.value}"

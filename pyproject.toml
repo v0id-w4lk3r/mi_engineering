@@ -7,6 +7,7 @@ requires-python = ">=3.14"
 dependencies = [
     "disposable-email-domains>=0.0.244",
     "django>=6.1",
+    "django-ckeditor-5>=0.2.20",
     "django-environ>=0.14.0",
     "django-htmx>=1.29.0",
     "django-jazzmin>=3.0.5",

@@ -1,9 +1,11 @@
-New Industrial Inquiry Received
+New Contact Inquiry Received
 
-From: {{ full_name }} ({{ email }})
+Submitted By: {{ full_name }}
+Sender Email: {{ email }}
 
-Message / Specifications:
+Message Details:
+----------------------------------------
 {{ message }}
+----------------------------------------
 
---
-Sent via M.I. Engineering Works Web Portal
+Please review and respond directly to the sender's email address.

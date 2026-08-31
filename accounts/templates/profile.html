@@ -1,300 +1,97 @@
-{% extends 'base.html' %} {% block title %} Account Profile & Dashboard - M.I.
-Engineering Works {% endblock %} {% block content %}
-<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-  {% comment %} Header Section & Action Bar {% endcomment %}
-  <div
-    class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8"
-  >
-    <div>
-      <h1 class="text-3xl font-bold text-gray-900">
-        Welcome, {{ request.user.get_full_name|default:request.user.username }}
-      </h1>
-      <p class="text-gray-600 font-medium mt-1">
-        {% if request.user.company_name %}{{ request.user.company_name }} &bull;
-        {% endif %} Client Profile & Overview
-      </p>
-    </div>
+{% extends 'base.html' %}
+{% load static %}
 
-    {% comment %} Account Actions (Change Password Link) {% endcomment %}
-    <div class="flex items-center space-x-3">
-      <a
-        href="{% url 'accounts:password_change' %}"
-        class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 transition shadow-sm"
-      >
-        <svg
-          class="w-4 h-4 mr-2 text-gray-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 0121 9z"
-          ></path>
-        </svg>
-        Change Password
-      </a>
-    </div>
-  </div>
+{% block title %}Account Profile & Dashboard - M.I. Engineering Works{% endblock %}
 
-  {% comment %} Quick Stats Overview {% endcomment %}
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-    <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-      <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">
-        Total Orders
-      </p>
-      <p class="text-3xl font-extrabold text-gray-900 mt-2">12</p>
-    </div>
-    <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-      <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">
-        Active Shipments
-      </p>
-      <p class="text-3xl font-extrabold text-blue-600 mt-2">1</p>
-    </div>
-    <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-      <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">
-        Registered Tax / GST ID
-      </p>
-      <p class="text-xl font-bold text-gray-800 mt-2">
-        {{ profile.tax_id|default:"Not Provided" }}
-      </p>
-    </div>
-  </div>
+{% block content %}
+<div class="bg-[#F7F7F5] min-h-screen py-10 px-4 sm:px-6 lg:px-8" x-data="{ activeTab: 'orders' }">
+  <div class="max-w-7xl mx-auto">
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    {% comment %} Left Columns: Recent Orders, Tracking & Invoices {% endcomment
-    %}
-    <div class="lg:col-span-2 space-y-6">
-      <h2 class="text-xl font-bold text-gray-900">
-        Orders & Delivery Tracking
-      </h2>
-
-      {% comment %} Sample Active Delivery Card {% endcomment %}
-      <div
-        class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
-      >
+    <!-- Top Header & Actions -->
+    <div
+      class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 bg-white p-6 rounded-2xl border border-[#E4E4E7] shadow-sm">
+      <div class="flex items-center gap-4">
         <div
-          class="bg-gray-50 border-b border-gray-200 p-4 flex flex-wrap justify-between items-center gap-4"
-        >
-          <div>
-            <span class="text-xs font-semibold text-gray-500 uppercase"
-              >Order Ref</span
-            >
-            <p class="text-base font-bold text-gray-900">#MIE-2026-8941</p>
-          </div>
-          <div>
-            <span class="text-xs font-semibold text-gray-500 uppercase"
-              >Order Date</span
-            >
-            <p class="text-sm font-medium text-gray-700">Aug 20, 2026</p>
-          </div>
-          <div>
-            <span class="text-xs font-semibold text-gray-500 uppercase"
-              >Total Value</span
-            >
-            <p class="text-sm font-bold text-gray-900">&#8377;45,200.00</p>
-          </div>
-          <div>
-            <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800"
-            >
-              Shipped / In Transit
+          class="w-12 h-12 rounded-xl bg-[#C62828]/10 text-[#C62828] font-bold text-xl flex items-center justify-center uppercase border border-[#C62828]/20">
+          {{ request.user.first_name|default:request.user.username|slice:":1" }}
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-2xl font-extrabold text-[#18181B]">
+              Welcome, {{ request.user.get_full_name|default:request.user.username }}
+            </h1>
+            {% if profile.is_international %}
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 uppercase tracking-wider">
+              International Client
             </span>
+            {% endif %}
           </div>
-        </div>
-
-        <div class="p-4 divide-y divide-gray-100">
-          <div class="py-3 flex justify-between items-center">
-            <div>
-              <p class="font-semibold text-gray-900">
-                Custom Stainless Steel Flanges
-              </p>
-              <p class="text-xs text-gray-500">
-                Spec: Grade SS 304 | Outer Diameter: 150mm
-              </p>
-            </div>
-            <div class="text-right">
-              <p class="text-sm text-gray-600">50 &times; &#8377;904.00</p>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="bg-gray-50 border-t border-gray-200 p-4 flex flex-wrap items-center justify-between gap-4"
-        >
-          <div>
-            <p class="text-xs text-gray-500">
-              Carrier:
-              <span class="font-semibold text-gray-900">Blue Dart Express</span>
-            </p>
-            <p class="text-xs text-gray-500">
-              Tracking ID:
-              <span class="font-mono text-gray-800 font-bold"
-                >BLUEDART-89104729</span
-              >
-            </p>
-          </div>
-
-          <div class="flex items-center space-x-3">
-            <a
-              href="https://www.bluedart.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-semibold hover:bg-blue-700 transition"
-            >
-              Track Delivery &rarr;
-            </a>
-            <a
-              href="#"
-              class="px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded-xl text-xs font-semibold hover:bg-gray-50 transition"
-            >
-              Download Invoice PDF
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {% comment %} Sample Past Completed Order Card {% endcomment %}
-      <div
-        class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden opacity-90"
-      >
-        <div
-          class="bg-gray-50 border-b border-gray-200 p-4 flex flex-wrap justify-between items-center gap-4"
-        >
-          <div>
-            <span class="text-xs font-semibold text-gray-500 uppercase"
-              >Order Ref</span
-            >
-            <p class="text-base font-bold text-gray-900">#MIE-2026-7410</p>
-          </div>
-          <div>
-            <span class="text-xs font-semibold text-gray-500 uppercase"
-              >Order Date</span
-            >
-            <p class="text-sm font-medium text-gray-700">Jul 12, 2026</p>
-          </div>
-          <div>
-            <span class="text-xs font-semibold text-gray-500 uppercase"
-              >Total Value</span
-            >
-            <p class="text-sm font-bold text-gray-900">&#8377;18,500.00</p>
-          </div>
-          <div>
-            <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800"
-            >
-              Delivered
-            </span>
-          </div>
-        </div>
-
-        <div class="p-4 divide-y divide-gray-100">
-          <div class="py-3 flex justify-between items-center">
-            <div>
-              <p class="font-semibold text-gray-900">Precision Threaded Rods</p>
-              <p class="text-xs text-gray-500">
-                Spec: M12 x 1000mm | Carbon Steel
-              </p>
-            </div>
-            <div class="text-right">
-              <p class="text-sm text-gray-600">100 &times; &#8377;185.00</p>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="bg-gray-50 border-t border-gray-200 p-4 flex items-center justify-between"
-        >
-          <p class="text-xs text-green-700 font-medium">
-            Delivered on Jul 16, 2026
+          <p class="text-xs text-[#71717A] mt-0.5 font-medium">
+            {% if request.user.company_name %}
+            <span class="text-[#18181B] font-semibold">{{ request.user.company_name }}</span> &bull;
+            {% endif %}
+            {{ request.user.email }}
           </p>
-          <a
-            href="#"
-            class="px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded-xl text-xs font-semibold hover:bg-gray-50 transition"
-          >
-            Download Invoice PDF
-          </a>
         </div>
       </div>
-    </div>
 
-    {% comment %} Right Column: Profile & Business Form {% endcomment %}
-    <div class="space-y-6">
-      <h2 class="text-xl font-bold text-gray-900">
-        Profile & Business Details
-      </h2>
-      <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <form method="post" action="" class="space-y-4">
-          {% csrf_token %}
-
-          <div>
-            <label
-              class="block text-xs font-semibold uppercase text-gray-500 mb-1"
-              >Company Name</label
-            >
-            {{ profile_form.company_name }}
-          </div>
-
-          <div>
-            <label
-              class="block text-xs font-semibold uppercase text-gray-500 mb-1"
-              >Phone Number</label
-            >
-            {{ profile_form.phone_number }}
-          </div>
-
-          <div>
-            <label
-              class="block text-xs font-semibold uppercase text-gray-500 mb-1"
-              >Tax / GST Number</label
-            >
-            {{ profile_form.tax_id }}
-          </div>
-
-          <div>
-            <label
-              class="block text-xs font-semibold uppercase text-gray-500 mb-1"
-              >Industry Sector</label
-            >
-            {{ profile_form.industry_type }}
-          </div>
-
-          <div>
-            <label
-              class="block text-xs font-semibold uppercase text-gray-500 mb-1"
-              >Shipping Address</label
-            >
-            {{ profile_form.shipping_address }}
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label
-                class="block text-xs font-semibold uppercase text-gray-500 mb-1"
-                >City</label
-              >
-              {{ profile_form.city }}
-            </div>
-            <div>
-              <label
-                class="block text-xs font-semibold uppercase text-gray-500 mb-1"
-                >State</label
-              >
-              {{ profile_form.state }}
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            class="w-full py-3 bg-gray-900 text-white font-medium rounded-xl hover:bg-gray-800 transition text-sm shadow"
-          >
-            Save Changes
-          </button>
-        </form>
+      <div class="flex items-center gap-3">
+        <a href="{% url 'accounts:password_change' %}"
+          class="inline-flex items-center px-4 py-2.5 bg-[#F7F7F5] border border-[#E4E4E7] rounded-xl text-xs font-bold text-[#18181B] hover:bg-[#E4E4E7] transition shadow-sm">
+          <i class="fas fa-key text-[#71717A] mr-2"></i> Change Password
+        </a>
       </div>
     </div>
+
+    <!-- Stat Cards Partial -->
+    {% include "partials/_stat_cards.html" %}
+
+    <!-- Navigation Tabs -->
+    <div class="flex border-b border-[#E4E4E7] mb-8 gap-8">
+      <button @click="activeTab = 'orders'"
+        :class="{ 'border-[#C62828] text-[#C62828]': activeTab === 'orders', 'border-transparent text-[#71717A] hover:text-[#18181B]': activeTab !== 'orders' }"
+        class="pb-3 text-sm font-bold border-b-2 transition focus:outline-none flex items-center gap-2">
+        <i class="fas fa-shopping-bag text-xs"></i> Orders & History
+        <span class="px-2 py-0.5 rounded-full bg-[#F7F7F5] border text-[10px] text-[#52525B]">
+          {{ total_orders_count|default:"0" }}</span>
+      </button>
+
+      <button @click="activeTab = 'enquiries'"
+        :class="{ 'border-[#C62828] text-[#C62828]': activeTab === 'enquiries', 'border-transparent text-[#71717A] hover:text-[#18181B]': activeTab !== 'enquiries' }"
+        class="pb-3 text-sm font-bold border-b-2 transition focus:outline-none flex items-center gap-2">
+        <i class="fas fa-paper-plane text-xs"></i> Product Enquiries / RFQs
+        <span class="px-2 py-0.5 rounded-full bg-[#F7F7F5] border text-[10px] text-[#52525B]">
+          {{ total_enquiries_count|default:"0" }}</span>
+      </button>
+
+      <button @click="activeTab = 'profile'"
+        :class="{ 'border-[#C62828] text-[#C62828]': activeTab === 'profile', 'border-transparent text-[#71717A] hover:text-[#18181B]': activeTab !== 'profile' }"
+        class="pb-3 text-sm font-bold border-b-2 transition focus:outline-none flex items-center gap-2">
+        <i class="fas fa-user-gear text-xs"></i> Business Profile Settings
+      </button>
+    </div>
+
+    <!-- Tab Contents -->
+    <div x-show="activeTab === 'orders'">
+      {% include "partials/_orders_tab.html" %}
+    </div>
+
+    <div x-show="activeTab === 'enquiries'" style="display: none;">
+      {% include "partials/_enquiries_tab.html" %}
+    </div>
+
+    <div x-show="activeTab === 'profile'" style="display: none;" class="max-w-4xl mx-auto">
+      <div id="profile-form-container" class="bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8 shadow-sm">
+        <div class="mb-6 pb-4 border-b border-[#E4E4E7]">
+          <h2 class="text-lg font-bold text-[#18181B]">Business & Operational Details</h2>
+          <p class="text-xs text-[#71717A] mt-0.5">Manage billing address, international shipping options, and tax
+            records.</p>
+        </div>
+
+        {% include "partials/profile_form.html" %}
+      </div>
+    </div>
+
   </div>
 </div>
 {% endblock %}

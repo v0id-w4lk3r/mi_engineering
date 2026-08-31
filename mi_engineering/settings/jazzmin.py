@@ -22,13 +22,29 @@ JAZZMIN_SETTINGS = {
         "home",
         "accounts",
         "auth",
+        "products",
+        "gallery",
     ],
 
     # FontAwesome Icons for Custom Models
     "icons": {
+        # Accounts App Models
         "accounts.User": "fas fa-users-cog",
+        "accounts.ClientProfile": "fas fa-address-card",
         "auth.Group": "fas fa-user-shield",
+
+        # Home App Models
         "home.ContactInquiry": "fas fa-envelope-open-text",
+
+        # Products App Models
+        "products.Category": "fas fa-tags",
+        "products.Product": "fas fa-boxes",
+        "products.ProductImage": "fas fa-camera",
+        "products.ProductSpecification": "fas fa-sliders-h",
+
+        # Gallery App Models
+        "gallery.Category": "fas fa-folder-open",
+        "gallery.GalleryItem": "fas fa-images",
     },
 
     # Top Menu Navigation
@@ -59,15 +75,17 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     # Light/White Theme Configuration
     "theme": "flatly",
-    "dark_mode_theme": None,
+    "default_theme_mode": "light",
 
     # Navbar Styling
     "navbar": "navbar-white navbar-light",
 
-    # Sidebar Styling
+    # Sidebar Styling (Light Theme Override)
     "sidebar": "sidebar-light-primary",
     "sidebar_nav_small_text": False,
     "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": False,
 
     # Brand & Accent Colors
     "brand_colour": "navbar-white",
