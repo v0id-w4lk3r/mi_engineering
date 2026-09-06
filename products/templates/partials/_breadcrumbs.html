@@ -1,0 +1,23 @@
+<nav
+  class="flex text-xs text-[#71717A] mb-6 overflow-x-auto whitespace-nowrap pb-1"
+>
+  <a
+    href="{% url 'home:homepage' %}"
+    hx-get="{% url 'home:homepage' %}"
+    hx-target="#main-content"
+    hx-push-url="true"
+    class="hover:text-[#C62828] transition-colors"
+    >Home</a
+  >
+  <span class="mx-2">/</span>
+  <a
+    href="{% url 'products:product_list' %}"
+    hx-get="{% url 'products:product_list' %}"
+    hx-target="#main-content"
+    hx-push-url="true"
+    class="hover:text-[#C62828] transition-colors"
+    >Products</a
+  >
+  <span class="mx-2">/</span>
+  <span class="text-[#18181B] font-semibold">{{ product.title }}</span>
+</nav>

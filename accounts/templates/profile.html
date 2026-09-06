@@ -1,97 +1,202 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} {% block content %}
+<div
+  class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8"
+  x-data="{ activeTab: 'overview' }"
+>
+  <!-- TOP METRIC / STAT CARDS -->
+  <div class="mb-6">{% include 'partials/_stat_cards.html' %}</div>
 
-{% block title %}Account Profile & Dashboard - M.I. Engineering Works{% endblock %}
-
-{% block content %}
-<div class="bg-[#F7F7F5] min-h-screen py-10 px-4 sm:px-6 lg:px-8" x-data="{ activeTab: 'orders' }">
-  <div class="max-w-7xl mx-auto">
-
-    <!-- Top Header & Actions -->
-    <div
-      class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8 bg-white p-6 rounded-2xl border border-[#E4E4E7] shadow-sm">
-      <div class="flex items-center gap-4">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- LEFT NAVIGATION SIDEBAR -->
+    <div class="lg:col-span-3 space-y-4">
+      <!-- User Profile Header Card -->
+      <div
+        class="bg-white rounded-xl p-4 border border-[#E4E4E7] shadow-sm flex items-center gap-3"
+      >
         <div
-          class="w-12 h-12 rounded-xl bg-[#C62828]/10 text-[#C62828] font-bold text-xl flex items-center justify-center uppercase border border-[#C62828]/20">
-          {{ request.user.first_name|default:request.user.username|slice:":1" }}
+          class="w-12 h-12 bg-[#18181B] text-white rounded-full flex items-center justify-center font-bold text-lg shrink-0"
+        >
+          {{ request.user.username|first|upper }}
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-2xl font-extrabold text-[#18181B]">
-              Welcome, {{ request.user.get_full_name|default:request.user.username }}
-            </h1>
-            {% if profile.is_international %}
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 uppercase tracking-wider">
-              International Client
-            </span>
-            {% endif %}
-          </div>
-          <p class="text-xs text-[#71717A] mt-0.5 font-medium">
-            {% if request.user.company_name %}
-            <span class="text-[#18181B] font-semibold">{{ request.user.company_name }}</span> &bull;
-            {% endif %}
+        <div class="min-w-0 flex-1">
+          <p class="text-xs text-gray-500">Welcome back,</p>
+          <p class="font-bold text-sm text-[#18181B] truncate">
+            {{ request.user.get_full_name|default:request.user.username }}
+          </p>
+          <p class="text-[10px] text-gray-400 truncate">
             {{ request.user.email }}
           </p>
         </div>
       </div>
 
-      <div class="flex items-center gap-3">
-        <a href="{% url 'accounts:password_change' %}"
-          class="inline-flex items-center px-4 py-2.5 bg-[#F7F7F5] border border-[#E4E4E7] rounded-xl text-xs font-bold text-[#18181B] hover:bg-[#E4E4E7] transition shadow-sm">
-          <i class="fas fa-key text-[#71717A] mr-2"></i> Change Password
+      <!-- Navigation Tabs Menu -->
+      <div
+        class="bg-white rounded-xl border border-[#E4E4E7] shadow-sm divide-y divide-[#E4E4E7] overflow-hidden"
+      >
+        <button
+          @click="activeTab = 'overview'"
+          :class="activeTab === 'overview' ? 'text-[#C62828] bg-red-50/50 font-bold border-l-4 border-[#C62828]' : 'text-[#18181B] hover:bg-gray-50'"
+          class="w-full text-left px-4 py-3 text-xs flex items-center gap-3 transition"
+        >
+          <i class="fas fa-[#C62828] fa-id-card w-4 text-center"></i> Account
+          Overview
+        </button>
+
+        <button
+          @click="activeTab = 'orders'"
+          :class="activeTab === 'orders' ? 'text-[#C62828] bg-red-50/50 font-bold border-l-4 border-[#C62828]' : 'text-[#18181B] hover:bg-gray-50'"
+          class="w-full text-left px-4 py-3 text-xs flex items-center justify-between transition"
+        >
+          <div class="flex items-center gap-3">
+            <i class="fas fa-[#C62828] fa-box w-4 text-center"></i> Order
+            History
+          </div>
+          {% if total_orders_count > 0 %}
+          <span
+            class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-[10px] font-semibold"
+            >{{ total_orders_count }}</span
+          >
+          {% endif %}
+        </button>
+
+        <button
+          @click="activeTab = 'enquiries'"
+          :class="activeTab === 'enquiries' ? 'text-[#C62828] bg-red-50/50 font-bold border-l-4 border-[#C62828]' : 'text-[#18181B] hover:bg-gray-50'"
+          class="w-full text-left px-4 py-3 text-xs flex items-center justify-between transition"
+        >
+          <div class="flex items-center gap-3">
+            <i class="fas fa-[#C62828] fa-question-circle w-4 text-center"></i>
+            Inquiries & RFQs
+          </div>
+          {% if total_enquiries_count > 0 %}
+          <span
+            class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-[10px] font-semibold"
+            >{{ total_enquiries_count }}</span
+          >
+          {% endif %}
+        </button>
+
+        <button
+          @click="activeTab = 'addresses'"
+          :class="activeTab === 'addresses' ? 'text-[#C62828] bg-red-50/50 font-bold border-l-4 border-[#C62828]' : 'text-[#18181B] hover:bg-gray-50'"
+          class="w-full text-left px-4 py-3 text-xs flex items-center gap-3 transition"
+        >
+          <i class="fas fa-[#C62828] fa-map-marker-alt w-4 text-center"></i>
+          Delivery Addresses
+        </button>
+
+        <a
+          href="{% url 'accounts:password_change' %}"
+          class="block px-4 py-3 text-xs text-[#18181B] hover:bg-gray-50 transition flex items-center gap-3"
+        >
+          <i class="fas fa-key w-4 text-center"></i> Security & Password
         </a>
       </div>
     </div>
 
-    <!-- Stat Cards Partial -->
-    {% include "partials/_stat_cards.html" %}
+    <!-- MAIN DASHBOARD CONTENT AREA -->
+    <div class="lg:col-span-9 space-y-4">
+      <!-- Django Notification Messages -->
+      {% if messages %}
+      <div class="space-y-2">
+        {% for message in messages %}
+        <div
+          class="p-3 rounded-xl text-xs font-medium flex items-center justify-between {% if message.tags == 'error' %}bg-red-100 text-red-800 border border-red-200{% else %}bg-green-100 text-green-800 border border-green-200{% endif %}"
+        >
+          <span>{{ message }}</span>
+          <button
+            @click="$el.parentElement.remove()"
+            class="text-xs font-bold px-2"
+          >
+            &times;
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
 
-    <!-- Navigation Tabs -->
-    <div class="flex border-b border-[#E4E4E7] mb-8 gap-8">
-      <button @click="activeTab = 'orders'"
-        :class="{ 'border-[#C62828] text-[#C62828]': activeTab === 'orders', 'border-transparent text-[#71717A] hover:text-[#18181B]': activeTab !== 'orders' }"
-        class="pb-3 text-sm font-bold border-b-2 transition focus:outline-none flex items-center gap-2">
-        <i class="fas fa-shopping-bag text-xs"></i> Orders & History
-        <span class="px-2 py-0.5 rounded-full bg-[#F7F7F5] border text-[10px] text-[#52525B]">
-          {{ total_orders_count|default:"0" }}</span>
-      </button>
+      <!-- TAB 1: Profile & Client Info Partial -->
+      <div
+        x-show="activeTab === 'overview'"
+        x-cloak
+        id="profile-form-container"
+      >
+        {% include 'partials/profile_form.html' %}
+      </div>
 
-      <button @click="activeTab = 'enquiries'"
-        :class="{ 'border-[#C62828] text-[#C62828]': activeTab === 'enquiries', 'border-transparent text-[#71717A] hover:text-[#18181B]': activeTab !== 'enquiries' }"
-        class="pb-3 text-sm font-bold border-b-2 transition focus:outline-none flex items-center gap-2">
-        <i class="fas fa-paper-plane text-xs"></i> Product Enquiries / RFQs
-        <span class="px-2 py-0.5 rounded-full bg-[#F7F7F5] border text-[10px] text-[#52525B]">
-          {{ total_enquiries_count|default:"0" }}</span>
-      </button>
+      <!-- TAB 2: Orders Partial -->
+      <div x-show="activeTab === 'orders'" x-cloak>
+        {% include 'partials/_orders_tab.html' %}
+      </div>
 
-      <button @click="activeTab = 'profile'"
-        :class="{ 'border-[#C62828] text-[#C62828]': activeTab === 'profile', 'border-transparent text-[#71717A] hover:text-[#18181B]': activeTab !== 'profile' }"
-        class="pb-3 text-sm font-bold border-b-2 transition focus:outline-none flex items-center gap-2">
-        <i class="fas fa-user-gear text-xs"></i> Business Profile Settings
-      </button>
-    </div>
+      <!-- TAB 3: Product Inquiries Partial -->
+      <div x-show="activeTab === 'enquiries'" x-cloak>
+        {% include 'partials/_enquiries_tab.html' %}
+      </div>
 
-    <!-- Tab Contents -->
-    <div x-show="activeTab === 'orders'">
-      {% include "partials/_orders_tab.html" %}
-    </div>
-
-    <div x-show="activeTab === 'enquiries'" style="display: none;">
-      {% include "partials/_enquiries_tab.html" %}
-    </div>
-
-    <div x-show="activeTab === 'profile'" style="display: none;" class="max-w-4xl mx-auto">
-      <div id="profile-form-container" class="bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8 shadow-sm">
-        <div class="mb-6 pb-4 border-b border-[#E4E4E7]">
-          <h2 class="text-lg font-bold text-[#18181B]">Business & Operational Details</h2>
-          <p class="text-xs text-[#71717A] mt-0.5">Manage billing address, international shipping options, and tax
-            records.</p>
+      <!-- TAB 4: Saved Addresses Management -->
+      <div
+        x-show="activeTab === 'addresses'"
+        x-cloak
+        class="bg-white rounded-xl border border-[#E4E4E7] p-6 shadow-sm space-y-4"
+      >
+        <div class="flex justify-between items-center border-b pb-3">
+          <div>
+            <h2 class="text-base font-bold text-[#18181B]">
+              Saved Delivery Addresses
+            </h2>
+            <p class="text-xs text-gray-500">
+              Manage saved locations for fast RFQ processing and ordering.
+            </p>
+          </div>
+          <a
+            href="{% url 'accounts:address_add' %}"
+            class="text-xs text-[#C62828] font-bold border border-[#C62828] px-3 py-1.5 rounded-lg hover:bg-red-50 transition"
+          >
+            + Add New Address
+          </a>
         </div>
 
-        {% include "partials/profile_form.html" %}
+        <div class="space-y-3">
+          {% for addr in addresses %}
+          <div
+            class="p-4 border border-[#E4E4E7] rounded-xl flex justify-between items-start hover:border-gray-300 transition"
+          >
+            <div class="space-y-1 text-xs">
+              <div class="flex items-center gap-2">
+                <p class="font-bold text-[#18181B]">
+                  {{ addr.recipient_name }}
+                </p>
+                {% if addr.is_default %}
+                <span
+                  class="bg-red-100 text-[#C62828] text-[10px] font-bold px-2 py-0.5 rounded-full"
+                  >Default</span
+                >
+                {% endif %}
+              </div>
+              <p class="text-gray-500">{{ addr.phone_number }}</p>
+              <p class="text-gray-600">
+                {{ addr.street_address }}, {{ addr.city }}, {{ addr.state }} -
+                {{ addr.postal_code }}, {{ addr.country }}
+              </p>
+            </div>
+            <div class="flex gap-3 text-xs">
+              <a
+                href="{% url 'accounts:address_edit' addr.id %}"
+                class="text-blue-600 font-bold hover:underline"
+                >Edit</a
+              >
+            </div>
+          </div>
+          {% empty %}
+          <div class="text-center py-8">
+            <i class="fas fa-map-marked-alt text-3xl text-gray-300 mb-2"></i>
+            <p class="text-xs text-gray-500">No saved addresses found.</p>
+          </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
-
   </div>
 </div>
 {% endblock %}

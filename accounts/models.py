@@ -1,3 +1,4 @@
+import uuid
 from typing import TYPE_CHECKING, Any
 from django.contrib.auth.models import AbstractUser, UserManager as DjangoUserManager
 from django.db import models
@@ -66,9 +67,10 @@ class User(AbstractUser):
         default=Role.CLIENT,
     )
     company_name = models.CharField(max_length=255, blank=True, null=True)
-
-    # Extended max_length to safely capture international numbers (+code area number)
     phone_number = models.CharField(max_length=30, blank=True, null=True)
+
+    # Type annotation for reverse manager access in Pylance
+    addresses: Any
 
     objects: UserManager = UserManager()
 
@@ -86,15 +88,51 @@ class User(AbstractUser):
             self.is_staff = True
             self.is_superuser = False
         elif self.role == self.Role.CLIENT:
-            # Forcefully strip staff/superuser privileges when role is set to CLIENT
             self.is_staff = False
             self.is_superuser = False
 
         super().save(*args, **kwargs)
 
 
+class Address(models.Model):
+    """Stores multiple delivery/shipping destinations linked directly to a User profile."""
+
+    id: int
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="addresses",
+    )
+    recipient_name = models.CharField(max_length=150)
+    phone_number = models.CharField(max_length=30)
+    street_address = models.TextField()
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100, default="India")
+    is_default = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-is_default", "-created_at"]
+        verbose_name_plural = "Addresses"
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if self.is_default:
+            Address.objects.filter(
+                user=self.user,
+                is_default=True).exclude(id=self.id).update(is_default=False)
+        super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return f"{self.recipient_name} - {self.city}, {self.postal_code}"
+
+
 class ClientProfile(models.Model):
-    """Profile model storing detailed operational and tax attributes for domestic and international client accounts."""
+    """Profile model storing detailed operational and tax attributes for client accounts."""
 
     class Currency(models.TextChoices):
         INR = "INR", "INR (₹)"
@@ -110,49 +148,23 @@ class ClientProfile(models.Model):
         on_delete=models.CASCADE,
         related_name="client_profile",
     )
-
-    # Support for global tax identification numbers (GSTIN, VAT, EIN, TIN, ABN, EORI)
     tax_id = models.CharField(
         max_length=50,
         blank=True,
         null=True,
         help_text="GST, VAT, EIN, TIN, or Business Registration Number",
     )
-
-    billing_address = models.TextField(blank=True, null=True)
-    shipping_address = models.TextField(blank=True, null=True)
-    city = models.CharField(max_length=100, blank=True, null=True)
-    state = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        help_text="State, Province, or Region",
-    )
-
-    # Alphanumeric support for UK (SW1A 1AA), Canada (K1A 0B1), etc.
-    postal_code = models.CharField(
-        max_length=20,
-        blank=True,
-        null=True,
-        help_text="PIN Code / ZIP Code / Postcode",
-    )
-
-    # Standard ISO country names or codes (e.g., "India", "United States", "Germany")
-    country = models.CharField(max_length=100, blank=True, null=True)
-
     preferred_currency = models.CharField(
         max_length=3,
         choices=Currency.choices,
         default=Currency.USD,
         help_text="Primary currency for invoicing and quotes",
     )
-
     is_international = models.BooleanField(
         default=False,
         help_text=
         "Flag for cross-border shipping, tax exemptions, or custom billing rules",
     )
-
     industry_type = models.CharField(
         max_length=100,
         blank=True,
@@ -165,7 +177,8 @@ class ClientProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        country_str = f" ({self.country})" if self.country else ""
+        default_address = self.user.addresses.filter(is_default=True).first()
+        country_str = f" ({default_address.country})" if default_address else ""
         return f"Client Profile - {self.user.get_full_name() or self.user.username}{country_str}"
 
 
@@ -173,9 +186,7 @@ class ClientProfile(models.Model):
 @receiver(post_save, sender=User)
 def create_or_update_client_profile(sender: type[User], instance: User,
                                     created: bool, **kwargs: Any) -> None:
-    """Ensures a ClientProfile is automatically generated when User is CLIENT, and removed if role changes."""
     if instance.role == User.Role.CLIENT:
         ClientProfile.objects.get_or_create(user=instance)
     else:
-        # Deletes orphaned profiles if a user is promoted to STAFF or ADMIN
         ClientProfile.objects.filter(user=instance).delete()

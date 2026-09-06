@@ -31,6 +31,7 @@ JAZZMIN_SETTINGS = {
         # Accounts App Models
         "accounts.User": "fas fa-users-cog",
         "accounts.ClientProfile": "fas fa-address-card",
+        "accounts.Address": "fas fa-map-marker-alt",
         "auth.Group": "fas fa-user-shield",
 
         # Home App Models
@@ -39,8 +40,12 @@ JAZZMIN_SETTINGS = {
         # Products App Models
         "products.Category": "fas fa-tags",
         "products.Product": "fas fa-boxes",
-        "products.ProductImage": "fas fa-camera",
-        "products.ProductSpecification": "fas fa-sliders-h",
+
+        # Orders App Models
+        "orders.Order": "fas fa-shopping-cart",
+        "orders.OrderItem": "fas fa-box-open",
+        "orders.Enquiry": "fas fa-file-invoice-dollar",  # or RFQ model
+        "orders.Quote": "fas fa-calculator",
 
         # Gallery App Models
         "gallery.Category": "fas fa-folder-open",

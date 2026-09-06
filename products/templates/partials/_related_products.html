@@ -1,0 +1,77 @@
+{% if related_products %}
+<div class="mt-12">
+  <div class="flex items-center justify-between mb-6">
+    <h3 class="text-xl font-extrabold text-[#18181B] tracking-tight">
+      Related Solutions
+    </h3>
+    <a
+      href="{% url 'products:product_list' %}"
+      hx-get="{% url 'products:product_list' %}"
+      hx-target="#main-content"
+      hx-push-url="true"
+      class="text-xs font-bold text-[#C62828] hover:underline flex items-center gap-1"
+    >
+      View All <i class="fas fa-arrow-right text-[10px]"></i>
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {% for rel in related_products %}
+    <div
+      class="bg-white rounded-xl border border-[#E4E4E7] p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between group"
+    >
+      <div>
+        <div
+          class="aspect-video bg-[#F7F7F5] rounded-lg border border-[#E4E4E7] overflow-hidden mb-3 flex items-center justify-center"
+        >
+          {% with rel.images.first as rel_img %} {% if rel_img %}
+          <img
+            src="{{ rel_img.image.url }}"
+            alt="{{ rel.title }}"
+            class="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform"
+          />
+          {% else %}
+          <i class="fas fa-boxes text-2xl text-[#A1A1AA]"></i>
+          {% endif %} {% endwith %}
+        </div>
+
+        <h4
+          class="font-bold text-sm text-[#18181B] mb-1 group-hover:text-[#C62828] transition-colors"
+        >
+          <a
+            href="{% url 'products:product_detail' rel.slug %}"
+            hx-get="{% url 'products:product_detail' rel.slug %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+          >
+            {{ rel.title }}
+          </a>
+        </h4>
+        <p class="text-xs text-[#52525B] line-clamp-2 mb-4 leading-relaxed">
+          {{ rel.short_description }}
+        </p>
+      </div>
+
+      <div
+        class="pt-3 border-t border-[#E4E4E7] flex items-center justify-between"
+      >
+        <span
+          class="text-[11px] font-semibold text-[#C62828] bg-[#C62828]/5 px-2 py-0.5 rounded"
+        >
+          {{ rel.material|default:"Industrial Grade" }}
+        </span>
+        <a
+          href="{% url 'products:product_detail' rel.slug %}"
+          hx-get="{% url 'products:product_detail' rel.slug %}"
+          hx-target="#main-content"
+          hx-push-url="true"
+          class="text-xs font-bold text-[#18181B] hover:text-[#C62828] transition"
+        >
+          Details &rarr;
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}

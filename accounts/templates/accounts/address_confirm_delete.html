@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto py-12 px-4 sm:px-6 lg:px-8">
+  <div class="bg-white rounded-xl border border-[#E4E4E7] p-6 shadow-sm text-center space-y-4">
+    <div class="w-12 h-12 bg-red-100 text-[#C62828] rounded-full flex items-center justify-center mx-auto text-xl">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+
+    <div>
+      <h2 class="text-base font-bold text-[#18181B]">Delete Delivery Address</h2>
+      <p class="text-xs text-gray-500 mt-1">
+        Are you sure you want to remove this address? This action cannot be undone.
+      </p>
+    </div>
+
+    <!-- Address Preview Card -->
+    <div class="p-3 bg-gray-50 rounded-lg text-left text-xs text-gray-700 border border-[#E4E4E7] space-y-0.5">
+      <p class="font-bold text-[#18181B]">{{ object.recipient_name }}</p>
+      <p>{{ object.street_address }}</p>
+      <p>{{ object.city }}, {{ object.state }} - {{ object.postal_code }}</p>
+      <p>{{ object.country }}</p>
+    </div>
+
+    <form method="post" class="flex gap-3 pt-2">
+      {% csrf_token %}
+      <a
+        href="{% url 'accounts:profile' %}"
+        class="w-1/2 py-2 text-xs font-semibold text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 transition text-center"
+      >
+        Cancel
+      </a>
+      <button
+        type="submit"
+        class="w-1/2 py-2 text-xs font-bold text-white bg-[#C62828] hover:bg-[#b71c1c] rounded-xl shadow-sm transition"
+      >
+        Confirm Delete
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

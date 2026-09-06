@@ -1,8 +1,14 @@
+from .address import (
+    AddressCreateView,
+    AddressDeleteView,
+    AddressListView,
+    AddressUpdateView,
+)
 from .auth import UserLoginView, UserLogoutView, UserRegisterView
 from .password_management import (
     CustomPasswordChangeView,
-    CustomPasswordResetView,
     CustomPasswordResetConfirmView,
+    CustomPasswordResetView
 )
 from .profile import ClientProfileView
 
@@ -14,4 +20,8 @@ __all__ = [
     "CustomPasswordResetView",
     "CustomPasswordResetConfirmView",
     "ClientProfileView",
+    "AddressListView",
+    "AddressCreateView",
+    "AddressUpdateView",
+    "AddressDeleteView",
 ]

@@ -14,7 +14,8 @@ INSTALLED_APPS = [
     'jazzmin', 'django_htmx', 'django_ckeditor_5', 'django.contrib.admin',
     'django.contrib.auth', 'django.contrib.contenttypes',
     'django.contrib.sessions', 'django.contrib.messages',
-    'django.contrib.staticfiles', 'home', 'accounts', 'gallery', 'products'
+    'django.contrib.staticfiles', 'home', 'accounts', 'gallery', 'products',
+    'orders'
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,34 @@ DEFAULT_FROM_EMAIL = os.getenv(
 # Clean up MAILERS at the VERY END of base settings
 if "MAILERS" in globals():
     del MAILERS  # type: ignore
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+    },
+    'extends': {
+        'blockToolbar': [
+            'paragraph', 'heading1', 'heading2', 'heading3',
+            '|', 'bulletedList', 'numberedList', '|', 'uploadImage'
+        ],
+        'toolbar': [
+            'heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'underline', 'strikethrough',
+            'code', 'subscript', 'superscript', 'highlight', '|', 'link', 'uploadImage', 'insertTable',
+            'mediaEmbed', 'blockQuote', 'bulletedList', 'numberedList', 'todoList', '|', 'undo', 'redo'
+        ],
+        'image': {
+            'toolbar': ['imageTextAlternative', 'toggleImageCaption', 'imageStyle:inline', 'imageStyle:wrapText', 'imageStyle:breakText'],
+        },
+        'table': {
+            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties'],
+        },
+        'heading': {
+            'options': [
+                {'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2'},
+                {'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3'}
+            ]
+        }
+    }
+}

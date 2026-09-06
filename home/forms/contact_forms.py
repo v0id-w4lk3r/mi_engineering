@@ -1,6 +1,6 @@
 from django import forms
 from utils.validators import validate_not_disposable_email
-from .models import ContactInquiry
+from ..models import ContactInquiry
 
 
 class ContactForm(forms.ModelForm):
@@ -13,15 +13,21 @@ class ContactForm(forms.ModelForm):
             forms.TextInput(
                 attrs={
                     "class":
-                    "w-full px-4 py-3 rounded-xl border border-brand-border focus:ring-2 focus:ring-brand-accent focus:outline-none",
-                    "placeholder": "John Doe",
+                    ("w-full px-4 py-3 rounded-xl border border-brand-border"
+                     " focus:ring-2 focus:ring-brand-accent focus:outline-none"
+                     ),
+                    "placeholder":
+                    "John Doe",
                 }),
             "email":
             forms.EmailInput(
                 attrs={
                     "class":
-                    "w-full px-4 py-3 rounded-xl border border-brand-border focus:ring-2 focus:ring-brand-accent focus:outline-none",
-                    "placeholder": "john@company.com",
+                    ("w-full px-4 py-3 rounded-xl border border-brand-border"
+                     " focus:ring-2 focus:ring-brand-accent focus:outline-none"
+                     ),
+                    "placeholder":
+                    "john@company.com",
                 }),
             "message":
             forms.Textarea(
@@ -29,9 +35,11 @@ class ContactForm(forms.ModelForm):
                     "rows":
                     4,
                     "class":
-                    "w-full px-4 py-3 rounded-xl border border-brand-border focus:ring-2 focus:ring-brand-accent focus:outline-none",
-                    "placeholder":
-                    "Specify dimensions, material grade, and quantity...",
+                    ("w-full px-4 py-3 rounded-xl border border-brand-border"
+                     " focus:ring-2 focus:ring-brand-accent focus:outline-none"
+                     ),
+                    "placeholder": (
+                        "Specify dimensions, material grade, and quantity..."),
                 }),
         }
 
