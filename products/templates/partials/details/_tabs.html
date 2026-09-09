@@ -1,0 +1,134 @@
+<div
+  class="bg-brand-bg rounded-2xl border border-brand-border p-6 lg:p-8 shadow-sm"
+  x-data="{ activeTab: 'overview' }"
+>
+  <!-- Tab Controls -->
+  <div class="flex border-b border-brand-border overflow-x-auto gap-8 mb-6">
+    <button
+      type="button"
+      @click="activeTab = 'overview'"
+      :class="{ 'border-brand-accent text-brand-accent': activeTab === 'overview', 'border-transparent text-brand-muted hover:text-brand-heading': activeTab !== 'overview' }"
+      class="pb-3 text-sm font-bold border-b-2 transition whitespace-nowrap focus:outline-none"
+    >
+      Detailed Overview
+    </button>
+
+    <button
+      type="button"
+      @click="activeTab = 'specs'"
+      :class="{ 'border-brand-accent text-brand-accent': activeTab === 'specs', 'border-transparent text-brand-muted hover:text-brand-heading': activeTab !== 'specs' }"
+      class="pb-3 text-sm font-bold border-b-2 transition whitespace-nowrap focus:outline-none flex items-center gap-2"
+    >
+      Technical Specifications
+      <span class="px-2 py-0.5 rounded-full bg-brand-secondaryBg border border-brand-border text-[10px] text-brand-body">
+        {{ product.specifications.all|length }}
+      </span>
+    </button>
+
+    {% if product.chemical_composition %}
+    <button
+      type="button"
+      @click="activeTab = 'chemical'"
+      :class="{ 'border-brand-accent text-brand-accent': activeTab === 'chemical', 'border-transparent text-brand-muted hover:text-brand-heading': activeTab !== 'chemical' }"
+      class="pb-3 text-sm font-bold border-b-2 transition whitespace-nowrap focus:outline-none"
+    >
+      Chemical Composition
+    </button>
+    {% endif %}
+
+    {% if product.mechanical_properties %}
+    <button
+      type="button"
+      @click="activeTab = 'mechanical'"
+      :class="{ 'border-brand-accent text-brand-accent': activeTab === 'mechanical', 'border-transparent text-brand-muted hover:text-brand-heading': activeTab !== 'mechanical' }"
+      class="pb-3 text-sm font-bold border-b-2 transition whitespace-nowrap focus:outline-none"
+    >
+      Mechanical Properties
+    </button>
+    {% endif %}
+  </div>
+
+  <!-- Tab Panels -->
+  <div>
+    <!-- Detailed Overview Panel -->
+    <div x-show="activeTab === 'overview'" class="prose max-w-none text-sm text-brand-body leading-relaxed">
+      {% if product.description %}
+        {{ product.description|safe }}
+      {% else %}
+        <p class="text-brand-muted italic">No detailed overview provided for this product.</p>
+      {% endif %}
+    </div>
+
+    <!-- Technical Specifications Panel -->
+    <div x-show="activeTab === 'specs'" style="display: none">
+      {% if product.specifications.all %}
+      <div class="overflow-x-auto rounded-xl border border-brand-border">
+        <table class="w-full text-left text-sm">
+          <tbody>
+            {% for spec in product.specifications.all %}
+            <tr class="border-b last:border-b-0 border-brand-border hover:bg-brand-secondaryBg/50 transition">
+              <td class="py-3 px-4 font-semibold text-brand-heading bg-brand-secondaryBg w-1/3 sm:w-1/4 border-r border-brand-border">
+                {{ spec.key }}
+              </td>
+              <td class="py-3 px-4 text-brand-body font-medium">
+                {{ spec.value }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-brand-muted text-sm italic">No additional technical specifications listed.</p>
+      {% endif %}
+    </div>
+
+    <!-- Chemical Composition Panel -->
+    {% if product.chemical_composition %}
+    <div x-show="activeTab === 'chemical'" style="display: none">
+      <div class="overflow-x-auto rounded-xl border border-brand-border">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-brand-secondaryBg border-b border-brand-border">
+              <th class="py-3 px-4 font-bold text-brand-heading border-r border-brand-border w-1/2">Element</th>
+              <th class="py-3 px-4 font-bold text-brand-heading">Value / Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for element, value in product.chemical_composition.items %}
+            <tr class="border-b last:border-b-0 border-brand-border hover:bg-brand-secondaryBg/50 transition">
+              <td class="py-3 px-4 font-semibold text-brand-body border-r border-brand-border">{{ element }}</td>
+              <td class="py-3 px-4 text-brand-heading font-medium">{{ value }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Mechanical Properties Panel -->
+    {% if product.mechanical_properties %}
+    <div x-show="activeTab === 'mechanical'" style="display: none">
+      <div class="overflow-x-auto rounded-xl border border-brand-border">
+        <table class="w-full text-left text-sm">
+          <thead>
+            <tr class="bg-brand-secondaryBg border-b border-brand-border">
+              <th class="py-3 px-4 font-bold text-brand-heading border-r border-brand-border w-1/2">Property</th>
+              <th class="py-3 px-4 font-bold text-brand-heading">Specification</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for prop_name, prop_val in product.mechanical_properties.items %}
+            <tr class="border-b last:border-b-0 border-brand-border hover:bg-brand-secondaryBg/50 transition">
+              <td class="py-3 px-4 font-semibold text-brand-body border-r border-brand-border">{{ prop_name }}</td>
+              <td class="py-3 px-4 text-brand-heading font-medium">{{ prop_val }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>

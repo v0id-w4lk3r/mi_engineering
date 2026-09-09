@@ -1,0 +1,78 @@
+<section class="max-w-6xl mx-auto px-4 space-y-12">
+  <!-- Quality Assurance Highlight -->
+  <div
+    class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-brand-primary text-white rounded-3xl p-8 md:p-12 shadow-xl border border-brand-primaryHover"
+  >
+    <div class="space-y-4">
+      <span
+        class="text-white font-bold uppercase text-xs tracking-wider bg-brand-accent px-3 py-1 rounded-full inline-block"
+        >Quality & Precision</span
+      >
+      <h2 class="text-3xl md:text-4xl font-bold leading-tight text-white">
+        Quality You Can Measure
+      </h2>
+      <p class="text-zinc-300 text-sm leading-relaxed">
+        Quality in precision engineering starts with verified raw materials and
+        continues through thread pitch checking, dimensional tolerances, and
+        surface finish checks.
+      </p>
+      <p class="text-zinc-300 text-sm leading-relaxed">
+        At M.I. Engineering Works, every order undergoes dimensional
+        verification to ensure total alignment with customer drawings and
+        relevant DIN/ISO standard tolerances.
+      </p>
+      <div class="flex flex-wrap gap-4 pt-4">
+        <a
+          href="{% url 'home:contact-us' %}"
+          class="bg-brand-accent text-white px-5 py-2.5 rounded-xl font-semibold text-xs hover:bg-brand-accentHover transition shadow-sm"
+        >
+          Request Quality Documentation
+        </a>
+      </div>
+    </div>
+    <div
+      class="relative rounded-2xl overflow-hidden border border-zinc-800 shadow-xl aspect-video"
+    >
+      <img
+        src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1000&q=80"
+        alt="Quality Inspection and Vernier Caliper Measurement at M.I. Engineering Works"
+        loading="lazy"
+        width="1000"
+        height="667"
+        class="w-full h-full object-cover"
+      />
+    </div>
+  </div>
+
+  <!-- Final Call-To-Action Banner -->
+  <div
+    class="bg-brand-primary text-white rounded-3xl p-8 md:p-14 text-center shadow-xl border border-brand-primaryHover"
+  >
+    <div class="max-w-3xl mx-auto space-y-6">
+      <h2 class="text-3xl md:text-5xl font-extrabold leading-tight text-white">
+        Have a Custom Engineering Requirement?
+      </h2>
+      <p class="text-zinc-300 text-base md:text-lg leading-relaxed">
+        Send us your engineering drawings, required material grade, standard
+        specifications, dimensions, and quantity for an immediate quotation.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 pt-4">
+        <a
+          href="{% url 'home:contact-us' %}"
+          hx-get="{% url 'home:contact-us' %}"
+          hx-target="#main-content"
+          hx-push-url="true"
+          class="bg-brand-accent hover:bg-brand-accentHover text-white text-base font-bold px-8 py-3.5 rounded-xl shadow-lg transition"
+        >
+          Submit RFQ Now
+        </a>
+        <a
+          href="#products"
+          class="bg-brand-primaryHover hover:bg-black text-zinc-200 font-bold px-8 py-3.5 rounded-xl border border-zinc-700 transition"
+        >
+          Browse Categories
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

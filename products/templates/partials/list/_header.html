@@ -1,0 +1,47 @@
+<!-- Page Header & Search Landmark -->
+<header class="bg-brand-bg rounded-2xl shadow-sm border border-brand-border p-8 mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+  <div>
+    <span class="inline-block px-3 py-1 bg-brand-lightAccentBg text-brand-accent text-xs font-semibold rounded-full uppercase tracking-wider mb-2">
+      Industrial Catalog
+    </span>
+    <h1 class="text-3xl font-extrabold text-brand-heading tracking-tight">
+      {% if category_obj %}
+        {{ category_obj.name }}
+      {% else %}
+        Engineering Products
+      {% endif %}
+    </h1>
+    <p class="mt-1 text-sm text-brand-body">
+      {% if category_obj %}
+        Explore our line of {{ category_obj.name|lower }} manufactured to strict industrial tolerances.
+      {% else %}
+        Explore our range of precision-manufactured components and custom engineering solutions.
+      {% endif %}
+    </p>
+  </div>
+
+  <!-- Quick Search Bar -->
+  <form
+    method="get"
+    action="{% if category_obj %}{% url 'products:category_product_list' category_obj.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
+    hx-get="{% if category_obj %}{% url 'products:category_product_list' category_obj.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
+    hx-target="#catalog-content"
+    hx-push-url="true"
+    hx-trigger="submit, keyup changed delay:400ms from:#catalog-search"
+    class="w-full md:w-72"
+    role="search"
+  >
+    <label for="catalog-search" class="sr-only">Search industrial products</label>
+    <div class="relative">
+      <input
+        id="catalog-search"
+        name="q"
+        type="search"
+        value="{{ request.GET.q|default:'' }}"
+        placeholder="Search products..."
+        class="w-full pl-10 pr-4 py-2 text-sm bg-brand-secondaryBg border border-brand-border rounded-xl focus:outline-none focus:border-brand-accent transition-colors"
+      />
+      <i class="fas fa-search absolute left-3.5 top-3 text-brand-muted text-xs" aria-hidden="true"></i>
+    </div>
+  </form>
+</header>

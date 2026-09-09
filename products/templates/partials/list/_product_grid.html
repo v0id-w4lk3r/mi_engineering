@@ -1,0 +1,100 @@
+<section id="catalog-content" class="lg:col-span-3" aria-label="Products Listing">
+  {% if page_obj.object_list %}
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for product in page_obj.object_list %}
+    <article class="bg-brand-bg rounded-2xl border border-brand-border overflow-hidden shadow-sm hover:shadow-md transition duration-200 flex flex-col">
+      
+      <!-- Product Thumbnail -->
+      <a
+        href="{% url 'products:product_detail' product.slug %}"
+        hx-get="{% url 'products:product_detail' product.slug %}"
+        hx-target="#main-content"
+        hx-push-url="true"
+        class="aspect-square bg-brand-secondaryBg border-b border-brand-border flex items-center justify-center p-4 relative group overflow-hidden"
+        aria-label="View details for {{ product.title }}"
+      >
+        {% with product.images.first as primary_image %}
+          {% if primary_image %}
+          <img
+            src="{{ primary_image.image.url }}"
+            alt="{{ product.title }} - {{ product.material|default:'Industrial Component' }}"
+            loading="lazy"
+            width="300"
+            height="300"
+            class="w-full h-full object-contain group-hover:scale-105 transition duration-300"
+          />
+          {% else %}
+          <div class="text-center text-brand-muted">
+            <i class="fas fa-cubes text-3xl mb-1" aria-hidden="true"></i>
+            <p class="text-xs">No Image Available</p>
+          </div>
+          {% endif %}
+        {% endwith %}
+      </a>
+
+      <!-- Product Information -->
+      <div class="p-5 flex-1 flex flex-col justify-between">
+        <div>
+          <span class="text-[10px] font-bold text-brand-accent uppercase tracking-wider block mb-1">
+            {{ product.category.name }}
+          </span>
+          <h2 class="text-base font-bold text-brand-heading hover:text-brand-accent transition-colors mb-2">
+            <a
+              href="{% url 'products:product_detail' product.slug %}"
+              hx-get="{% url 'products:product_detail' product.slug %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+            >
+              {{ product.title }}
+            </a>
+          </h2>
+          <p class="text-xs text-brand-body line-clamp-2 mb-4 leading-relaxed">
+            {{ product.short_description }}
+          </p>
+        </div>
+
+        <!-- Spec Badges & CTA -->
+        <div>
+          <div class="flex flex-wrap gap-1.5 mb-4 text-[11px]">
+            {% if product.material %}
+            <span class="px-2 py-0.5 bg-brand-secondaryBg border border-brand-border rounded text-brand-body">
+              {{ product.material }}
+            </span>
+            {% endif %}
+            {% if product.grade %}
+            <span class="px-2 py-0.5 bg-brand-secondaryBg border border-brand-border rounded text-brand-body">
+              {{ product.grade }}
+            </span>
+            {% endif %}
+          </div>
+
+          <a
+            href="{% url 'products:product_detail' product.slug %}"
+            hx-get="{% url 'products:product_detail' product.slug %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-xl text-xs font-bold hover:bg-brand-accent transition-colors shadow-sm"
+          >
+            View Specifications
+            <i class="fas fa-arrow-right text-[10px]" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination Include -->
+  {% include 'partials/list/_pagination.html' %}
+
+  {% else %}
+  <!-- Empty State -->
+  <div class="bg-brand-bg rounded-2xl border border-brand-border p-12 text-center">
+    <i class="fas fa-boxes text-4xl text-brand-muted mb-3" aria-hidden="true"></i>
+    <h2 class="text-lg font-bold text-brand-heading">No products found</h2>
+    <p class="text-xs text-brand-body mt-1">
+      There are currently no active products in this section matching your search criteria.
+    </p>
+  </div>
+  {% endif %}
+</section>

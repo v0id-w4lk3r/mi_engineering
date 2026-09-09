@@ -1,0 +1,74 @@
+<section class="py-6 md:py-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div
+      class="relative bg-brand-primary text-white rounded-3xl p-8 md:p-16 overflow-hidden shadow-xl border border-brand-primaryHover"
+    >
+      <div
+        class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10"
+      >
+        <div>
+          <span
+            class="text-white font-bold uppercase text-xs tracking-widest bg-brand-accent px-3.5 py-1.5 rounded-full inline-block mb-4 shadow-sm"
+          >
+            Precision Engineering. Built for Industry.
+          </span>
+          <h1
+            class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-6 text-white"
+          >
+            Reliable Industrial Fasteners & Precision Engineering Components
+          </h1>
+          <p class="text-zinc-300 text-base md:text-lg leading-relaxed mb-4">
+            Manufactured to meet demanding specifications, applications, and
+            strict international industry standards.
+          </p>
+          <p class="text-zinc-400 text-sm leading-relaxed mb-8">
+            From standard fasteners to drawing-based custom components, M.I.
+            Engineering Works delivers tailored solutions with uncompromised
+            precision and quality.
+          </p>
+          <div class="flex flex-wrap gap-4 mb-8">
+            <a
+              href="{% url 'home:contact-us' %}"
+              hx-get="{% url 'home:contact-us' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              class="bg-brand-accent hover:bg-brand-accentHover text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg transition duration-150"
+            >
+              Request a Quote
+            </a>
+            <a
+              href="#products"
+              class="bg-brand-primaryHover hover:bg-black text-zinc-200 font-semibold px-8 py-3.5 rounded-xl border border-zinc-700 transition duration-150"
+            >
+              Explore Products
+            </a>
+          </div>
+          <p
+            class="text-xs text-zinc-400 font-medium border-t border-zinc-800 pt-4"
+          >
+            Standard & Custom Solutions • Stainless, Alloy & Mild Steel •
+            Certified Compliance
+          </p>
+        </div>
+
+        <!-- Hero Image with Aspect Ratio Protection & Lazy Loading -->
+        <div
+          class="relative rounded-2xl overflow-hidden shadow-2xl border border-zinc-800 aspect-video lg:aspect-auto lg:h-96"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80"
+            alt="M.I. Engineering Works Industrial CNC Manufacturing Floor"
+            loading="eager"
+            width="1000"
+            height="667"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+      <div
+        class="absolute -right-20 -bottom-20 w-96 h-96 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none"
+        aria-hidden="true"
+      ></div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,66 @@
+<section
+  class="bg-[#151515] text-white py-14 lg:py-20 border-b border-[#202124]"
+>
+  <div
+    class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+  >
+    <div class="lg:col-span-7">
+      <span
+        class="text-xs font-bold uppercase tracking-widest text-[#C62828] mb-2 block"
+      >
+        About M.I. Engineering Works
+      </span>
+      <h1
+        class="text-3xl lg:text-4xl font-extrabold text-white mb-4 leading-tight"
+      >
+        Engineering Excellence.
+        <span class="text-[#71717A]">Built on Precision & Trust.</span>
+      </h1>
+      <p class="text-[#71717A] text-sm leading-relaxed mb-6 max-w-lg">
+        Delivering reliable engineering products, industrial fasteners, and
+        custom-machined solutions tailored to your technical requirements,
+        ISO/DIN standards, and precise tolerances.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        {% if has_products %}
+        <a
+          href="{% url 'products:list' %}"
+          class="px-5 py-2.5 rounded-lg bg-[#C62828] text-white text-sm font-medium hover:bg-[#A61F1F] transition focus:outline-none focus:ring-2 focus:ring-[#C62828]"
+        >
+          Explore Products
+        </a>
+        {% else %}
+        <a
+          href="{% url 'home:contact-us' %}"
+          class="px-5 py-2.5 rounded-lg bg-[#C62828] text-white text-sm font-medium hover:bg-[#A61F1F] transition focus:outline-none focus:ring-2 focus:ring-[#C62828]"
+        >
+          Request Product Details
+        </a>
+        {% endif %}
+        <a
+          href="{% url 'home:contact-us' %}"
+          class="px-5 py-2.5 rounded-lg border border-[#E4E4E7]/20 text-[#FAFAF9] text-sm font-medium hover:border-[#C62828] hover:text-[#C62828] transition focus:outline-none focus:ring-2 focus:ring-[#C62828]"
+        >
+          Send Enquiry
+        </a>
+      </div>
+    </div>
+
+    <div class="lg:col-span-5">
+      <div
+        class="w-full h-56 lg:h-64 rounded-xl bg-[#202124] border border-[#71717A]/20 flex flex-col justify-center items-center text-center p-4 relative overflow-hidden"
+      >
+        <i
+          class="fas fa-industry text-4xl text-[#C62828] mb-3"
+          aria-hidden="true"
+        ></i>
+        <span class="text-white font-bold text-sm"
+          >Industrial Precision Facility</span
+        >
+        <span class="text-[#71717A] text-xs mt-1"
+          >High-capacity manufacturing unit</span
+        >
+      </div>
+    </div>
+  </div>
+</section>

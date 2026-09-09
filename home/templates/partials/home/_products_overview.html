@@ -1,0 +1,151 @@
+<section id="products" class="max-w-6xl mx-auto px-4 scroll-mt-20">
+  <div class="text-center max-w-3xl mx-auto mb-12">
+    <span class="text-brand-accent font-bold uppercase text-xs tracking-widest"
+      >Our Products</span
+    >
+    <h2
+      class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2 mb-4"
+    >
+      Engineered for Strength. Manufactured for Reliability.
+    </h2>
+    <p class="text-brand-body leading-relaxed">
+      Explore our comprehensive range of industrial fasteners available in
+      Stainless Steel, High Tensile Alloy, Brass, and Mild Steel across ISO,
+      DIN, and ASTM specifications.
+    </p>
+  </div>
+
+  <!-- 6-Grid Product Category Display -->
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+    <!-- Bolts -->
+    <article
+      class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm"
+    >
+      <div
+        class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform"
+        aria-hidden="true"
+      >
+        <i class="fas fa-bolt-lightning text-xl"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-brand-heading text-base mb-1">
+          Industrial Bolts
+        </h3>
+        <p class="text-xs text-brand-muted leading-snug">
+          Hex, Flange & Heavy Hex
+        </p>
+      </div>
+    </article>
+
+    <!-- Nuts -->
+    <article
+      class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm"
+    >
+      <div
+        class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform"
+        aria-hidden="true"
+      >
+        <i class="fas fa-cog text-xl"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-brand-heading text-base mb-1">
+          Precision Nuts
+        </h3>
+        <p class="text-xs text-brand-muted leading-snug">
+          Lock, Coupling & Flange
+        </p>
+      </div>
+    </article>
+
+    <!-- Studs & Threaded Rods -->
+    <article
+      class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm"
+    >
+      <div
+        class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform"
+        aria-hidden="true"
+      >
+        <i class="fas fa-grip-lines-vertical text-xl"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-brand-heading text-base mb-1">
+          Studs & Rods
+        </h3>
+        <p class="text-xs text-brand-muted leading-snug">
+          Full & Double-End Threaded
+        </p>
+      </div>
+    </article>
+
+    <!-- Washers -->
+    <article
+      class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm"
+    >
+      <div
+        class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform"
+        aria-hidden="true"
+      >
+        <i class="fas fa-circle-notch text-xl"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-brand-heading text-base mb-1">Washers</h3>
+        <p class="text-xs text-brand-muted leading-snug">
+          Flat, Spring & Lock Washers
+        </p>
+      </div>
+    </article>
+
+    <!-- Anchor Bolts -->
+    <article
+      class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm"
+    >
+      <div
+        class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform"
+        aria-hidden="true"
+      >
+        <i class="fas fa-anchor text-xl"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-brand-heading text-base mb-1">
+          Anchor Bolts
+        </h3>
+        <p class="text-xs text-brand-muted leading-snug">
+          L, J & Expansion Bolts
+        </p>
+      </div>
+    </article>
+
+    <!-- Custom Machined Parts -->
+    <article
+      class="bg-brand-card hover:bg-brand-lightAccentBg border border-brand-border hover:border-brand-accent/30 rounded-2xl p-5 text-center transition flex flex-col items-center justify-between group shadow-sm"
+    >
+      <div
+        class="w-14 h-14 rounded-full bg-brand-lightAccentBg border border-brand-accent/10 flex items-center justify-center text-brand-accent mb-4 group-hover:scale-105 transition-transform"
+        aria-hidden="true"
+      >
+        <i class="fas fa-drafting-compass text-xl"></i>
+      </div>
+      <div>
+        <h3 class="font-bold text-brand-heading text-base mb-1">
+          Custom Parts
+        </h3>
+        <p class="text-xs text-brand-muted leading-snug">
+          Drawing-based Turned Parts
+        </p>
+      </div>
+    </article>
+  </div>
+
+  <div class="text-center mt-10">
+    <a
+      href="{% url 'home:contact-us' %}"
+      hx-get="{% url 'home:contact-us' %}"
+      hx-target="#main-content"
+      hx-push-url="true"
+      class="inline-flex items-center gap-2 bg-brand-primary text-white font-bold px-8 py-3.5 rounded-xl hover:bg-brand-primaryHover transition shadow-md"
+    >
+      View All Product Specifications
+      <i class="fas fa-arrow-right text-sm" aria-hidden="true"></i>
+    </a>
+  </div>
+</section>

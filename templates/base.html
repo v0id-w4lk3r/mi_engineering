@@ -1,75 +1,71 @@
 {% if not request.htmx %}
 <!doctype html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- SEO Core Meta Tags -->
-    <title>
-      {% block title %}M.I. Engineering Works | Industrial Engineering
-      Solutions{% endblock %}
-    </title>
-    <meta
-      name="description"
-      content="{% block meta_description %}M.I. Engineering Works provides high-precision industrial components, engineering products, and technical manufacturing solutions tailored to exact specifications.{% endblock %}"
-    />
-    <meta
-      name="keywords"
-      content="{% block meta_keywords %}engineering works, industrial manufacturing, precision components, technical hardware, industrial procurement, engineering solutions{% endblock %}"
-    />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+    <!-- Resource Hints & Preconnects for Faster Asset Loading -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="preconnect" href="https://unpkg.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <link rel="dns-prefetch" href="https://unpkg.com" />
 
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:title"
-      content="{% block og_title %}M.I. Engineering Works{% endblock %}"
-    />
-    <meta
-      property="og:description"
-      content="{% block og_description %}Quality and precision-driven industrial engineering components and solutions.{% endblock %}"
-    />
-    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <!-- Core SEO Meta Tags -->
+    <title>{% block title %}M.I. Engineering Works | Industrial Engineering Solutions{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}M.I. Engineering Works manufactures high-precision industrial components, fasteners, and technical hardware solutions tailored to exact engineering specifications.{% endblock %}" />
+    <meta name="keywords" content="{% block meta_keywords %}engineering works, industrial manufacturing, precision components, technical hardware, industrial procurement, fasteners, custom engineering{% endblock %}" />
+    <meta name="robots" content="{% block meta_robots %}index, follow, max-image-preview:large{% endblock %}" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}" />
+
+    <!-- Open Graph / Facebook / LinkedIn Meta Tags -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
     <meta property="og:site_name" content="M.I. Engineering Works" />
-    {% block og_image %}
-    <meta
-      property="og:image"
-      content="{{ request.scheme }}://{{ request.get_host }}/static/images/og-image.jpg"
-    />
-    {% endblock %}
+    <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}" />
+    <meta property="og:title" content="{% block og_title %}{% block title_og %}{{ self.title }}{% endblock %}{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}{% block meta_description_og %}{{ self.meta_description }}{% endblock %}{% endblock %}" />
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}/static/images/og-image.jpg{% endblock %}" />
+    <meta property="og:image:alt" content="{% block og_image_alt %}M.I. Engineering Works Industrial Components{% endblock %}" />
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="{% block twitter_title %}M.I. Engineering Works{% endblock %}"
-    />
-    <meta
-      name="twitter:description"
-      content="{% block twitter_description %}High-precision industrial components and custom engineering solutions.{% endblock %}"
-    />
+    <meta name="twitter:url" content="{{ request.build_absolute_uri }}" />
+    <meta name="twitter:title" content="{% block twitter_title %}{% block title_twitter %}{{ self.title }}{% endblock %}{% endblock %}" />
+    <meta name="twitter:description" content="{% block twitter_description %}{% block meta_description_twitter %}{{ self.meta_description }}{% endblock %}{% endblock %}" />
+    <meta name="twitter:image" content="{% block twitter_image %}{% block og_image_twitter %}{{ self.og_image }}{% endblock %}{% endblock %}" />
 
-    <!-- Schema.org Structured Data -->
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png" />
+
+    <!-- Schema.org JSON-LD Structured Data -->
     <script type="application/ld+json">
+      {% block schema_json %}
       {
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization",
         "name": "M.I. Engineering Works",
-        "url": "{{ request.scheme }}://{{ request.get_host }}",
+        "url": "{{ request.scheme }}://{{ request.get_host }}/",
         "logo": "{{ request.scheme }}://{{ request.get_host }}/static/images/logo.png",
-        "description": "Manufacturer and provider of industrial engineering solutions and precision components.",
+        "image": "{{ request.scheme }}://{{ request.get_host }}/static/images/og-image.jpg",
+        "description": "Manufacturer and provider of precision industrial engineering components and fasteners.",
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer service",
-          "email": "info@miengineeringworks.com"
+          "email": "info@miengineeringworks.com",
+          "availableLanguage": ["English"]
         }
       }
+      {% endblock %}
     </script>
 
-    <!-- Tailwind CSS with Custom Color Config -->
+    <!-- Tailwind CSS with Custom Theme Config -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -99,58 +95,76 @@
       };
     </script>
 
-    <!-- Font Awesome CDN -->
+    <!-- Font Awesome Stylesheet -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    </noscript>
 
-    <!-- Alpine.js CDN -->
-    <script
-      defer
-      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
-    ></script>
+    <!-- HTMX & Alpine.js JavaScript CDNs (Non-blocking Execution) -->
+    <script defer src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <!-- HTMX CDN & CSRF Setup -->
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- CSRF Token Meta Reference -->
     <meta name="csrf-token" content="{{ csrf_token }}" />
 
     {% block extra_head %}{% endblock %}
   </head>
 
   <body
-    class="bg-brand-secondaryBg text-brand-body flex flex-col min-h-screen font-sans"
+    class="bg-brand-secondaryBg text-brand-body flex flex-col min-h-screen font-sans anti-aliased"
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
   >
-    <!-- Navbar -->
-    {% if not hide_navbar %} 
-      {% block navbar %} {% include 'Navbar.html' %} {%endblock %}
+    <!-- Navigation Bar -->
+    {% if not hide_navbar %}
+      <header role="banner">
+        {% block navbar %}{% include 'Navbar.html' %}{% endblock %}
+      </header>
     {% endif %}
 
-    <!-- Global Toast / Flash Messages -->
+    <!-- Global Flash / Toast Messages -->
     {% if messages %}
-    <div class="fixed top-20 right-5 z-50 space-y-2">
+    <div 
+      class="fixed top-20 right-5 z-50 space-y-2" 
+      role="alert" 
+      aria-live="polite"
+    >
       {% for message in messages %}
       <div
         x-data="{ show: true }"
-        x-init="setTimeout(() => show = false, 4000)"
+        x-init="setTimeout(() => show = false, 5000)"
         x-show="show"
-        x-transition.opacity.duration.500ms
-        class="px-4 py-3 rounded-xl shadow-lg text-sm font-medium border {% if message.tags == 'error' %} bg-red-50 text-brand-error border-red-200 {% elif message.tags == 'success' %} bg-green-50 text-brand-success border-green-200 {% elif message.tags == 'warning' %} bg-amber-50 text-brand-warning border-amber-200 {% else %} bg-brand-lightAccentBg text-brand-accent border-brand-accent/20 {% endif %}"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-90"
+        class="px-4 py-3 rounded-xl shadow-lg text-sm font-medium border flex items-center gap-2 {% if message.tags == 'error' %} bg-red-50 text-brand-error border-red-200 {% elif message.tags == 'success' %} bg-green-50 text-brand-success border-green-200 {% elif message.tags == 'warning' %} bg-amber-50 text-brand-warning border-amber-200 {% else %} bg-brand-lightAccentBg text-brand-accent border-brand-accent/20 {% endif %}"
       >
-        {{ message }}
+        <span>{{ message }}</span>
+        <button @click="show = false" class="ml-auto text-xs opacity-70 hover:opacity-100" aria-label="Close notification">&times;</button>
       </div>
       {% endfor %}
     </div>
     {% endif %}
 
-    <!-- Main Content Container -->
-    <main id="main-content" class="w-full flex-grow">
-      {% endif %} {% block content %}{% endblock %} {% if not request.htmx %}
+    <!-- Main Dynamic View Container -->
+    <main id="main-content" class="w-full flex-grow" role="main">
+{% endif %}
+
+      {% block content %}{% endblock %}
+
+{% if not request.htmx %}
     </main>
 
     <!-- Footer -->
-    {% block footer %} {% include 'Footer.html' %} {% endblock %} 
+    <footer role="contentinfo">
+      {% block footer %}{% include 'Footer.html' %}{% endblock %}
+    </footer>
+
     {% block extra_scripts %}{% endblock %}
   </body>
 </html>

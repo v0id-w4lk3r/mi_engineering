@@ -1,0 +1,33 @@
+<section
+  class="py-12 bg-[#151515] text-white border-t border-[#202124]"
+  aria-label="Procurement Inquiry CTA"
+>
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <span
+      class="text-xs font-bold uppercase tracking-widest text-[#C62828] block mb-2"
+    >
+      Streamlined Procurement
+    </span>
+    <h2 class="text-2xl font-bold text-white mb-3">
+      Ready to Discuss Your Technical Requirements?
+    </h2>
+    <p class="text-[#71717A] text-xs leading-relaxed mb-6 max-w-xl mx-auto">
+      Submit your CAD drawings, request bulk pricing, and track component
+      production status directly through our integrated client portal.
+    </p>
+    <div class="flex justify-center gap-3">
+      <a
+        href="{% url 'home:contact-us' %}"
+        class="px-6 py-2.5 rounded-lg bg-[#C62828] text-white text-xs font-medium hover:bg-[#A61F1F] transition focus:outline-none focus:ring-2 focus:ring-[#C62828]"
+      >
+        Send an Enquiry
+      </a>
+      <a
+        href="{% url 'accounts:login' %}"
+        class="px-6 py-2.5 rounded-lg border border-[#71717A]/40 text-[#FAFAF9] text-xs font-medium hover:border-[#C62828] hover:text-[#C62828] transition focus:outline-none focus:ring-2 focus:ring-[#C62828]"
+      >
+        Client Login
+      </a>
+    </div>
+  </div>
+</section>

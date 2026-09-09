@@ -1,0 +1,35 @@
+<nav class="text-xs font-semibold text-brand-body flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-1">
+  <a
+    href="{% url 'home:homepage' %}"
+    hx-get="{% url 'home:homepage' %}"
+    hx-target="#main-content"
+    hx-push-url="true"
+    class="hover:text-brand-accent transition-colors"
+  >
+    Home
+  </a>
+  <span>/</span>
+  <a
+    href="{% url 'products:product_list' %}"
+    hx-get="{% url 'products:product_list' %}"
+    hx-target="#main-content"
+    hx-push-url="true"
+    class="hover:text-brand-accent transition-colors"
+  >
+    Catalog
+  </a>
+  <span>/</span>
+  {% if product.category %}
+    <a
+      href="{% url 'products:category_product_list' product.category.slug %}"
+      hx-get="{% url 'products:category_product_list' product.category.slug %}"
+      hx-target="#main-content"
+      hx-push-url="true"
+      class="hover:text-brand-accent transition-colors"
+    >
+      {{ product.category.name }}
+    </a>
+    <span>/</span>
+  {% endif %}
+  <span class="text-brand-heading font-bold">{{ product.title }}</span>
+</nav>

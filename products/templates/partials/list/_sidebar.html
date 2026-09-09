@@ -1,0 +1,35 @@
+<!-- Category Navigation Sidebar -->
+<aside class="space-y-4" aria-label="Catalog Categories">
+  <nav class="bg-brand-bg rounded-2xl border border-brand-border p-6 shadow-sm">
+    <h2 class="text-sm font-bold text-brand-heading uppercase tracking-wider mb-4 pb-2 border-b border-brand-border">
+      Categories
+    </h2>
+    <ul class="space-y-1.5 text-sm">
+      <li>
+        <a
+          href="{% url 'products:product_list' %}"
+          hx-get="{% url 'products:product_list' %}"
+          hx-target="#catalog-content"
+          hx-push-url="true"
+          class="block px-3 py-2 rounded-lg transition-colors {% if not selected_category %}bg-brand-accent text-white font-semibold{% else %}text-brand-body hover:bg-brand-secondaryBg{% endif %}"
+        >
+          All Products
+        </a>
+      </li>
+      {% for category in categories %}
+      <li>
+        <a
+          href="{% url 'products:category_product_list' category.slug %}"
+          hx-get="{% url 'products:category_product_list' category.slug %}"
+          hx-target="#catalog-content"
+          hx-push-url="true"
+          class="flex items-center justify-between px-3 py-2 rounded-lg transition-colors {% if selected_category == category.slug %}bg-brand-accent text-white font-semibold{% else %}text-brand-body hover:bg-brand-secondaryBg{% endif %}"
+        >
+          <span>{{ category.name }}</span>
+          <span class="text-xs opacity-75">({{ category.products.count }})</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </nav>
+</aside>

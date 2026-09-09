@@ -1,0 +1,73 @@
+{% if related_products %}
+<section aria-label="Related Products" class="space-y-4 pt-4">
+  <div class="flex items-center justify-between">
+    <h2 class="text-xl font-extrabold text-brand-heading tracking-tight">Related Solutions</h2>
+    <a
+      href="{% url 'products:product_list' %}"
+      hx-get="{% url 'products:product_list' %}"
+      hx-target="#main-content"
+      hx-push-url="true"
+      class="text-xs font-bold text-brand-accent hover:underline flex items-center gap-1"
+    >
+      View All <i class="fas fa-arrow-right text-[10px]" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {% for rel in related_products %}
+    <article class="bg-brand-bg rounded-2xl border border-brand-border p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+      <div>
+        <a
+          href="{% url 'products:product_detail' rel.slug %}"
+          hx-get="{% url 'products:product_detail' rel.slug %}"
+          hx-target="#main-content"
+          hx-push-url="true"
+          class="aspect-video bg-brand-secondaryBg rounded-xl border border-brand-border overflow-hidden mb-3 flex items-center justify-center p-2 block"
+        >
+          {% with rel.images.first as rel_img %}
+            {% if rel_img %}
+            <img
+              src="{{ rel_img.image.url }}"
+              alt="{{ rel.title }}"
+              class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+            />
+            {% else %}
+            <i class="fas fa-boxes text-2xl text-brand-muted" aria-hidden="true"></i>
+            {% endif %}
+          {% endwith %}
+        </a>
+
+        <h3 class="font-bold text-sm text-brand-heading mb-1 group-hover:text-brand-accent transition-colors">
+          <a
+            href="{% url 'products:product_detail' rel.slug %}"
+            hx-get="{% url 'products:product_detail' rel.slug %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+          >
+            {{ rel.title }}
+          </a>
+        </h3>
+        <p class="text-xs text-brand-body line-clamp-2 mb-4 leading-relaxed">
+          {{ rel.short_description }}
+        </p>
+      </div>
+
+      <div class="pt-3 border-t border-brand-border flex items-center justify-between">
+        <span class="text-[11px] font-semibold text-brand-accent bg-brand-lightAccentBg px-2 py-0.5 rounded">
+          {{ rel.material|default:"Industrial Grade" }}
+        </span>
+        <a
+          href="{% url 'products:product_detail' rel.slug %}"
+          hx-get="{% url 'products:product_detail' rel.slug %}"
+          hx-target="#main-content"
+          hx-push-url="true"
+          class="text-xs font-bold text-brand-heading hover:text-brand-accent transition-colors"
+        >
+          Details &rarr;
+        </a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
