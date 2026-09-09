@@ -188,3 +188,4 @@ cython_debug/
 *~
 migrations/
 */migrations/
+main.env

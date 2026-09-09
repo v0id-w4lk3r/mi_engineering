@@ -1,4 +1,3 @@
-from decimal import Decimal
 from typing import TYPE_CHECKING
 from django.db import models
 from django.utils.text import slugify
@@ -88,12 +87,6 @@ class Product(models.Model):
         help_text="Tensile strength, yield strength, elongation, and hardness",
     )
 
-    unit_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=Decimal("0.00"),  # Fixed Decimal type error
-        help_text="Base price per piece in INR",
-    )
     min_order_quantity = models.PositiveIntegerField(
         default=1, help_text="Minimum required order quantity")
 
@@ -107,11 +100,6 @@ class Product(models.Model):
         indexes = [
             models.Index(fields=["is_active", "is_featured"]),
         ]
-
-    @property
-    def price(self):
-        """Property alias for unit_price to preserve template compatibility."""
-        return self.unit_price
 
     @property
     def primary_image(self):
@@ -169,15 +157,21 @@ class ProductSpecification(models.Model):
         on_delete=models.CASCADE,
         related_name="specifications",
     )
-    key = models.CharField(max_length=100,
-                           help_text="Property Name (e.g., Surface Finish)")
-    value = models.CharField(max_length=255,
-                             help_text="Property Value (e.g., Galvanized)")
+    key = models.CharField(
+        max_length=100,
+        help_text="Property Name (e.g., Surface Finish)",
+    )
+    value = models.CharField(
+        max_length=255,
+        help_text="Property Value (e.g., Galvanized)",
+    )
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["product", "key"],
-                                    name="unique_product_spec_key")
+            models.UniqueConstraint(
+                fields=["product", "key"],
+                name="unique_product_spec_key",
+            )
         ]
 
     def __str__(self):

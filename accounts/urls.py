@@ -8,21 +8,7 @@ urlpatterns = [
     path("logout/", views.UserLogoutView.as_view(), name="logout"),
     path("register/", views.UserRegisterView.as_view(), name="register"),
     path("profile/", views.ClientProfileView.as_view(), name="profile"),
-    # Address Management Routes
-    path("addresses/", views.AddressListView.as_view(), name="address_list"),
-    path(
-        "addresses/add/", views.AddressCreateView.as_view(), name="address_add"
-    ),
-    path(
-        "addresses/<int:pk>/edit/",
-        views.AddressUpdateView.as_view(),
-        name="address_edit",
-    ),
-    path(
-        "addresses/<int:pk>/delete/",
-        views.AddressDeleteView.as_view(),
-        name="address_delete",
-    ),
+    # Password Management Routes
     path(
         "password-change/",
         views.CustomPasswordChangeView.as_view(),

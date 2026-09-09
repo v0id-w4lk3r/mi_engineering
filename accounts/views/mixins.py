@@ -27,20 +27,6 @@ class AnonymousRequiredMixin(_BaseMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-class ClientRequiredMixin(BaseAccessMixin):
-    """Restricts view access strictly to registered Clients."""
-
-    def test_func(self) -> bool:
-        user = self.request.user
-        return isinstance(user, User) and user.is_client()
-
-    def handle_no_permission(self):
-        if not self.request.user.is_authenticated:
-            return redirect("accounts:login")
-        messages.error(self.request, "Access restricted to client accounts.")
-        return redirect("home:homepage")
-
-
 class StaffRequiredMixin(BaseAccessMixin):
     """Restricts view access to Staff/Engineers and Admins."""
 
@@ -51,8 +37,10 @@ class StaffRequiredMixin(BaseAccessMixin):
     def handle_no_permission(self):
         if not self.request.user.is_authenticated:
             return redirect("accounts:login")
-        messages.error(self.request,
-                       "Access restricted to authorized staff members.")
+        messages.error(
+            self.request,
+            "Access restricted to authorized staff members.",
+        )
         return redirect("home:homepage")
 
 

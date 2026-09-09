@@ -1,5 +1,5 @@
 from typing import Any
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth.models import Group
 from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
@@ -82,7 +82,7 @@ class ContactInquiryAdmin(admin.ModelAdmin):
     def client_info_summary(self, obj: ContactInquiry) -> str:
         company = (getattr(obj.user, "company_name", "N/A")
                    if obj.user else "N/A")
-        profile = obj.client_profile
+        profile = getattr(obj, "client_profile", None)
         if not profile:
             return f"Company: {company} | No associated client profile found."
 
@@ -112,11 +112,16 @@ class ContactInquiryAdmin(admin.ModelAdmin):
                 email.send(fail_silently=False)
                 obj.is_processed = True
                 obj.replied_at = timezone.now()
-                self.message_user(request,
-                                  f"Reply successfully sent to {obj.email}")
+                self.message_user(
+                    request,
+                    f"Reply successfully sent to {obj.email}",
+                    level=messages.SUCCESS,
+                )
             except Exception as e:
-                self.message_user(request,
-                                  f"Failed to send email: {e}",
-                                  level="ERROR")
+                self.message_user(
+                    request,
+                    f"Failed to send email: {e}",
+                    level=messages.ERROR,
+                )
 
         super().save_model(request, obj, form, change)

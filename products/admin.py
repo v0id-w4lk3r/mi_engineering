@@ -40,14 +40,12 @@ class ProductAdmin(admin.ModelAdmin):
         "primary_thumbnail",
         "title",
         "category",
-        "unit_price",
         "min_order_quantity",
         "material",
         "is_featured",
         "is_active",
     )
-    list_editable = ("unit_price", "min_order_quantity", "is_featured",
-                     "is_active")
+    list_editable = ("min_order_quantity", "is_featured", "is_active")
     list_filter = ("category", "is_active", "is_featured", "material")
     search_fields = ("title", "material", "grade", "standard")
     prepopulated_fields = {"slug": ("title", )}
@@ -67,8 +65,8 @@ class ProductAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("Pricing & MOQ", {
-            "fields": ("unit_price", "min_order_quantity")
+        ("Minimum Order Quantity", {
+            "fields": ("min_order_quantity", )
         }),
         (
             "Specifications & Attributes",

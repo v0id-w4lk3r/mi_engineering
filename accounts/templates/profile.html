@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
+
+{% block content %}
 <div
   class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8"
   x-data="{ activeTab: 'overview' }"
@@ -38,25 +40,7 @@
           :class="activeTab === 'overview' ? 'text-[#C62828] bg-red-50/50 font-bold border-l-4 border-[#C62828]' : 'text-[#18181B] hover:bg-gray-50'"
           class="w-full text-left px-4 py-3 text-xs flex items-center gap-3 transition"
         >
-          <i class="fas fa-[#C62828] fa-id-card w-4 text-center"></i> Account
-          Overview
-        </button>
-
-        <button
-          @click="activeTab = 'orders'"
-          :class="activeTab === 'orders' ? 'text-[#C62828] bg-red-50/50 font-bold border-l-4 border-[#C62828]' : 'text-[#18181B] hover:bg-gray-50'"
-          class="w-full text-left px-4 py-3 text-xs flex items-center justify-between transition"
-        >
-          <div class="flex items-center gap-3">
-            <i class="fas fa-[#C62828] fa-box w-4 text-center"></i> Order
-            History
-          </div>
-          {% if total_orders_count > 0 %}
-          <span
-            class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-[10px] font-semibold"
-            >{{ total_orders_count }}</span
-          >
-          {% endif %}
+          <i class="fas fa-id-card w-4 text-center"></i> Account Overview
         </button>
 
         <button
@@ -65,8 +49,7 @@
           class="w-full text-left px-4 py-3 text-xs flex items-center justify-between transition"
         >
           <div class="flex items-center gap-3">
-            <i class="fas fa-[#C62828] fa-question-circle w-4 text-center"></i>
-            Inquiries & RFQs
+            <i class="fas fa-question-circle w-4 text-center"></i> Inquiries & RFQs
           </div>
           {% if total_enquiries_count > 0 %}
           <span
@@ -74,15 +57,6 @@
             >{{ total_enquiries_count }}</span
           >
           {% endif %}
-        </button>
-
-        <button
-          @click="activeTab = 'addresses'"
-          :class="activeTab === 'addresses' ? 'text-[#C62828] bg-red-50/50 font-bold border-l-4 border-[#C62828]' : 'text-[#18181B] hover:bg-gray-50'"
-          class="w-full text-left px-4 py-3 text-xs flex items-center gap-3 transition"
-        >
-          <i class="fas fa-[#C62828] fa-map-marker-alt w-4 text-center"></i>
-          Delivery Addresses
         </button>
 
         <a
@@ -124,77 +98,9 @@
         {% include 'partials/profile_form.html' %}
       </div>
 
-      <!-- TAB 2: Orders Partial -->
-      <div x-show="activeTab === 'orders'" x-cloak>
-        {% include 'partials/_orders_tab.html' %}
-      </div>
-
-      <!-- TAB 3: Product Inquiries Partial -->
+      <!-- TAB 2: Product Inquiries Partial -->
       <div x-show="activeTab === 'enquiries'" x-cloak>
         {% include 'partials/_enquiries_tab.html' %}
-      </div>
-
-      <!-- TAB 4: Saved Addresses Management -->
-      <div
-        x-show="activeTab === 'addresses'"
-        x-cloak
-        class="bg-white rounded-xl border border-[#E4E4E7] p-6 shadow-sm space-y-4"
-      >
-        <div class="flex justify-between items-center border-b pb-3">
-          <div>
-            <h2 class="text-base font-bold text-[#18181B]">
-              Saved Delivery Addresses
-            </h2>
-            <p class="text-xs text-gray-500">
-              Manage saved locations for fast RFQ processing and ordering.
-            </p>
-          </div>
-          <a
-            href="{% url 'accounts:address_add' %}"
-            class="text-xs text-[#C62828] font-bold border border-[#C62828] px-3 py-1.5 rounded-lg hover:bg-red-50 transition"
-          >
-            + Add New Address
-          </a>
-        </div>
-
-        <div class="space-y-3">
-          {% for addr in addresses %}
-          <div
-            class="p-4 border border-[#E4E4E7] rounded-xl flex justify-between items-start hover:border-gray-300 transition"
-          >
-            <div class="space-y-1 text-xs">
-              <div class="flex items-center gap-2">
-                <p class="font-bold text-[#18181B]">
-                  {{ addr.recipient_name }}
-                </p>
-                {% if addr.is_default %}
-                <span
-                  class="bg-red-100 text-[#C62828] text-[10px] font-bold px-2 py-0.5 rounded-full"
-                  >Default</span
-                >
-                {% endif %}
-              </div>
-              <p class="text-gray-500">{{ addr.phone_number }}</p>
-              <p class="text-gray-600">
-                {{ addr.street_address }}, {{ addr.city }}, {{ addr.state }} -
-                {{ addr.postal_code }}, {{ addr.country }}
-              </p>
-            </div>
-            <div class="flex gap-3 text-xs">
-              <a
-                href="{% url 'accounts:address_edit' addr.id %}"
-                class="text-blue-600 font-bold hover:underline"
-                >Edit</a
-              >
-            </div>
-          </div>
-          {% empty %}
-          <div class="text-center py-8">
-            <i class="fas fa-map-marked-alt text-3xl text-gray-300 mb-2"></i>
-            <p class="text-xs text-gray-500">No saved addresses found.</p>
-          </div>
-          {% endfor %}
-        </div>
       </div>
     </div>
   </div>

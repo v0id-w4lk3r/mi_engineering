@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from ..models import ContactInquiry
 
 MAX_UPLOAD_SIZE = 25 * 1024 * 1024  # 25 MB
@@ -30,10 +31,17 @@ class CustomGroupAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Retrieve permissions ordered by application and model
-        permissions = (
-            Permission.objects.select_related("content_type").order_by(
-                "content_type__app_label", "content_type__model", "codename"))
+        # 1. Fetch active ContentType IDs (filters out deleted models in installed apps)
+        valid_content_types = [
+            ct.id for ct in ContentType.objects.all()
+            if ct.model_class() is not None
+        ]
+
+        # 2. Retrieve permissions belonging strictly to active models
+        permissions = (Permission.objects.filter(
+            content_type_id__in=valid_content_types).select_related(
+                "content_type").order_by("content_type__app_label",
+                                         "content_type__model", "codename"))
 
         self.app_permissions = {}
         for perm in permissions:
@@ -42,12 +50,13 @@ class CustomGroupAdminForm(forms.ModelForm):
                 self.app_permissions[app_label] = []
             self.app_permissions[app_label].append(perm)
 
-        # Create dynamically bound checkbox sets per app label
+        # 3. Create dynamically bound checkbox sets per app label
         for app_label, perms in self.app_permissions.items():
             field_name = f"perm_app_{app_label}"
+            perm_ids = [p.id for p in perms]
+
             self.fields[field_name] = forms.ModelMultipleChoiceField(
-                queryset=Permission.objects.filter(
-                    id__in=[p.id for p in perms]),
+                queryset=Permission.objects.filter(id__in=perm_ids),
                 widget=forms.CheckboxSelectMultiple,
                 required=False,
                 label=app_label.capitalize(),
@@ -55,7 +64,7 @@ class CustomGroupAdminForm(forms.ModelForm):
             if self.instance.pk:
                 self.fields[
                     field_name].initial = self.instance.permissions.filter(
-                        id__in=[p.id for p in perms])
+                        id__in=perm_ids)
 
     def save(self, commit=True):
         group = super().save(commit=False)
