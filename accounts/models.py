@@ -66,7 +66,7 @@ class User(AbstractUser):
     company_name = models.CharField(max_length=255, blank=True, null=True)
     phone_number = models.CharField(max_length=30, blank=True, null=True)
 
-    objects: UserManager = UserManager()
+    objects: UserManager = UserManager() # type: ignore
 
     def is_client(self) -> bool:
         return self.role == self.Role.CLIENT
