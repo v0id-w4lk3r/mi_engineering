@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    {% load static %}
+
     <!-- Resource Hints & Preconnects for Faster Asset Loading -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link rel="preconnect" href="https://unpkg.com" crossorigin />
-    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
     <link rel="dns-prefetch" href="https://unpkg.com" />
 
@@ -27,7 +27,8 @@
     <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
     <meta property="og:site_name" content="M.I. Engineering Works" />
     <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}" />
-    <meta property="og:title" content="{% block og_title %}{% block title_og %}{{ self.title }}{% endblock %}{% endblock %}" />
+    <meta property="og:title" content="{% block og_title %}{% block title_og %}{{ self.title }}{% endblock %}
+    {% endblock %}" />
     <meta property="og:description" content="{% block og_description %}{% block meta_description_og %}{{ self.meta_description }}{% endblock %}{% endblock %}" />
     <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}/static/images/og-image.jpg{% endblock %}" />
     <meta property="og:image:alt" content="{% block og_image_alt %}M.I. Engineering Works Industrial Components{% endblock %}" />
@@ -35,9 +36,11 @@
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="{{ request.build_absolute_uri }}" />
-    <meta name="twitter:title" content="{% block twitter_title %}{% block title_twitter %}{{ self.title }}{% endblock %}{% endblock %}" />
+    <meta name="twitter:title" content="{% block twitter_title %}{% block title_twitter %}{{ self.title }}
+    {% endblock %}{% endblock %}" />
     <meta name="twitter:description" content="{% block twitter_description %}{% block meta_description_twitter %}{{ self.meta_description }}{% endblock %}{% endblock %}" />
-    <meta name="twitter:image" content="{% block twitter_image %}{% block og_image_twitter %}{{ self.og_image }}{% endblock %}{% endblock %}" />
+    <meta name="twitter:image" content="{% block twitter_image %}{% block og_image_twitter %}{{ self.og_image }}
+    {% endblock %}{% endblock %}" />
 
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
@@ -58,42 +61,15 @@
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer service",
-          "email": "info@miengineeringworks.com",
+          "email": "info@miengineeringworks.in",
           "availableLanguage": ["English"]
         }
       }
       {% endblock %}
     </script>
 
-    <!-- Tailwind CSS with Custom Theme Config -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brand: {
-                bg: "#FFFFFF",
-                secondaryBg: "#F7F7F5",
-                card: "#FAFAF9",
-                primary: "#202124",
-                primaryHover: "#151515",
-                accent: "#C62828",
-                accentHover: "#A61F1F",
-                heading: "#18181B",
-                body: "#52525B",
-                muted: "#71717A",
-                border: "#E4E4E7",
-                lightAccentBg: "#FFF5F5",
-                success: "#16A34A",
-                warning: "#D97706",
-                error: "#DC2626",
-              },
-            },
-          },
-        },
-      };
-    </script>
+    <!-- Local Compiled CSS stylesheet -->
+    <link rel="stylesheet" href="{% static "css/index.css" %}" />
 
     <!-- Font Awesome Stylesheet -->
     <link

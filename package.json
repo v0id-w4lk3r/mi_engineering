@@ -1,0 +1,15 @@
+{
+  "name": "mi-engineering-works",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:css": "bunx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/index.css --minify",
+    "watch:css": "bunx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/index.css --watch"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "tailwindcss": "^4.0.0"
+  }
+}

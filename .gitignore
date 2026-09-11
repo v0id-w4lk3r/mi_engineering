@@ -1,35 +1,57 @@
-# Django
+# ==========================================
+# Frontend & Build Tools (Tailwind + Bun)
+# ==========================================
+
+# Node / Bun dependencies
+node_modules/
+bun.lockb
+
+# Compiled CSS output (generated via bun build)
+static/css/index.css
+
+# Bun / Tailwind / PostCSS Caches
+.bun/
+.cache/
+.tailwindcss/
+
+
+# ==========================================
+# Django Framework
+# ==========================================
+
 *.log
 *.pot
 *.pyc
 __pycache__/
 
+# Local settings override
 local_settings.py
 
 # Development Database
 db.sqlite3
 db.sqlite3-journal
 
-# User-uploaded files
+# User-uploaded files in local development
 media/
 media
 
-# Collected static files
+# Collected static files target (django collectstatic output)
 staticfiles/
+migrations/
+*/migrations/
 
+# ==========================================
+# Python Runtime & Packaging
+# ==========================================
 
-# Python
-
-# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized files
 *.py[cod]
 *$py.class
 
 # C extensions
 *.so
 
-
 # Distribution / Packaging
-
 .Python
 build/
 develop-eggs/
@@ -51,7 +73,9 @@ share/python-wheels/
 MANIFEST
 
 
-# Virtual Environments
+# ==========================================
+# Virtual Environments & Package Managers
+# ==========================================
 
 .venv/
 venv/
@@ -60,29 +84,28 @@ ENV/
 env.bak/
 venv.bak/
 
+# uv cache
+.uv/
 
-# Environment Variables / Secrets
+# IMPORTANT: Do NOT ignore these files:
+# uv.lock
+# .python-version
+# package.json
+
+
+# ==========================================
+# Environment Variables & Secrets
+# ==========================================
 
 .env
 .env.*
 !.example.env
+main.env
 
 
-# uv
-
-# uv cache (if created locally)
-.uv/
-
-# IMPORTANT:
-# Do NOT ignore these:
-#
-# uv.lock
-# .python-version
-#
-# They should be committed for this application.
-
-
-# Testing / Coverage
+# ==========================================
+# Testing & Code Quality
+# ==========================================
 
 htmlcov/
 .tox/
@@ -91,7 +114,6 @@ htmlcov/
 .coverage
 .coverage.*
 
-.cache/
 .pytest_cache/
 .hypothesis/
 
@@ -102,52 +124,41 @@ coverage.xml
 *.py,cover
 cover/
 
-
-# Type Checkers
-
-# mypy
+# Mypy / Pyre / Pytype
 .mypy_cache/
 .dmypy.json
 dmypy.json
-
-# Pyre
 .pyre/
-
-# Pytype
 .pytype/
 
-
-# Jupyter / IPython
-
-.ipynb_checkpoints/
-profile_default/
-ipython_config.py
+# Ruff / Flake8 / Linters
+.ruff_cache/
 
 
-# Celery
-
-celerybeat-schedule
-celerybeat.pid
-
-
-# IDE / Editors
+# ==========================================
+# Editors & IDEs
+# ==========================================
 
 # Visual Studio Code
-.vscode/
+.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 # JetBrains / PyCharm
 .idea/
 
-# Vim
+# Vim & Text Editors
 *.swp
 *.swo
-
-# Sublime Text
 *.sublime-workspace
 *.sublime-project
 
 
-# Operating System
+# ==========================================
+# Operating System Files
+# ==========================================
 
 # macOS
 .DS_Store
@@ -157,35 +168,12 @@ Thumbs.db
 Desktop.ini
 
 
-# Documentation
-
-docs/_build/
-site/
-
-
-# Miscellaneous Python Tools
-
-.pybuilder/
-target/
-.scrapy/
-.webassets-cache/
-.ropeproject/
-.spyderproject
-.spyproject
-.pdm.toml
-
-__pypackages__/
-
-cython_debug/
-
-
+# ==========================================
 # Temporary Files
+# ==========================================
 
 *.tmp
 *.temp
 *.bak
 *.orig
 *~
-migrations/
-*/migrations/
-main.env
