@@ -12,7 +12,7 @@ echo "Checking Django..."
 uv run python manage.py check
 
 echo "Creating migrations..."
-uv run python manage.py makemigrations --noinput
+uv run python manage.py makemigrations accounts home gallery products --noinput
 
 echo "Applying migrations..."
 uv run python manage.py migrate --noinput
