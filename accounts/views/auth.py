@@ -28,11 +28,11 @@ class UserRegisterView(AnonymousRequiredMixin, CreateView):
             user.save()
             self.object = user
 
-        # Log user in using ModelBackend explicitly
+        # Log user in using custom backend
         login(
             self.request,
             user,
-            backend="django.contrib.auth.backends.ModelBackend",
+            backend="accounts.backends.EmailOrUsernameModelBackend",
         )
 
         messages.success(
@@ -51,12 +51,9 @@ class UserRegisterView(AnonymousRequiredMixin, CreateView):
 
 # 2. User Login View
 class UserLoginView(AnonymousRequiredMixin, LoginView):
-    """Authenticates existing users and redirects to homepage upon success."""
+    """Authenticates existing users and redirects upon success."""
 
     template_name = "login.html"
-
-    def get_success_url(self) -> str:
-        return str(reverse_lazy("home:homepage"))
 
     def form_valid(self, form: Any) -> HttpResponse:
         messages.success(self.request,

@@ -14,7 +14,7 @@
 {% block og_type %}website{% endblock %}
 {% block og_title %}About M.I. Engineering Works | Precision Engineering Solutions{% endblock %}
 {% block og_description %}Discover our commitment to quality, custom component manufacturing, and strict engineering compliance across global industries.{% endblock %}
-{% block og_image %}{{ request.scheme }}://{{ request.get_host }}/static/images/about-og-image.jpg{% endblock %}
+{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endblock %}
 
 <!-- Schema.org Organization Structured Data -->
 {% block schema_json %}
@@ -23,7 +23,7 @@
   "@type": "Organization",
   "name": "M.I. Engineering Works",
   "url": "{{ request.scheme }}://{{ request.get_host }}",
-  "logo": "{{ request.scheme }}://{{ request.get_host }}/static/images/logo.png",
+  "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo/logo.png' %}",
   "description": "Manufacturer and supplier of precision-engineered industrial fasteners, custom drawing-based components, and heavy engineering hardware.",
   "knowsAbout": [
     "Industrial Fasteners",
@@ -40,7 +40,7 @@
 {% endblock %}
 
 {% block content %}
-<main class="font-sans antialiased bg-brand-bg text-brand-body">
+<div class="font-sans antialiased bg-brand-bg text-brand-body">
   
   <!-- 1. Hero Section -->
   {% include 'partials/about/_hero.html' %}
@@ -57,5 +57,5 @@
   <!-- 5. Procurement CTA -->
   {% include 'partials/about/_cta.html' %}
 
-</main>
+</div>
 {% endblock %}

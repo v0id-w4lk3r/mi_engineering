@@ -59,6 +59,16 @@
           </li>
           <li>
             <a
+              href="{% url 'products:product_list' %}"
+              hx-get="{% url 'products:product_list' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+              class="hover:text-white transition-colors"
+              >Products Catalog</a
+            >
+          </li>
+          <li>
+            <a
               href="{% url 'gallery:gallery_list' %}"
               hx-get="{% url 'gallery:gallery_list' %}"
               hx-target="#main-content"
@@ -167,7 +177,7 @@
     <div
       class="border-t border-[#202124] mt-12 pt-6 flex flex-col md:flex-row justify-between items-center text-[#71717A] text-sm"
     >
-      <p>© 2026 M.I. ENGINEERING WORKS. All rights reserved.</p>
+      <p>© {% now "Y" %} M.I. ENGINEERING WORKS. All rights reserved.</p>
       <div class="flex space-x-6 mt-4 md:mt-0">
         <a
           href="{% url 'home:privacy-policy' %}"

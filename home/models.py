@@ -3,9 +3,6 @@ from django.conf import settings
 from django.db import models
 from django_ckeditor_5.fields import CKEditor5Field
 
-if TYPE_CHECKING:
-    from accounts.models import ClientProfile  # type: ignore
-
 
 class ContactInquiry(models.Model):
     if TYPE_CHECKING:
@@ -46,10 +43,3 @@ class ContactInquiry(models.Model):
 
     def __str__(self) -> str:
         return f"Inquiry from {self.full_name} ({self.email})"
-
-    @property
-    def client_profile(self) -> "ClientProfile | None":
-        """Returns the ClientProfile attached to the submitting user, if it exists."""
-        if self.user and hasattr(self.user, "client_profile"):
-            return getattr(self.user, "client_profile", None)
-        return None

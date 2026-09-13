@@ -67,14 +67,19 @@ class CustomGroupAdminForm(forms.ModelForm):
                         id__in=perm_ids)
 
     def save(self, commit=True):
-        group = super().save(commit=False)
-        if commit:
-            group.save()
+        group = super().save(commit=commit)
 
         selected_permissions = []
         for field_name, value in self.cleaned_data.items():
             if field_name.startswith("perm_app_") and value:
                 selected_permissions.extend(value)
 
-        group.permissions.set(selected_permissions)
+        def save_m2m():
+            group.permissions.set(selected_permissions)
+
+        if commit:
+            save_m2m()
+        else:
+            self.save_m2m = save_m2m
+
         return group

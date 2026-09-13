@@ -27,21 +27,19 @@ class PrivacyPolicyView(TemplateView):
     template_name = "privacy_policy.html"
 
 
-class ContactView(LoginRequiredMixin, FormView):
+class ContactView(FormView):
     template_name = "contact.html"
     form_class = ContactForm
     success_url = reverse_lazy("home:contact-us")
 
-    # Redirect unauthenticated users to login with next parameter
-    login_url = reverse_lazy("accounts:login")
-
     def get_initial(self) -> dict[str, Any]:
         initial = super().get_initial()
 
-        # Explicitly narrow type for Pylance using cast
-        user = cast(Any, self.request.user)
-        initial["email"] = user.email
-        initial["full_name"] = user.get_full_name() or user.username
+        # Pre-fill details if the user is authenticated
+        if self.request.user.is_authenticated:
+            user = cast(Any, self.request.user)
+            initial["email"] = user.email
+            initial["full_name"] = user.get_full_name() or user.username
 
         # Capture URL parameter inputs from product detail page redirect
         product = self.request.GET.get("product")
@@ -66,11 +64,13 @@ class ContactView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form: ContactForm) -> HttpResponse:
         inquiry = form.save(commit=False)
-        inquiry.user = self.request.user  # Associate inquiry with the logged-in user
+        if self.request.user.is_authenticated:
+            inquiry.user = self.request.user
         inquiry.save()
 
-        admin_email: str = getattr(settings, "DEFAULT_FROM_EMAIL",
-                                   "webmaster@localhost")
+        import email.utils
+        raw_from = getattr(settings, "DEFAULT_FROM_EMAIL", "")
+        admin_email: str = email.utils.parseaddr(raw_from)[1] or getattr(settings, "EMAIL_HOST_USER", "webmaster@localhost")
 
         send_app_email(
             subject=f"New Contact Inquiry: {inquiry.full_name}",

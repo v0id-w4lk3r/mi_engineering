@@ -1,5 +1,35 @@
-{% extends 'base.html' %} 
-{% block title %} {{ item.title }} - M.I. Engineering Gallery {% endblock %} 
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- SEO Meta Blocks -->
+{% block title %}{{ item.title }} | Engineering Gallery - M.I. Engineering Works{% endblock %}
+
+{% block meta_description %}{% if item.description %}{{ item.description|truncatewords:25 }}{% else %}View {{ item.title }} in the M.I. Engineering Works engineering and media gallery.{% endif %}{% endblock %}
+
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'gallery:gallery_detail' item.pk %}{% endblock %}
+
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ item.title }} - M.I. Engineering Works Gallery{% endblock %}
+{% block og_description %}{% if item.description %}{{ item.description|truncatewords:25 }}{% else %}View {{ item.title }} in the M.I. Engineering Works gallery.{% endif %}{% endblock %}
+{% block og_image %}{% if item.image %}{{ request.scheme }}://{{ request.get_host }}{{ item.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endif %}{% endblock %}
+{% block og_image_alt %}{{ item.title }} - M.I. Engineering Works{% endblock %}
+
+{% block schema_json %}
+{
+  "@context": "https://schema.org",
+  "@type": "{% if item.media_type == 'VIDEO' %}VideoObject{% else %}ImageObject{% endif %}",
+  "name": "{{ item.title|escapejs }}",
+  "description": "{% if item.description %}{{ item.description|escapejs|truncatewords:30 }}{% else %}{{ item.title|escapejs }}{% endif %}",
+  {% if item.image %}"thumbnailUrl": "{{ request.scheme }}://{{ request.get_host }}{{ item.image.url }}",{% endif %}
+  "uploadDate": "{{ item.uploaded_at|date:'c' }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "M.I. Engineering Works",
+    "url": "{{ request.scheme }}://{{ request.get_host }}/"
+  }
+}
+{% endblock %}
+
 
 {% block content %}
 
@@ -39,7 +69,7 @@
       {% elif item.video_url %}
       <div class="w-full aspect-video rounded-lg overflow-hidden shadow-md">
         <iframe
-          src="{{ item.video_url }}"
+          src="{{ item.embed_url|default:item.video_url }}"
           class="w-full h-full border-0"
           allow="
             accelerometer;

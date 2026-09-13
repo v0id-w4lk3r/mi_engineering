@@ -20,7 +20,13 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            base_slug = slugify(self.name) or "category"
+            slug = base_slug
+            counter = 1
+            while Category.objects.filter(slug=slug).exclude(id=self.id).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -104,8 +110,10 @@ class Product(models.Model):
     @property
     def primary_image(self):
         """Returns the primary image or falls back to the first uploaded image."""
-        return self.images.filter(
-            is_primary=True).first() or self.images.first()
+        if hasattr(self, "_prefetched_objects_cache") and "images" in self._prefetched_objects_cache:
+            images = self._prefetched_objects_cache["images"]
+            return next((img for img in images if img.is_primary), None) or (images[0] if images else None)
+        return self.images.filter(is_primary=True).first() or self.images.first()
 
     def save(self, *args, **kwargs):
         if not self.slug:

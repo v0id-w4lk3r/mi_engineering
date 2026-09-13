@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
 from ..models import Category, Product
@@ -33,10 +33,12 @@ class ProductListView(ListView):
         context = super().get_context_data(**kwargs)
         category_slug = self.kwargs.get("category_slug")
 
-        context["categories"] = Category.objects.filter(is_active=True)
+        context["categories"] = Category.objects.filter(is_active=True).annotate(
+            active_products_count=Count("products", filter=Q(products__is_active=True))
+        )
         context["selected_category"] = category_slug
         context["category_obj"] = (get_object_or_404(
-            Category, slug=category_slug) if category_slug else None)
+            Category, slug=category_slug, is_active=True) if category_slug else None)
         return context
 
     def render_to_response(self, context, **response_kwargs):

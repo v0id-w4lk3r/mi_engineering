@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /ckeditor5/
+Disallow: /media/
+
+Sitemap: https://miengineeringworks.in/sitemap.xml

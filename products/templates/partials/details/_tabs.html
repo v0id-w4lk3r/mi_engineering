@@ -85,49 +85,15 @@
 
     <!-- Chemical Composition Panel -->
     {% if product.chemical_composition %}
-    <div x-show="activeTab === 'chemical'" style="display: none">
-      <div class="overflow-x-auto rounded-xl border border-brand-border">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-brand-secondaryBg border-b border-brand-border">
-              <th class="py-3 px-4 font-bold text-brand-heading border-r border-brand-border w-1/2">Element</th>
-              <th class="py-3 px-4 font-bold text-brand-heading">Value / Percentage</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for element, value in product.chemical_composition.items %}
-            <tr class="border-b last:border-b-0 border-brand-border hover:bg-brand-secondaryBg/50 transition">
-              <td class="py-3 px-4 font-semibold text-brand-body border-r border-brand-border">{{ element }}</td>
-              <td class="py-3 px-4 text-brand-heading font-medium">{{ value }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+    <div x-show="activeTab === 'chemical'" style="display: none" class="prose max-w-none text-sm text-brand-body leading-relaxed">
+      {{ product.chemical_composition|safe }}
     </div>
     {% endif %}
 
     <!-- Mechanical Properties Panel -->
     {% if product.mechanical_properties %}
-    <div x-show="activeTab === 'mechanical'" style="display: none">
-      <div class="overflow-x-auto rounded-xl border border-brand-border">
-        <table class="w-full text-left text-sm">
-          <thead>
-            <tr class="bg-brand-secondaryBg border-b border-brand-border">
-              <th class="py-3 px-4 font-bold text-brand-heading border-r border-brand-border w-1/2">Property</th>
-              <th class="py-3 px-4 font-bold text-brand-heading">Specification</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for prop_name, prop_val in product.mechanical_properties.items %}
-            <tr class="border-b last:border-b-0 border-brand-border hover:bg-brand-secondaryBg/50 transition">
-              <td class="py-3 px-4 font-semibold text-brand-body border-r border-brand-border">{{ prop_name }}</td>
-              <td class="py-3 px-4 text-brand-heading font-medium">{{ prop_val }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+    <div x-show="activeTab === 'mechanical'" style="display: none" class="prose max-w-none text-sm text-brand-body leading-relaxed">
+      {{ product.mechanical_properties|safe }}
     </div>
     {% endif %}
   </div>

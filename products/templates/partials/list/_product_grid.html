@@ -13,7 +13,7 @@
         class="aspect-square bg-brand-secondaryBg border-b border-brand-border flex items-center justify-center p-4 relative group overflow-hidden"
         aria-label="View details for {{ product.title }}"
       >
-        {% with product.images.first as primary_image %}
+        {% with product.primary_image as primary_image %}
           {% if primary_image %}
           <img
             src="{{ primary_image.image.url }}"

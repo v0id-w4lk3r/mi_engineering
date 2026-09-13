@@ -5,52 +5,89 @@
 {% block title %}{{ product.title }} | {{ product.category.name|default:"Industrial Component" }} - M.I. Engineering Works{% endblock %}
 
 {% block meta_description %}
-  {% if product.short_description %}
-    {{ product.short_description }}
-  {% else %}
-    High-precision {{ product.title }} manufactured by M.I. Engineering Works. Made from {{ product.material|default:"industrial grade materials" }}.
-  {% endif %}
+  {% if product.short_description %}{{ product.short_description }}{% else %}High-precision {{ product.title }} manufactured by M.I. Engineering Works. Made from {{ product.material|default:"industrial grade materials" }}.{% endif %}
 {% endblock %}
 
 {% block meta_keywords %}{{ product.title }}, {{ product.category.name }}, {{ product.material }}, industrial fasteners, precision engineering{% endblock %}
 
-{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'products:product_detail' product.slug %}{% endblock %}
 
 <!-- Open Graph / Social Media Overrides -->
+{% block og_type %}product{% endblock %}
 {% block og_title %}{{ product.title }} - M.I. Engineering Works{% endblock %}
-
 {% block og_description %}{{ product.short_description|default:product.title }}{% endblock %}
-
 {% block og_image %}
-  {% with product.images.first as primary_image %}
-    {% if primary_image %}
-      {{ request.scheme }}://{{ request.get_host }}{{ primary_image.image.url }}
-    {% endif %}
+  {% with product.primary_image as primary_image %}
+    {% if primary_image and primary_image.image %}{{ request.scheme }}://{{ request.get_host }}{{ primary_image.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endif %}
+  {% endwith %}
+{% endblock %}
+{% block og_image_alt %}{{ product.title }} - M.I. Engineering Works{% endblock %}
+
+<!-- Twitter Card -->
+{% block twitter_title %}{{ product.title }} - M.I. Engineering Works{% endblock %}
+{% block twitter_description %}{{ product.short_description|default:product.title }}{% endblock %}
+{% block twitter_image %}
+  {% with product.primary_image as primary_image %}
+    {% if primary_image and primary_image.image %}{{ request.scheme }}://{{ request.get_host }}{{ primary_image.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endif %}
   {% endwith %}
 {% endblock %}
 
-<!-- Product Structured Data (Schema.org) for Google Search -->
+<!-- Product + BreadcrumbList Structured Data (Schema.org) -->
 {% block schema_json %}
-{
-  "@context": "https://schema.org/",
-  "@type": "Product",
-  "name": "{{ product.title|escapejs }}",
-  "image": [
-    {% for img in product.images.all %}
-      "{{ request.scheme }}://{{ request.get_host }}{{ img.image.url }}"{% if not forloop.last %},{% endif %}
-    {% endfor %}
-  ],
-  "description": "{% if product.short_description %}{{ product.short_description|escapejs }}{% else %}{{ product.title|escapejs }}{% endif %}",
-  "category": "{{ product.category.name|escapejs }}",
-  "brand": {
-    "@type": "Brand",
-    "name": "M.I. Engineering Works"
+[
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "@id": "{{ request.scheme }}://{{ request.get_host }}{% url 'products:product_detail' product.slug %}#product",
+    "name": "{{ product.title|escapejs }}",
+    "image": [
+      {% for img in product.images.all %}
+        "{{ request.scheme }}://{{ request.get_host }}{{ img.image.url }}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    ],
+    "description": "{% if product.short_description %}{{ product.short_description|escapejs }}{% else %}{{ product.title|escapejs }}{% endif %}",
+    "category": "{{ product.category.name|escapejs }}",
+    {% if product.material %}"material": "{{ product.material|escapejs }}",{% endif %}
+    {% if product.grade %}"additionalProperty": [{"@type": "PropertyValue", "name": "Grade", "value": "{{ product.grade|escapejs }}"}],{% endif %}
+    "brand": {
+      "@type": "Brand",
+      "name": "M.I. Engineering Works"
+    },
+    "manufacturer": {
+      "@type": "Organization",
+      "name": "M.I. Engineering Works",
+      "url": "{{ request.scheme }}://{{ request.get_host }}/"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "INR",
+      "availability": "{% if product.is_active %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+      "seller": {
+        "@type": "Organization",
+        "name": "M.I. Engineering Works"
+      }
+    },
+    "dateModified": "{{ product.updated_at|date:'c' }}"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ request.scheme }}://{{ request.get_host }}/"},
+      {"@type": "ListItem", "position": 2, "name": "Catalog", "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'products:product_list' %}"},
+      {% if product.category %}
+      {"@type": "ListItem", "position": 3, "name": "{{ product.category.name|escapejs }}", "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'products:category_product_list' product.category.slug %}"},
+      {"@type": "ListItem", "position": 4, "name": "{{ product.title|escapejs }}", "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'products:product_detail' product.slug %}"}
+      {% else %}
+      {"@type": "ListItem", "position": 3, "name": "{{ product.title|escapejs }}", "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'products:product_detail' product.slug %}"}
+      {% endif %}
+    ]
   }
-}
+]
 {% endblock %}
 
 {% block content %}
-<div id="main-content" class="bg-brand-secondaryBg min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">
+<div class="bg-brand-secondaryBg min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">
   <div class="max-w-7xl mx-auto space-y-8">
 
     <!-- Breadcrumbs Partial -->
@@ -93,7 +130,7 @@
         <!-- Action CTAs -->
         <div class="pt-6 border-t border-brand-border flex flex-col sm:flex-row gap-3">
           <a
-            href="{% url 'home:contact-us' %}"
+            href="{% url 'home:contact-us' %}?product={{ product.title|urlencode }}{% if product.material %}&material={{ product.material|urlencode }}{% endif %}{% if product.grade %}&grade={{ product.grade|urlencode }}{% endif %}"
             class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-brand-primary text-white text-xs font-bold rounded-xl hover:bg-brand-accent transition-colors shadow-sm"
           >
             <i class="fas fa-envelope text-xs" aria-hidden="true"></i> Request Bulk Quote

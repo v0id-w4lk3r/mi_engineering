@@ -6,27 +6,35 @@
     <span
       class="text-xs font-bold uppercase tracking-widest text-[#C62828] block mb-2"
     >
-      Streamlined Procurement
+      Start Your Procurement
     </span>
-    <h2 class="text-2xl font-bold text-white mb-3">
+    <h2 class="text-2xl lg:text-3xl font-bold text-white mb-3">
       Ready to Discuss Your Technical Requirements?
     </h2>
-    <p class="text-[#71717A] text-xs leading-relaxed mb-6 max-w-xl mx-auto">
-      Submit your CAD drawings, request bulk pricing, and track component
-      production status directly through our integrated client portal.
+    <p class="text-[#71717A] text-xs leading-relaxed mb-2 max-w-xl mx-auto">
+      Share your product specification, material grade, standard, quantity, and technical drawing — our engineering team will respond with a detailed quotation within 24 hours.
     </p>
-    <div class="flex justify-center gap-3">
+    <p class="text-[#71717A] text-xs leading-relaxed mb-6 max-w-xl mx-auto">
+      We handle both one-time project requirements and long-term OEM supply agreements — with consistent quality, certified documentation, and committed delivery schedules.
+    </p>
+    <div class="flex justify-center gap-3 flex-wrap">
       <a
         href="{% url 'home:contact-us' %}"
+        hx-get="{% url 'home:contact-us' %}"
+        hx-target="#main-content"
+        hx-push-url="true"
         class="px-6 py-2.5 rounded-lg bg-[#C62828] text-white text-xs font-medium hover:bg-[#A61F1F] transition focus:outline-none focus:ring-2 focus:ring-[#C62828]"
       >
-        Send an Enquiry
+        Send a Technical Enquiry
       </a>
       <a
-        href="{% url 'accounts:login' %}"
+        href="{% url 'products:product_list' %}"
+        hx-get="{% url 'products:product_list' %}"
+        hx-target="#main-content"
+        hx-push-url="true"
         class="px-6 py-2.5 rounded-lg border border-[#71717A]/40 text-[#FAFAF9] text-xs font-medium hover:border-[#C62828] hover:text-[#C62828] transition focus:outline-none focus:ring-2 focus:ring-[#C62828]"
       >
-        Client Login
+        Browse Product Catalog
       </a>
     </div>
   </div>

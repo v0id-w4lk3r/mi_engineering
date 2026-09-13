@@ -9,7 +9,7 @@
         <a
           href="{% url 'products:product_list' %}"
           hx-get="{% url 'products:product_list' %}"
-          hx-target="#catalog-content"
+          hx-target="#main-content"
           hx-push-url="true"
           class="block px-3 py-2 rounded-lg transition-colors {% if not selected_category %}bg-brand-accent text-white font-semibold{% else %}text-brand-body hover:bg-brand-secondaryBg{% endif %}"
         >
@@ -21,12 +21,12 @@
         <a
           href="{% url 'products:category_product_list' category.slug %}"
           hx-get="{% url 'products:category_product_list' category.slug %}"
-          hx-target="#catalog-content"
+          hx-target="#main-content"
           hx-push-url="true"
           class="flex items-center justify-between px-3 py-2 rounded-lg transition-colors {% if selected_category == category.slug %}bg-brand-accent text-white font-semibold{% else %}text-brand-body hover:bg-brand-secondaryBg{% endif %}"
         >
           <span>{{ category.name }}</span>
-          <span class="text-xs opacity-75">({{ category.products.count }})</span>
+          <span class="text-xs opacity-75">({{ category.active_products_count|default:0 }})</span>
         </a>
       </li>
       {% endfor %}

@@ -66,7 +66,7 @@
                 type="{{ field.field.widget.input_type|default:'text' }}" 
                 name="{{ field.html_name }}" 
                 id="{{ field.id_for_label }}" 
-                value="{{ field.value|default_if_none:'' }}"
+                value="{% if field.field.widget.input_type != 'password' %}{{ field.value|default_if_none:'' }}{% endif %}"
                 {% if field.field.required %}required{% endif %} 
                 class="w-full px-4 py-3 rounded-xl border text-base text-[#18181B] transition focus:outline-none focus:ring-2 
                        {% if field.errors %}border-[#C62828] bg-red-50/30 focus:border-[#C62828] focus:ring-[#C62828]/20{% else %}border-[#E4E4E7] bg-[#FAFAF9] focus:bg-[#FFFFFF] focus:border-[#C62828] focus:ring-[#C62828]/20{% endif %}"

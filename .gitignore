@@ -37,8 +37,10 @@ media
 
 # Collected static files target (django collectstatic output)
 staticfiles/
-migrations/
-*/migrations/
+
+# Django Migrations (auto-generated, keep __init__.py to track the dir)
+*/migrations/*.py
+!*/migrations/__init__.py
 
 # ==========================================
 # Python Runtime & Packaging

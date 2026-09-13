@@ -1,4 +1,4 @@
-<nav class="text-xs font-semibold text-brand-body flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-1">
+<nav aria-label="Breadcrumb" class="text-xs font-semibold text-brand-body flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-1">
   <a
     href="{% url 'home:homepage' %}"
     hx-get="{% url 'home:homepage' %}"
@@ -31,5 +31,5 @@
     </a>
     <span>/</span>
   {% endif %}
-  <span class="text-brand-heading font-bold">{{ product.title }}</span>
+  <span class="text-brand-heading font-bold" aria-current="page">{{ product.title }}</span>
 </nav>

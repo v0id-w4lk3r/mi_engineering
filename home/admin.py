@@ -78,22 +78,21 @@ class ContactInquiryAdmin(admin.ModelAdmin):
     def user_link(self, obj: ContactInquiry) -> str:
         return str(obj.user) if obj.user else "Anonymous"
 
-    @admin.display(description="Client Profile Summary")
+    @admin.display(description="Client Info Summary")
     def client_info_summary(self, obj: ContactInquiry) -> str:
-        company = (getattr(obj.user, "company_name", "N/A")
-                   if obj.user else "N/A")
-        profile = getattr(obj, "client_profile", None)
-        if not profile:
-            return f"Company: {company} | No associated client profile found."
+        if not obj.user:
+            return "Anonymous User / No registered account"
 
-        tax_id = getattr(profile, "tax_id", "N/A") or "N/A"
-        country = getattr(profile, "country", "N/A") or "N/A"
-        currency = getattr(profile, "preferred_currency", "N/A") or "N/A"
+        company = getattr(obj.user, "company_name", None) or "N/A"
+        phone = getattr(obj.user, "phone_number", None) or "N/A"
+        role = obj.user.get_role_display() if hasattr(obj.user, "get_role_display") else str(getattr(obj.user, "role", "Client"))
 
-        return f"Company: {company} | Tax ID: {tax_id} | Country: {country} | Currency: {currency}"
+        return f"Company: {company} | Phone: {phone} | Role: {role} | Registered Email: {obj.user.email}"
 
     def save_model(self, request: Any, obj: ContactInquiry, form: Any,
                    change: bool) -> None:
+        super().save_model(request, obj, form, change)
+
         if "reply_message" in form.changed_data and obj.reply_message:
             html_content = obj.reply_message
             text_content = strip_tags(html_content)
@@ -106,12 +105,20 @@ class ContactInquiryAdmin(admin.ModelAdmin):
             email.attach_alternative(html_content, "text/html")
 
             if obj.reply_attachment:
-                email.attach_file(obj.reply_attachment.path)
+                try:
+                    email.attach_file(obj.reply_attachment.path)
+                except Exception as attach_err:
+                    self.message_user(
+                        request,
+                        f"Could not attach file: {attach_err}",
+                        level=messages.WARNING,
+                    )
 
             try:
                 email.send(fail_silently=False)
                 obj.is_processed = True
                 obj.replied_at = timezone.now()
+                obj.save(update_fields=["is_processed", "replied_at"])
                 self.message_user(
                     request,
                     f"Reply successfully sent to {obj.email}",
@@ -123,5 +130,3 @@ class ContactInquiryAdmin(admin.ModelAdmin):
                     f"Failed to send email: {e}",
                     level=messages.ERROR,
                 )
-
-        super().save_model(request, obj, form, change)

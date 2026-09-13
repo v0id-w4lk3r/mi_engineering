@@ -1,17 +1,16 @@
-<section id="products" class="max-w-6xl mx-auto px-4 scroll-mt-20">
+<section id="products" class="max-w-6xl mx-auto px-4 scroll-mt-20" aria-labelledby="products-heading">
   <div class="text-center max-w-3xl mx-auto mb-12">
     <span class="text-brand-accent font-bold uppercase text-xs tracking-widest"
-      >Our Products</span
+      >Our Product Range</span
     >
     <h2
+      id="products-heading"
       class="text-3xl md:text-4xl font-extrabold text-brand-heading mt-2 mb-4"
     >
-      Engineered for Strength. Manufactured for Reliability.
+      Precision Fasteners &amp; Industrial Components — ISO, DIN &amp; ASTM Grade
     </h2>
     <p class="text-brand-body leading-relaxed">
-      Explore our comprehensive range of industrial fasteners available in
-      Stainless Steel, High Tensile Alloy, Brass, and Mild Steel across ISO,
-      DIN, and ASTM specifications.
+      We manufacture and supply a comprehensive range of industrial fasteners available in Stainless Steel (SS304/SS316), High-Tensile Alloy Steel, Brass, and Mild Steel — produced to ISO, DIN, ASTM, and IS specifications with sizes from M3 to M64.
     </p>
   </div>
 
@@ -32,7 +31,7 @@
           Industrial Bolts
         </h3>
         <p class="text-xs text-brand-muted leading-snug">
-          Hex, Flange & Heavy Hex
+          Hex, Heavy Hex &amp; Flange Bolts · DIN 931 / ISO 4014
         </p>
       </div>
     </article>
@@ -52,7 +51,7 @@
           Precision Nuts
         </h3>
         <p class="text-xs text-brand-muted leading-snug">
-          Lock, Coupling & Flange
+          Hex, Lock, Coupling &amp; Flange Nuts · DIN 934 / ISO 4032
         </p>
       </div>
     </article>
@@ -69,10 +68,10 @@
       </div>
       <div>
         <h3 class="font-bold text-brand-heading text-base mb-1">
-          Studs & Rods
+          Studs &amp; Threaded Rods
         </h3>
         <p class="text-xs text-brand-muted leading-snug">
-          Full & Double-End Threaded
+          Full, Half &amp; Double-End Threaded · ASTM A193 / DIN 976
         </p>
       </div>
     </article>
@@ -90,7 +89,7 @@
       <div>
         <h3 class="font-bold text-brand-heading text-base mb-1">Washers</h3>
         <p class="text-xs text-brand-muted leading-snug">
-          Flat, Spring & Lock Washers
+          Flat, Spring, Lock &amp; Taper Washers · DIN 125 / DIN 127
         </p>
       </div>
     </article>
@@ -110,7 +109,7 @@
           Anchor Bolts
         </h3>
         <p class="text-xs text-brand-muted leading-snug">
-          L, J & Expansion Bolts
+          L-Type, J-Type &amp; Expansion Anchor Bolts · Civil &amp; Structural
         </p>
       </div>
     </article>
@@ -126,25 +125,45 @@
         <i class="fas fa-drafting-compass text-xl"></i>
       </div>
       <div>
-        <h3 class="font-bold text-brand-heading text-base mb-1">
-          Custom Parts
+      <h3 class="font-bold text-brand-heading text-base mb-1">
+          Custom Machined Parts
         </h3>
         <p class="text-xs text-brand-muted leading-snug">
-          Drawing-based Turned Parts
+          Drawing-Based CNC Turned &amp; Machined Components
         </p>
       </div>
     </article>
   </div>
 
+  <!-- Key specs bar -->
+  <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+    <div class="bg-brand-card border border-brand-border rounded-xl p-4">
+      <p class="text-2xl font-extrabold text-brand-accent">M3–M64</p>
+      <p class="text-xs text-brand-muted mt-1">Size Range</p>
+    </div>
+    <div class="bg-brand-card border border-brand-border rounded-xl p-4">
+      <p class="text-2xl font-extrabold text-brand-accent">SS304 · SS316</p>
+      <p class="text-xs text-brand-muted mt-1">Stainless Grades</p>
+    </div>
+    <div class="bg-brand-card border border-brand-border rounded-xl p-4">
+      <p class="text-2xl font-extrabold text-brand-accent">ISO · DIN · ASTM</p>
+      <p class="text-xs text-brand-muted mt-1">Compliance Standards</p>
+    </div>
+    <div class="bg-brand-card border border-brand-border rounded-xl p-4">
+      <p class="text-2xl font-extrabold text-brand-accent">EN 10204</p>
+      <p class="text-xs text-brand-muted mt-1">Test Certificates</p>
+    </div>
+  </div>
+
   <div class="text-center mt-10">
     <a
-      href="{% url 'home:contact-us' %}"
-      hx-get="{% url 'home:contact-us' %}"
+      href="{% url 'products:product_list' %}"
+      hx-get="{% url 'products:product_list' %}"
       hx-target="#main-content"
       hx-push-url="true"
       class="inline-flex items-center gap-2 bg-brand-primary text-white font-bold px-8 py-3.5 rounded-xl hover:bg-brand-primaryHover transition shadow-md"
     >
-      View All Product Specifications
+      View Full Product Catalog &amp; Specifications
       <i class="fas fa-arrow-right text-sm" aria-hidden="true"></i>
     </a>
   </div>

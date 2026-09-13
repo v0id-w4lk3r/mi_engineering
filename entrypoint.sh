@@ -11,11 +11,19 @@ export DJANGO_SETTINGS_MODULE="${DJANGO_SETTINGS_MODULE:-mi_engineering.settings
 echo "Checking Django..."
 uv run python manage.py check
 
-echo "Creating migrations..."
-uv run python manage.py makemigrations accounts home gallery products --noinput
+echo "Making migrations..."
+uv run python manage.py makemigrations accounts
+uv run python manage.py makemigrations home
+uv run python manage.py makemigrations gallery
+uv run python manage.py makemigrations products
 
 echo "Applying migrations..."
 uv run python manage.py migrate --noinput
+
+echo "Checking / Installing frontend dependencies..."
+if [ ! -d "node_modules" ]; then
+    bun install --frozen-lockfile || bun install
+fi
 
 echo "Building Tailwind CSS..."
 bun run build:css

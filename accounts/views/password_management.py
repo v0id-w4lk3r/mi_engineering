@@ -59,11 +59,9 @@ class CustomPasswordResetView(AnonymousRequiredMixin, PasswordResetView):
 
 
 # 3. Password Reset Confirm
-class CustomPasswordResetConfirmView(AnonymousRequiredMixin,
-                                     PasswordResetConfirmView):
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     """
     Step 2 of password reset flow where user inputs a new password.
-    Restricted to anonymous users using AnonymousRequiredMixin.
     """
 
     template_name = "password_reset_confirm.html"

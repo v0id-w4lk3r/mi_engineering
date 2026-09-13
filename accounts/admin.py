@@ -31,12 +31,14 @@ class UserAdmin(BaseUserAdmin):
         (
             "Custom Profile Info",
             {
-                "fields": ["role", "company_name", "phone_number"],
+                "fields": ["email", "role", "company_name", "phone_number"],
             },
         ),
     ]
 
     def get_fieldsets(self, request: Any, obj: Any = None) -> Any:
+        if not obj:
+            return self.add_fieldsets
         fieldsets = list(super().get_fieldsets(request, obj))
         custom_fieldset = (
             "Custom Profile Info",

@@ -1,7 +1,17 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
+from django.views.generic import TemplateView
+
+from home.sitemaps import CategorySitemap, ProductSitemap, StaticViewSitemap
+
+sitemaps = {
+    "static": StaticViewSitemap,
+    "products": ProductSitemap,
+    "categories": CategorySitemap,
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -10,6 +20,24 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('gallery/', include('gallery.urls', namespace='gallery')),
     path('products/', include('products.urls', namespace='products')),
+
+    # SEO: XML sitemap
+    path(
+        "sitemap.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
+
+    # SEO: robots.txt
+    path(
+        "robots.txt",
+        TemplateView.as_view(
+            template_name="robots.txt",
+            content_type="text/plain",
+        ),
+        name="robots-txt",
+    ),
 ]
 
 if settings.DEBUG:

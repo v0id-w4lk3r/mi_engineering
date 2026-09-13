@@ -1,8 +1,16 @@
 {% with product.images.all as images %}
+{% with product.primary_image as primary_img %}
 <div class="space-y-4">
   <!-- Main Display Image -->
   <div class="aspect-square bg-brand-secondaryBg rounded-xl border border-brand-border overflow-hidden flex items-center justify-center p-6 relative group">
-    {% if images %}
+    {% if primary_img and primary_img.image %}
+    <img
+      id="main-product-image"
+      src="{{ primary_img.image.url }}"
+      alt="{{ primary_img.alt_text|default:product.title }}"
+      class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+    />
+    {% elif images %}
     <img
       id="main-product-image"
       src="{{ images.0.image.url }}"
@@ -24,7 +32,7 @@
     <button
       type="button"
       onclick="document.getElementById('main-product-image').src='{{ img.image.url }}'; document.querySelectorAll('.thumb-btn').forEach(b => b.classList.remove('border-brand-accent')); this.classList.add('border-brand-accent')"
-      class="thumb-btn aspect-square rounded-xl border-2 {% if forloop.first %}border-brand-accent{% else %}border-brand-border{% endif %} overflow-hidden bg-brand-secondaryBg p-1.5 transition focus:outline-none"
+      class="thumb-btn aspect-square rounded-xl border-2 {% if primary_img and img.id == primary_img.id or not primary_img and forloop.first %}border-brand-accent{% else %}border-brand-border{% endif %} overflow-hidden bg-brand-secondaryBg p-1.5 transition focus:outline-none"
     >
       <img
         src="{{ img.image.url }}"
@@ -36,4 +44,5 @@
   </div>
   {% endif %}
 </div>
+{% endwith %}
 {% endwith %}

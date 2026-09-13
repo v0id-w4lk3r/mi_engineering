@@ -1,15 +1,59 @@
-{% extends 'base.html' %} 
-{% block title %}M.I. Engineering Works | Industrial
-Fasteners & Precision Components{% endblock %} 
-{% block meta_description %}Manufacturer & supplier of precision industrial fasteners, bolts, nuts, studs,
-washers, and custom engineering components built to ISO, DIN, and ASTM
-standards.{% endblock %} 
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}M.I. Engineering Works | Industrial Fasteners & Precision Components{% endblock %}
+
+{% block meta_description %}Manufacturer & supplier of precision industrial fasteners, bolts, nuts, studs, washers, and custom engineering components built to ISO, DIN, and ASTM standards.{% endblock %}
+
+{% block meta_keywords %}industrial fasteners manufacturer, precision bolts nuts studs, ISO DIN ASTM components, M.I. Engineering Works, custom engineering India{% endblock %}
+
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}/{% endblock %}
+
+{% block og_type %}website{% endblock %}
+{% block og_title %}M.I. Engineering Works | Industrial Fasteners & Precision Components{% endblock %}
+{% block og_description %}Manufacturer & supplier of precision industrial fasteners, bolts, nuts, studs, washers, and custom engineering components built to ISO, DIN, and ASTM standards.{% endblock %}
+{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endblock %}
+
+{% block twitter_title %}M.I. Engineering Works | Industrial Fasteners & Precision Components{% endblock %}
+{% block twitter_description %}Manufacturer & supplier of precision industrial fasteners and custom engineering components built to ISO, DIN, and ASTM standards.{% endblock %}
+
+{% block schema_json %}
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
+  "name": "M.I. Engineering Works",
+  "url": "{{ request.scheme }}://{{ request.get_host }}/",
+  "description": "Manufacturer and supplier of precision-engineered industrial fasteners and custom components.",
+  "publisher": {
+    "@type": "Organization",
+    "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization",
+    "name": "M.I. Engineering Works",
+    "url": "{{ request.scheme }}://{{ request.get_host }}/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo/logo.png' %}"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "email": "info@miengineeringworks.in",
+      "availableLanguage": ["English"]
+    }
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ request.scheme }}://{{ request.get_host }}{% url 'products:product_list' %}?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+{% endblock %}
 
 {% block content %}
-<main
-  class="space-y-16 md:space-y-24 py-4 font-sans text-brand-body"
-  aria-label="Main Content"
->
+<div class="space-y-16 md:space-y-24 py-4 font-sans text-brand-body">
   <!-- 1. Hero Section -->
   {% include 'partials/home/_hero.html' %}
 
@@ -24,5 +68,5 @@ standards.{% endblock %}
 
   <!-- 5. Quality Assurance & Final Call-to-Action -->
   {% include 'partials/home/_quality_cta.html' %}
-</main>
+</div>
 {% endblock %}

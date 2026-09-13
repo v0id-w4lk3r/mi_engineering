@@ -14,7 +14,9 @@ INSTALLED_APPS = [
     'jazzmin', 'django_htmx', 'django_ckeditor_5', 'django.contrib.admin',
     'django.contrib.auth', 'django.contrib.contenttypes',
     'django.contrib.sessions', 'django.contrib.messages',
-    'django.contrib.staticfiles', 'home', 'accounts', 'gallery', 'products'
+    'django.contrib.staticfiles', 'django.contrib.sitemaps',
+    'meta',
+    'home', 'accounts', 'gallery', 'products'
 ]
 
 MIDDLEWARE = [
@@ -32,6 +34,15 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'mi_engineering.urls'
 
 AUTH_USER_MODEL = "accounts.User"
+
+AUTHENTICATION_BACKENDS = [
+    "accounts.backends.EmailOrUsernameModelBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+LOGIN_REDIRECT_URL = "home:homepage"
+LOGIN_URL = "accounts:login"
+LOGOUT_REDIRECT_URL = "accounts:login"
 
 TEMPLATES = [
     {
@@ -154,3 +165,16 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+
+# ── django-meta SEO configuration ───────────────────────────────────────────
+META_SITE_PROTOCOL = os.getenv("META_SITE_PROTOCOL", "https")
+META_SITE_DOMAIN = os.getenv("ALLOWED_HOSTS", "miengineeringworks.in").split(",")[0].strip()
+META_USE_OG_PROPERTIES = True
+META_USE_TWITTER_PROPERTIES = True
+META_USE_SCHEMAORG_PROPERTIES = True
+META_DEFAULT_KEYWORDS = [
+    "engineering works", "industrial manufacturing", "precision components",
+    "technical hardware", "fasteners", "custom engineering", "industrial procurement",
+]
+META_INCLUDE_KEYWORDS_TAG = True
+META_OG_SECURE_URL_ITEMS = ["image"]

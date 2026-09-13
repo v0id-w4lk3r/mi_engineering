@@ -27,24 +27,26 @@
     <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
     <meta property="og:site_name" content="M.I. Engineering Works" />
     <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}" />
-    <meta property="og:title" content="{% block og_title %}{% block title_og %}{{ self.title }}{% endblock %}
-    {% endblock %}" />
-    <meta property="og:description" content="{% block og_description %}{% block meta_description_og %}{{ self.meta_description }}{% endblock %}{% endblock %}" />
-    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}/static/images/og-image.jpg{% endblock %}" />
+    <meta property="og:title" content="{% block og_title %}M.I. Engineering Works | Industrial Engineering Solutions{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}M.I. Engineering Works manufactures high-precision industrial components, fasteners, and technical hardware solutions tailored to exact engineering specifications.{% endblock %}" />
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endblock %}" />
     <meta property="og:image:alt" content="{% block og_image_alt %}M.I. Engineering Works Industrial Components{% endblock %}" />
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="{{ request.build_absolute_uri }}" />
-    <meta name="twitter:title" content="{% block twitter_title %}{% block title_twitter %}{{ self.title }}
-    {% endblock %}{% endblock %}" />
-    <meta name="twitter:description" content="{% block twitter_description %}{% block meta_description_twitter %}{{ self.meta_description }}{% endblock %}{% endblock %}" />
-    <meta name="twitter:image" content="{% block twitter_image %}{% block og_image_twitter %}{{ self.og_image }}
-    {% endblock %}{% endblock %}" />
+    <meta name="twitter:title" content="{% block twitter_title %}M.I. Engineering Works | Industrial Engineering Solutions{% endblock %}" />
+    <meta name="twitter:description" content="{% block twitter_description %}M.I. Engineering Works manufactures high-precision industrial components, fasteners, and technical hardware solutions.{% endblock %}" />
+    <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endblock %}" />
 
     <!-- Favicon & Touch Icons -->
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png" />
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon_io/favicon.ico' %}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon_io/favicon-16x16.png' %}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon_io/favicon-32x32.png' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon_io/apple-touch-icon.png' %}" />
+    <link rel="manifest" href="{% static 'favicon_io/site.webmanifest' %}" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
 
     <!-- Schema.org JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -55,8 +57,8 @@
         "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization",
         "name": "M.I. Engineering Works",
         "url": "{{ request.scheme }}://{{ request.get_host }}/",
-        "logo": "{{ request.scheme }}://{{ request.get_host }}/static/images/logo.png",
-        "image": "{{ request.scheme }}://{{ request.get_host }}/static/images/og-image.jpg",
+        "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo/logo.png' %}",
+        "image": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}",
         "description": "Manufacturer and provider of precision industrial engineering components and fasteners.",
         "contactPoint": {
           "@type": "ContactPoint",
@@ -86,8 +88,18 @@
     <script defer src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <!-- CSRF Token Meta Reference -->
+    <!-- CSRF Token Meta Reference & Dynamic HTMX Cookie Integration -->
     <meta name="csrf-token" content="{{ csrf_token }}" />
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.body.addEventListener("htmx:configRequest", function (evt) {
+          const cookieMatch = document.cookie.match(/csrftoken=([^;]+)/);
+          if (cookieMatch) {
+            evt.detail.headers["X-CSRFToken"] = cookieMatch[1];
+          }
+        });
+      });
+    </script>
 
     {% block extra_head %}{% endblock %}
   </head>
@@ -130,6 +142,7 @@
     <!-- Main Dynamic View Container -->
     <main id="main-content" class="w-full flex-grow" role="main">
 {% endif %}
+
 
       {% block content %}{% endblock %}
 

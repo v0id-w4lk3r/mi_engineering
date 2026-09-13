@@ -1,4 +1,4 @@
-<section class="py-6 md:py-10">
+<section class="py-6 md:py-10" aria-label="Hero">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div
       class="relative bg-brand-primary text-white rounded-3xl p-8 md:p-16 overflow-hidden shadow-xl border border-brand-primaryHover"
@@ -10,21 +10,18 @@
           <span
             class="text-white font-bold uppercase text-xs tracking-widest bg-brand-accent px-3.5 py-1.5 rounded-full inline-block mb-4 shadow-sm"
           >
-            Precision Engineering. Built for Industry.
+            ISO · DIN · ASTM Certified Manufacturer
           </span>
           <h1
             class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-6 text-white"
           >
-            Reliable Industrial Fasteners & Precision Engineering Components
+            Industrial Fasteners &amp; Precision Engineering Components — Made in India
           </h1>
           <p class="text-zinc-300 text-base md:text-lg leading-relaxed mb-4">
-            Manufactured to meet demanding specifications, applications, and
-            strict international industry standards.
+            M.I. Engineering Works manufactures high-tensile bolts, precision nuts, stud rods, anchor bolts, washers, and custom-machined components — conforming to ISO 4014, DIN 931, ASTM A193, and IS 1363 standards.
           </p>
           <p class="text-zinc-400 text-sm leading-relaxed mb-8">
-            From standard fasteners to drawing-based custom components, M.I.
-            Engineering Works delivers tailored solutions with uncompromised
-            precision and quality.
+            From M3 to M64 in Stainless Steel (SS304 / SS316), Alloy Steel, Mild Steel, and Brass — we deliver bulk orders and drawing-based turned parts with full traceability and EN 10204 test certificates.
           </p>
           <div class="flex flex-wrap gap-4 mb-8">
             <a
@@ -34,31 +31,34 @@
               hx-push-url="true"
               class="bg-brand-accent hover:bg-brand-accentHover text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg transition duration-150"
             >
-              Request a Quote
+              Request a Bulk Quote
             </a>
             <a
-              href="#products"
+              href="{% url 'products:product_list' %}"
+              hx-get="{% url 'products:product_list' %}"
+              hx-target="#main-content"
+              hx-push-url="true"
               class="bg-brand-primaryHover hover:bg-black text-zinc-200 font-semibold px-8 py-3.5 rounded-xl border border-zinc-700 transition duration-150"
             >
-              Explore Products
+              Browse Product Catalog
             </a>
           </div>
           <p
             class="text-xs text-zinc-400 font-medium border-t border-zinc-800 pt-4"
           >
-            Standard & Custom Solutions • Stainless, Alloy & Mild Steel •
-            Certified Compliance
+            Standard &amp; Custom Solutions &nbsp;·&nbsp; SS304 · SS316 · Alloy · Mild Steel &nbsp;·&nbsp; ISO / DIN / ASTM / IS Certified
           </p>
         </div>
 
-        <!-- Hero Image with Aspect Ratio Protection & Lazy Loading -->
+        <!-- Hero Image -->
         <div
           class="relative rounded-2xl overflow-hidden shadow-2xl border border-zinc-800 aspect-video lg:aspect-auto lg:h-96"
         >
           <img
             src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80"
-            alt="M.I. Engineering Works Industrial CNC Manufacturing Floor"
+            alt="M.I. Engineering Works — Industrial CNC manufacturing floor producing precision fasteners and components"
             loading="eager"
+            fetchpriority="high"
             width="1000"
             height="667"
             class="w-full h-full object-cover"
