@@ -31,8 +31,7 @@ class GalleryListView(ListView):
         if media_type in [
                 GalleryItem.MediaType.IMAGE, 
                 GalleryItem.MediaType.VIDEO,
-                GalleryItem.MediaType.PDF,
-                GalleryItem.MediaType.CERTIFICATE
+                GalleryItem.MediaType.PDF
         ]:
             queryset = queryset.filter(media_type=media_type)
 

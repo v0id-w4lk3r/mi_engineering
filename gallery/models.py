@@ -26,7 +26,7 @@ class Category(models.Model):
             base_slug = slugify(self.name) or "category"
             slug = base_slug
             counter = 1
-            while Category.objects.filter(slug=slug).exclude(id=self.id).exists():
+            while Category.objects.filter(slug=slug).exclude(id=self.id).exists(): # type: ignore
                 slug = f"{base_slug}-{counter}"
                 counter += 1
             self.slug = slug
@@ -43,7 +43,6 @@ class GalleryItem(models.Model):
         IMAGE = "IMAGE", "Image"
         VIDEO = "VIDEO", "Video"
         PDF = "PDF", "PDF Document"
-        CERTIFICATE = "CERTIFICATE", "Certificate"
 
     title = models.CharField(max_length=255,
                              help_text="Title or caption for the media item")
@@ -58,7 +57,7 @@ class GalleryItem(models.Model):
         max_length=15,
         choices=MediaType.choices,
         default=MediaType.IMAGE,
-        help_text="Select whether this item is an image, video, pdf, or certificate",
+        help_text="Select whether this item is an image, video, or pdf",
     )
 
     # File handling
@@ -80,7 +79,7 @@ class GalleryItem(models.Model):
         upload_to="gallery/documents/",
         blank=True,
         null=True,
-        help_text="Upload PDF or document files for PDF/Certificate",
+        help_text="Upload PDF file",
     )
 
     # SEO fields
@@ -98,8 +97,8 @@ class GalleryItem(models.Model):
 
     class Meta:
         ordering = ["display_order", "-uploaded_at"]
-        verbose_name = "Gallery Item"
-        verbose_name_plural = "Gallery Items"
+        verbose_name = "All Media Item"
+        verbose_name_plural = "All Media Items"
 
     def clean(self):
         super().clean()
@@ -107,8 +106,8 @@ class GalleryItem(models.Model):
             raise ValidationError({"image": "An image file is required for items with media type Image."})
         if self.media_type == self.MediaType.VIDEO and not self.video and not self.video_url:
             raise ValidationError({"video": "Either a video file or a video URL is required for Video items."})
-        if self.media_type in [self.MediaType.PDF, self.MediaType.CERTIFICATE] and not self.document and not self.image:
-            raise ValidationError({"document": "A document or image file is required for PDF/Certificate items."})
+        if self.media_type == self.MediaType.PDF and not self.document:
+            raise ValidationError({"document": "A PDF document file is required for PDF items."})
 
     @property
     def embed_url(self) -> str | None:
@@ -143,7 +142,42 @@ class GalleryItem(models.Model):
     @property
     def media_type_label(self) -> str:
         """Type-safe getter for the media type display label."""
-        return self.get_media_type_display()
+        return self.get_media_type_display() # type: ignore
 
     def __str__(self) -> str:
         return f"{self.title} ({self.media_type_label})"
+
+
+# ── PROXY MODELS FOR ADMIN SEPARATION ─────────────────────────────────────────
+
+class GalleryImage(GalleryItem):
+    class Meta:
+        proxy = True
+        verbose_name = "Image"
+        verbose_name_plural = "Images"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.media_type = self.MediaType.IMAGE
+
+
+class GalleryVideo(GalleryItem):
+    class Meta:
+        proxy = True
+        verbose_name = "Video"
+        verbose_name_plural = "Videos"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.media_type = self.MediaType.VIDEO
+
+
+class GalleryDocument(GalleryItem):
+    class Meta:
+        proxy = True
+        verbose_name = "PDF Document"
+        verbose_name_plural = "PDF Documents"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.media_type = self.MediaType.PDF

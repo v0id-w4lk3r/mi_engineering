@@ -117,8 +117,6 @@
             <i class="fas fa-file-pdf w-5"></i> PDFs
           </a>
           <a
-            href="{% url 'gallery:gallery_list' %}?type=CERTIFICATE{% if active_category %}&category={{ active_category }}{% endif %}"
-            hx-get="{% url 'gallery:gallery_list' %}?type=CERTIFICATE{% if active_category %}&category={{ active_category }}{% endif %}"
             hx-target="#main-content"
             hx-push-url="true"
             class="px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 {% if active_type == 'CERTIFICATE' %}bg-brand-accent text-white shadow-md{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-border hover:text-brand-heading{% endif %}"
@@ -141,10 +139,21 @@
     >
       <!-- Media Container -->
       <a
-        href="{% url 'gallery:gallery_detail' item.pk %}"
-        hx-get="{% url 'gallery:gallery_detail' item.pk %}"
-        hx-target="#main-content"
-        hx-push-url="true"
+        {% if item.media_type == 'PDF' %}
+          {% if item.document %}
+            href="{{ item.document.url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+          {% else %}
+            href="#"
+            onclick="alert('Document is unavailable.'); return false;"
+          {% endif %}
+        {% else %}
+          href="{% url 'gallery:gallery_detail' item.pk %}"
+          hx-get="{% url 'gallery:gallery_detail' item.pk %}"
+          hx-target="#main-content"
+          hx-push-url="true"
+        {% endif %}
         class="block relative h-56 bg-brand-card overflow-hidden group"
       >
         {% if item.media_type == 'IMAGE' and item.image %}
@@ -176,7 +185,7 @@
             <i class="fas fa-play text-xl ml-1"></i>
           </div>
         </div>
-        {% elif item.media_type == 'PDF' or item.media_type == 'CERTIFICATE' %}
+        {% elif item.media_type == 'PDF' %}
         {% if item.image %}
         <img
           src="{{ item.image.url }}"
@@ -194,6 +203,12 @@
           {% endif %}
         </div>
         {% endif %}
+        <!-- External Link Overlay for Documents -->
+        <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-all duration-300 opacity-0 group-hover:opacity-100">
+          <div class="w-14 h-14 rounded-full bg-white/95 text-brand-heading flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-external-link-alt text-xl"></i>
+          </div>
+        </div>
         {% endif %}
 
         <!-- Media Badge -->
@@ -206,8 +221,6 @@
           <i class="fas fa-video"></i> Video
           {% elif item.media_type == 'PDF' %}
           <i class="fas fa-file-pdf"></i> PDF
-          {% else %}
-          <i class="fas fa-certificate"></i> Certificate
           {% endif %}
         </div>
       </a>
@@ -243,13 +256,28 @@
             ><i class="far fa-calendar-alt"></i> {{ item.uploaded_at|date:"M d, Y" }}</span
           >
           <a
-            href="{% url 'gallery:gallery_detail' item.pk %}"
-            hx-get="{% url 'gallery:gallery_detail' item.pk %}"
-            hx-target="#main-content"
-            hx-push-url="true"
+            {% if item.media_type == 'PDF' %}
+              {% if item.document %}
+                href="{{ item.document.url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+              {% else %}
+                href="#"
+                onclick="alert('Document is unavailable.'); return false;"
+              {% endif %}
+            {% else %}
+              href="{% url 'gallery:gallery_detail' item.pk %}"
+              hx-get="{% url 'gallery:gallery_detail' item.pk %}"
+              hx-target="#main-content"
+              hx-push-url="true"
+            {% endif %}
             class="text-brand-accent font-bold hover:text-brand-accentHover transition-colors flex items-center gap-1 group-hover:translate-x-1 duration-300"
           >
+            {% if item.media_type == 'PDF' %}
+            Open Document <i class="fas fa-external-link-alt text-xs ml-1"></i>
+            {% else %}
             View <span aria-hidden="true">&rarr;</span>
+            {% endif %}
           </a>
         </div>
       </div>

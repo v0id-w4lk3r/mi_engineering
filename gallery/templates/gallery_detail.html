@@ -90,28 +90,29 @@
       </div>
       {% endif %}
       
-      {% elif item.media_type == 'PDF' or item.media_type == 'CERTIFICATE' %}
-      {% if item.document %}
-      <div class="w-full h-full min-h-125 flex items-center justify-center bg-white rounded-lg shadow-md overflow-hidden">
-        <embed src="{{ item.document.url }}" type="application/pdf" width="100%" height="600px" class="w-full h-150" />
+      {% elif item.media_type == 'PDF' %}
+      <div class="w-full py-12 sm:py-16 flex flex-col items-center justify-center bg-white">
+          {% if item.image %}
+          <img
+            src="{{ item.image.url }}"
+            alt="{% if item.alt_text %}{{ item.alt_text }}{% else %}{{ item.title }}{% endif %}"
+            class="max-h-96 w-auto max-w-full object-contain rounded-lg shadow-md mb-8 border border-gray-200"
+          />
+          {% else %}
+          <i class="fas fa-file-pdf text-red-500 text-8xl mb-8 opacity-80"></i>
+          {% endif %}
+          
+          {% if item.document %}
+          <a href="{{ item.document.url }}" target="_blank" rel="noopener noreferrer" class="bg-brand-accent text-white px-8 py-3.5 rounded-xl hover:bg-opacity-90 transition font-bold shadow-md flex items-center gap-3 text-base sm:text-lg hover:-translate-y-1 duration-300">
+              <i class="fas fa-external-link-alt"></i> 
+              Open PDF Document in New Tab
+          </a>
+          {% else %}
+          <p class="text-sm text-gray-500 font-medium bg-gray-100 px-6 py-3 rounded-lg">
+              <i class="fas fa-info-circle mr-2"></i> Document file is unavailable.
+          </p>
+          {% endif %}
       </div>
-      {% elif item.image %}
-      <img
-        src="{{ item.image.url }}"
-        alt="{% if item.alt_text %}{{ item.alt_text }}{% else %}{{ item.title }}{% endif %}"
-        class="max-h-150 w-auto max-w-full object-contain rounded-lg shadow-md"
-      />
-      {% else %}
-      <div class="py-24 flex flex-col items-center justify-center text-gray-500 w-full h-full">
-        {% if item.media_type == 'PDF' %}
-        <i class="fas fa-file-pdf text-6xl mb-4"></i>
-        <p class="text-sm">PDF document is unavailable.</p>
-        {% else %}
-        <i class="fas fa-certificate text-6xl mb-4"></i>
-        <p class="text-sm">Certificate is unavailable.</p>
-        {% endif %}
-      </div>
-      {% endif %}
       {% endif %}
     </div>
 

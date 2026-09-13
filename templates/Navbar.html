@@ -1,6 +1,8 @@
 {% load static %}
 <nav
-  class="bg-brand-bg/95backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-brand-border"
+  id="main-navbar"
+  hx-swap-oob="true"
+  class="bg-brand-bg/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-brand-border"
   x-data="{ open: false }"
 >
   <div class="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
@@ -136,7 +138,7 @@
             {{ request.user.username|slice:":1"|upper }}
           </div>
           <span
-            class="font-semibold text-brand-headingding group-hover:text-brand-accent max-w-30 truncate transition"
+            class="font-semibold text-brand-heading group-hover:text-brand-accent max-w-30 truncate transition"
           >
             {{ request.user.get_full_name|default:request.user.username }}
           </span>
@@ -146,7 +148,7 @@
           {% csrf_token %}
           <button
             type="submit"
-            class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-brand-secondaryBg text-brand-heading hover:bg-brand-lightAccentBg hover:text-brand-accent transition border border-brand-borderder text-sm font-semibold"
+            class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-brand-secondaryBg text-brand-heading hover:bg-brand-lightAccentBg hover:text-brand-accent transition border border-brand-border text-sm font-semibold"
           >
             <i class="fas fa-sign-out-alt"></i> Logout
           </button>
@@ -179,7 +181,7 @@
     x-show="open"
     x-transition
     @click.away="open = false"
-    class="md:hidden bg-brand-bgborder-t border-brand-border"
+    class="md:hidden bg-brand-bg border-t border-brand-border"
   >
     <div class="px-4 py-4 space-y-2 text-brand-body">
       {% if request.user.is_authenticated %}
@@ -215,7 +217,7 @@
         hx-target="#main-content"
         hx-push-url="true"
         @click="open = false"
-        class="block px-3 py-2 rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accentent {% if request.path == '/' %}text-brand-accent font-semibold bg-brand-secondaryBgondaryBg{% endif %}"
+        class="block px-3 py-2 rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if request.path == '/' %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
       >
         <i class="fas fa-home mr-2"></i>Home
       </a>
@@ -292,7 +294,7 @@
         hx-target="#main-content"
         hx-push-url="true"
         @click="open = false"
-        class="block px-3 py-2 rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if '/contact' in request.path %}text-brand-accentent font-semibold bg-brand-secondaryBg{% endif %}"
+        class="block px-3 py-2 rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if '/contact' in request.path %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
       >
         <i class="fas fa-envelope mr-2"></i>Contact Us
       </a>

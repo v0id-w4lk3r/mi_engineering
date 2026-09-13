@@ -78,6 +78,9 @@
     <!-- Local Compiled CSS stylesheet -->
     <link rel="stylesheet" href="{% static "css/index.css" %}" />
 
+    <!-- Alpine.js x-cloak: hide elements until Alpine initializes to prevent flash -->
+    <style>[x-cloak] { display: none !important; }</style>
+
     <!-- Font Awesome Stylesheet -->
     <link
       rel="stylesheet"
@@ -108,6 +111,11 @@
         document.body.addEventListener("htmx:afterSwap", function (evt) {
           if (evt.detail.target.id === "main-content") {
             window.scrollTo({ top: 0, behavior: "smooth" });
+            // Re-initialize Alpine.js on swapped content so dropdowns,
+            // tabs, and x-data components work after HTMX navigation
+            if (window.Alpine) {
+              Alpine.initTree(evt.detail.target);
+            }
           }
         });
       });
@@ -153,6 +161,10 @@
 
     <!-- Main Dynamic View Container -->
     <main id="main-content" class="w-full grow" role="main">
+{% else %}
+    {% if not hide_navbar %}
+      {% include 'Navbar.html' %}
+    {% endif %}
 {% endif %}
 
 
