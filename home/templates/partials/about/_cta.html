@@ -1,29 +1,29 @@
 <section
-  class="py-12 bg-[#151515] text-white border-t border-[#202124]"
+  class="py-16 lg:py-20 bg-brand-primaryHover text-white border-t border-brand-primary"
   aria-label="Procurement Inquiry CTA"
 >
   <div class="max-w-4xl mx-auto px-6 text-center">
     <span
-      class="text-xs font-bold uppercase tracking-widest text-[#C62828] block mb-2"
+      class="text-xs font-bold uppercase tracking-widest text-brand-accent block mb-4"
     >
       Start Your Procurement
     </span>
-    <h2 class="text-2xl lg:text-3xl font-bold text-white mb-3">
+    <h2 class="text-3xl lg:text-4xl font-bold text-white mb-6">
       Ready to Discuss Your Technical Requirements?
     </h2>
-    <p class="text-[#71717A] text-xs leading-relaxed mb-2 max-w-xl mx-auto">
+    <p class="text-[#A1A1AA] text-sm lg:text-base leading-relaxed mb-4 max-w-2xl mx-auto">
       Share your product specification, material grade, standard, quantity, and technical drawing — our engineering team will respond with a detailed quotation within 24 hours.
     </p>
-    <p class="text-[#71717A] text-xs leading-relaxed mb-6 max-w-xl mx-auto">
+    <p class="text-[#A1A1AA] text-sm lg:text-base leading-relaxed mb-8 max-w-2xl mx-auto">
       We handle both one-time project requirements and long-term OEM supply agreements — with consistent quality, certified documentation, and committed delivery schedules.
     </p>
-    <div class="flex justify-center gap-3 flex-wrap">
+    <div class="flex justify-center gap-4 flex-wrap">
       <a
         href="{% url 'home:contact-us' %}"
         hx-get="{% url 'home:contact-us' %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="px-6 py-2.5 rounded-lg bg-[#C62828] text-white text-xs font-medium hover:bg-[#A61F1F] transition focus:outline-none focus:ring-2 focus:ring-[#C62828]"
+        class="px-8 py-3.5 rounded-xl bg-brand-accentent text-white text-base font-medium hover:bg-brand-accentHover transition shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-accent"
       >
         Send a Technical Enquiry
       </a>
@@ -32,7 +32,7 @@
         hx-get="{% url 'products:product_list' %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="px-6 py-2.5 rounded-lg border border-[#71717A]/40 text-[#FAFAF9] text-xs font-medium hover:border-[#C62828] hover:text-[#C62828] transition focus:outline-none focus:ring-2 focus:ring-[#C62828]"
+        class="px-8 py-3.5 rounded-xl border border-brand-muted/40 text-brand-card text-base font-medium hover:border-brand-accent hover:text-brand-accent transition focus:outline-none focus:ring-2 focus:ring-brand-accent"
       >
         Browse Product Catalog
       </a>

@@ -4,12 +4,12 @@
 {% block title %}Sign In | M.I. Engineering Works{% endblock %}
 
 {% block content %}
-<section class="py-16 bg-[#F7F7F5] min-h-[75vh] flex items-center">
+<section class="py-16 bg-brand-secondaryBg min-h-[75vh] flex items-center">
   <div class="max-w-md w-full mx-auto px-6">
-    <div class="bg-[#FFFFFF] p-8 rounded-xl border border-[#E4E4E7] shadow-sm">
+    <div class="bg-brand-bg p-8 rounded-xl border border-brand-border shadow-sm">
       <div class="text-center mb-6">
-        <span class="text-xs font-bold uppercase tracking-widest text-[#C62828] block mb-1">Customer Portal</span>
-        <h1 class="text-2xl font-bold text-[#18181B]">Sign In to Your Account</h1>
+        <span class="text-xs font-bold uppercase tracking-widest text-brand-accent block mb-1">Customer Portal</span>
+        <h1 class="text-2xl font-bold text-brand-headingding">Sign In to Your Account</h1>
       </div>
 
       <form method="post" class="space-y-4">
@@ -19,7 +19,7 @@
         {% endif %}
 
         {% if form.non_field_errors %}
-          <div class="p-3 bg-red-50 border border-red-200 text-[#C62828] text-xs font-semibold rounded-lg space-y-1">
+          <div class="p-3 bg-red-50 border border-red-200 text-brand-accent text-xs font-semibold rounded-lg space-y-1">
             {% for error in form.non_field_errors %}
               <p><i class="fas fa-exclamation-circle mr-1"></i>{{ error }}</p>
             {% endfor %}
@@ -27,26 +27,26 @@
         {% endif %}
 
         <div>
-          <label for="id_username" class="block text-xs font-bold uppercase tracking-wider text-[#18181B] mb-1">Username / Email</label>
-          <input type="text" name="username" id="id_username" required autofocus class="w-full px-3.5 py-2.5 rounded-lg border border-[#E4E4E7] bg-[#FAFAF9] text-sm text-[#18181B] focus:outline-none focus:border-[#C62828]">
+          <label for="id_username" class="block text-xs font-bold uppercase tracking-wider text-brand-heading mb-1">Username / Email</label>
+          <input type="text" name="username" id="id_username" required autofocus class="w-full px-3.5 py-2.5 rounded-lg border border-brand-border bg-brand-card text-sm text-brand-heading focus:outline-none focus:border-brand-accent">
         </div>
 
         <div>
           <div class="flex justify-between items-center mb-1">
-            <label for="id_password" class="block text-xs font-bold uppercase tracking-wider text-[#18181B]">Password</label>
-            <a href="{% url 'accounts:password_reset' %}" class="text-xs text-[#C62828] hover:underline font-medium">Forgot?</a>
+            <label for="id_password" class="block text-xs font-bold uppercase tracking-wider text-brand-heading">Password</label>
+            <a href="{% url 'accounts:password_reset' %}" class="text-xs text-brand-accent hover:underline font-medium">Forgot?</a>
           </div>
-          <input type="password" name="password" id="id_password" required class="w-full px-3.5 py-2.5 rounded-lg border border-[#E4E4E7] bg-[#FAFAF9] text-sm text-[#18181B] focus:outline-none focus:border-[#C62828]">
+          <input type="password" name="password" id="id_password" required class="w-full px-3.5 py-2.5 rounded-lg border border-brand-border bg-brand-card text-sm text-brand-heading focus:outline-none focus:border-brand-accent">
         </div>
 
-        <button type="submit" class="w-full py-2.5 rounded-lg bg-[#C62828] text-white text-sm font-semibold hover:bg-[#A61F1F] transition mt-2">
+        <button type="submit" class="w-full py-2.5 rounded-lg bg-brand-accentent text-black border text-sm font-semibold hover:bg-brand-accent hover:text-white hover:border-0 transition mt-2">
           Sign In
         </button>
       </form>
 
-      <div class="mt-6 pt-6 border-t border-[#E4E4E7] text-center">
-        <p class="text-xs text-[#71717A]">
-          Don't have an account? <a href="{% url 'accounts:register' %}" class="text-[#C62828] font-semibold hover:underline">Create an Account</a>
+      <div class="mt-6 pt-6 border-t border-brand-border text-center">
+        <p class="text-xs text-brand-muted">
+          Don't have an account? <a href="{% url 'accounts:register' %}" class="text-brand-accent font-semibold hover:underline">Create an Account</a>
         </p>
       </div>
     </div>

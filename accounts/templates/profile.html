@@ -13,16 +13,16 @@
     <div class="lg:col-span-3 space-y-4">
       <!-- User Profile Header Card -->
       <div
-        class="bg-white rounded-xl p-4 border border-[#E4E4E7] shadow-sm flex items-center gap-3"
+        class="bg-white rounded-xl p-4 border border-brand-border shadow-sm flex items-center gap-3"
       >
         <div
-          class="w-12 h-12 bg-[#18181B] text-white rounded-full flex items-center justify-center font-bold text-lg shrink-0"
+          class="w-12 h-12 bg-brand-heading text-white rounded-full flex items-center justify-center font-bold text-lg shrink-0"
         >
           {{ request.user.username|first|upper }}
         </div>
         <div class="min-w-0 flex-1">
           <p class="text-xs text-gray-500">Welcome back,</p>
-          <p class="font-bold text-sm text-[#18181B] truncate">
+          <p class="font-bold text-sm text-brand-heading truncate">
             {{ request.user.get_full_name|default:request.user.username }}
           </p>
           <p class="text-[10px] text-gray-400 truncate">
@@ -33,11 +33,11 @@
 
       <!-- Navigation Tabs Menu -->
       <div
-        class="bg-white rounded-xl border border-[#E4E4E7] shadow-sm divide-y divide-[#E4E4E7] overflow-hidden"
+        class="bg-white rounded-xl border border-brand-borderder shadow-sm divide-y divide-brand-border overflow-hidden"
       >
         <button
           @click="activeTab = 'overview'"
-          :class="activeTab === 'overview' ? 'text-[#C62828] bg-red-50/50 font-bold border-l-4 border-[#C62828]' : 'text-[#18181B] hover:bg-gray-50'"
+          :class="activeTab === 'overview' ? 'text-brand-accent bg-red-50/50 font-bold border-l-4 border-brand-accent' : 'text-brand-heading hover:bg-gray-50'"
           class="w-full text-left px-4 py-3 text-xs flex items-center gap-3 transition"
         >
           <i class="fas fa-id-card w-4 text-center"></i> Account Overview
@@ -45,7 +45,7 @@
 
         <button
           @click="activeTab = 'enquiries'"
-          :class="activeTab === 'enquiries' ? 'text-[#C62828] bg-red-50/50 font-bold border-l-4 border-[#C62828]' : 'text-[#18181B] hover:bg-gray-50'"
+          :class="activeTab === 'enquiries' ? 'text-brand-accent bg-red-50/50 font-bold border-l-4 border-brand-accent' : 'text-brand-heading hover:bg-gray-50'"
           class="w-full text-left px-4 py-3 text-xs flex items-center justify-between transition"
         >
           <div class="flex items-center gap-3">
@@ -61,7 +61,7 @@
 
         <a
           href="{% url 'accounts:password_change' %}"
-          class="block px-4 py-3 text-xs text-[#18181B] hover:bg-gray-50 transition flex items-center gap-3"
+          class="px-4 py-3 text-xs text-brand-heading hover:bg-gray-50 transition flex items-center gap-3"
         >
           <i class="fas fa-key w-4 text-center"></i> Security & Password
         </a>

@@ -7,6 +7,10 @@
     <h1 class="text-3xl font-extrabold text-brand-heading tracking-tight">
       {% if category_obj %}
         {{ category_obj.name }}
+      {% elif application_obj %}
+        {{ application_obj.name }}
+      {% elif standard_obj %}
+        {{ standard_obj.name }}
       {% else %}
         Engineering Products
       {% endif %}
@@ -14,6 +18,10 @@
     <p class="mt-1 text-sm text-brand-body">
       {% if category_obj %}
         Explore our line of {{ category_obj.name|lower }} manufactured to strict industrial tolerances.
+      {% elif application_obj %}
+        Explore our range of precision-manufactured components for {{ application_obj.name|lower }}.
+      {% elif standard_obj %}
+        Explore our range of precision-manufactured components conforming to {{ standard_obj.name }}.
       {% else %}
         Explore our range of precision-manufactured components and custom engineering solutions.
       {% endif %}
@@ -23,8 +31,8 @@
   <!-- Quick Search Bar -->
   <form
     method="get"
-    action="{% if category_obj %}{% url 'products:category_product_list' category_obj.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
-    hx-get="{% if category_obj %}{% url 'products:category_product_list' category_obj.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
+    action="{% if category_obj %}{% url 'products:category_product_list' category_obj.slug %}{% elif application_obj %}{% url 'products:application_product_list' application_obj.slug %}{% elif standard_obj %}{% url 'products:standard_product_list' standard_obj.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
+    hx-get="{% if category_obj %}{% url 'products:category_product_list' category_obj.slug %}{% elif application_obj %}{% url 'products:application_product_list' application_obj.slug %}{% elif standard_obj %}{% url 'products:standard_product_list' standard_obj.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
     hx-target="#catalog-content"
     hx-push-url="true"
     hx-trigger="submit, keyup changed delay:400ms from:#catalog-search"

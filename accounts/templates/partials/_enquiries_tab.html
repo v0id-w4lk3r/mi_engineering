@@ -1,12 +1,12 @@
 <div class="space-y-6">
   {% if enquiries %}
   <div
-    class="bg-white rounded-2xl border border-[#E4E4E7] overflow-hidden shadow-sm"
+    class="bg-white rounded-2xl border border-brand-border overflow-hidden shadow-sm"
   >
     <div class="overflow-x-auto">
       <table class="w-full text-left text-xs">
         <thead
-          class="bg-[#F7F7F5] border-b border-[#E4E4E7] text-[#18181B] font-bold"
+          class="bg-brand-secondaryBg border-b border-brand-border text-brand-heading font-bold"
         >
           <tr>
             <th class="py-3.5 px-4">Date</th>
@@ -15,16 +15,16 @@
             <th class="py-3.5 px-4 text-right">Action</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-[#E4E4E7]">
+        <tbody class="divide-y divide-brand-border">
           {% for req in enquiries %}
-          <tr class="hover:bg-[#F7F7F5]/50 transition">
+          <tr class="hover:bg-brand-secondaryBg/50 transition">
             <td
-              class="py-3.5 px-4 font-semibold text-[#71717A] whitespace-nowrap"
+              class="py-3.5 px-4 font-semibold text-brand-muted whitespace-nowrap"
             >
               {{ req.created_at|date:"M d, Y" }}
             </td>
             <td
-              class="py-3.5 px-4 font-medium text-[#18181B] max-w-xs md:max-w-md truncate"
+              class="py-3.5 px-4 font-medium text-brand-heading max-w-xs md:max-w-md truncate"
             >
               {{ req.message }}
             </td>
@@ -46,7 +46,7 @@
             <td class="py-3.5 px-4 text-right">
               <a
                 href="{% url 'home:contact-us' %}"
-                class="text-[#C62828] font-bold hover:underline"
+                class="text-brand-accent font-bold hover:underline"
               >
                 Follow Up &rarr;
               </a>
@@ -58,10 +58,10 @@
     </div>
   </div>
   {% else %}
-  <div class="bg-white rounded-2xl border border-[#E4E4E7] p-12 text-center">
+  <div class="bg-white rounded-2xl border border-brand-border p-12 text-center">
     <i class="fas fa-paper-plane text-4xl text-[#A1A1AA] mb-3"></i>
-    <h3 class="text-base font-bold text-[#18181B]">No Enquiries Submitted</h3>
-    <p class="text-xs text-[#71717A] mt-1 max-w-sm mx-auto">
+    <h3 class="text-base font-bold text-brand-heading">No Enquiries Submitted</h3>
+    <p class="text-xs text-brand-muted mt-1 max-w-sm mx-auto">
       Looking for custom precision machining or specialized parts? Request a
       quote directly from product pages.
     </p>

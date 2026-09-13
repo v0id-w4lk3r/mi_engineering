@@ -37,6 +37,8 @@ JAZZMIN_SETTINGS = {
 
         # Products App Models
         "products.Category": "fas fa-tags",
+        "products.Application": "fas fa-industry",
+        "products.Standard": "fas fa-certificate",
         "products.Product": "fas fa-boxes",
 
         # Gallery App Models

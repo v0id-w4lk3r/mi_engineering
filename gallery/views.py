@@ -26,10 +26,13 @@ class GalleryListView(ListView):
         if category_slug:
             queryset = queryset.filter(category__slug=category_slug)
 
-        # Filter by Media Type (IMAGE / VIDEO)
+        # Filter by Media Type
         media_type = self.request.GET.get("type")
         if media_type in [
-                GalleryItem.MediaType.IMAGE, GalleryItem.MediaType.VIDEO
+                GalleryItem.MediaType.IMAGE, 
+                GalleryItem.MediaType.VIDEO,
+                GalleryItem.MediaType.PDF,
+                GalleryItem.MediaType.CERTIFICATE
         ]:
             queryset = queryset.filter(media_type=media_type)
 

@@ -22,7 +22,7 @@
           hx-get="{% url 'products:product_detail' rel.slug %}"
           hx-target="#main-content"
           hx-push-url="true"
-          class="aspect-video bg-brand-secondaryBg rounded-xl border border-brand-border overflow-hidden mb-3 flex items-center justify-center p-2 block"
+          class="aspect-video bg-brand-secondaryBg rounded-xl border border-brand-border overflow-hidden mb-3 flex items-center justify-center p-2"
         >
           {% with rel.images.first as rel_img %}
             {% if rel_img %}

@@ -3,6 +3,7 @@
 # ==========================================
 
 # Node / Bun dependencies
+node_modules
 node_modules/
 bun.lockb
 
@@ -28,6 +29,7 @@ __pycache__/
 local_settings.py
 
 # Development Database
+data
 db.sqlite3
 db.sqlite3-journal
 

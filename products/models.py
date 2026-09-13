@@ -33,6 +33,47 @@ class Category(models.Model):
         return self.name
 
 
+class Application(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=150, unique=True, blank=True)
+    description = models.TextField(blank=True, default="")
+    image = models.ImageField(upload_to="applications/", blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name) or "application"
+            slug = base_slug
+            counter = 1
+            while Application.objects.filter(slug=slug).exclude(id=self.id).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class Standard(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=150, unique=True, blank=True)
+    description = models.TextField(blank=True, default="")
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name) or "standard"
+            slug = base_slug
+            counter = 1
+            while Standard.objects.filter(slug=slug).exclude(id=self.id).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     if TYPE_CHECKING:
         id: int
@@ -44,6 +85,8 @@ class Product(models.Model):
         related_name="products",
         db_index=True,
     )
+    applications = models.ManyToManyField(Application, blank=True, related_name="products")
+    standards = models.ManyToManyField(Standard, blank=True, related_name="products")
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     short_description = models.CharField(
@@ -63,12 +106,6 @@ class Product(models.Model):
         blank=True,
         default="",
         help_text="e.g. SS304, SS316, Grade 8.8",
-    )
-    standard = models.CharField(
-        max_length=150,
-        blank=True,
-        default="",
-        help_text="e.g. ISO 9001, DIN 933, ASTM A193",
     )
     size_range = models.CharField(
         max_length=150,
@@ -92,9 +129,6 @@ class Product(models.Model):
         default="",
         help_text="Tensile strength, yield strength, elongation, and hardness",
     )
-
-    min_order_quantity = models.PositiveIntegerField(
-        default=1, help_text="Minimum required order quantity")
 
     is_featured = models.BooleanField(default=False, db_index=True)
     is_active = models.BooleanField(default=True, db_index=True)

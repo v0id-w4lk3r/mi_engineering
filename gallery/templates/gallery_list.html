@@ -36,14 +36,14 @@
   <!-- Header Section -->
   <div class="text-center max-w-2xl mx-auto mb-10">
     <span
-      class="text-xs font-bold uppercase tracking-widest text-[#C62828] bg-[#C62828]/10 px-3 py-1 rounded-full"
+      class="text-xs font-bold uppercase tracking-widest text-brand-accentebg-bg-brand-accent/10/10 px-3 py-1 rounded-full"
     >
       Portfolio & Works
     </span>
-    <h1 class="text-3xl font-extrabold text-[#18181B] mt-3">
+    <h1 class="text-3xl font-extrabold text-brand-heading mt-3">
       Engineering & Media Gallery
     </h1>
-    <p class="text-sm text-[#71717A] mt-2">
+    <p class="text-sm text-brand-muted mt-2">
       Explore our precision machinery, custom fabrication output, and workshop
       videos.
     </p>
@@ -51,18 +51,18 @@
 
   <!-- Filter Toolbar (HTMX Powered) -->
   <div
-    class="bg-white p-4 rounded-2xl border border-[#E4E4E7] shadow-sm mb-8 flex flex-wrap items-center justify-between gap-4"
+    class="bg-white p-4 rounded-2xl border border-brand-border shadow-sm mb-8 flex flex-wrap items-center justify-between gap-4"
   >
     <!-- Category Tabs -->
     <div
-      class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 w-full lg:w-auto"
+      class="flex items-center gap-3 overflow-x-auto pb-4 sm:pb-0 w-full lg:w-auto hide-scrollbar"
     >
       <a
         href="{% url 'gallery:gallery_list' %}{% if active_type %}?type={{ active_type }}{% endif %}"
         hx-get="{% url 'gallery:gallery_list' %}{% if active_type %}?type={{ active_type }}{% endif %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="px-4 py-2 text-xs font-semibold rounded-xl transition whitespace-nowrap {% if not active_category %}bg-[#202124] text-white shadow-sm{% else %}bg-[#F7F7F5] text-[#52525B] hover:bg-[#E4E4E7]{% endif %}"
+        class="px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 whitespace-nowrap {% if not active_category %}bg-brand-accent text-white shadow-md ring-2 ring-brand-accent/50 ring-offset-2 scale-[1.02]{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-border hover:text-brand-heading{% endif %}"
       >
         All Categories
       </a>
@@ -73,7 +73,7 @@
         hx-get="{% url 'gallery:gallery_list' %}?category={{ category.slug }}{% if active_type %}&type={{ active_type }}{% endif %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="px-4 py-2 text-xs font-semibold rounded-xl transition whitespace-nowrap {% if active_category == category.slug %}bg-[#202124] text-white shadow-sm{% else %}bg-[#F7F7F5] text-[#52525B] hover:bg-[#E4E4E7]{% endif %}"
+        class="px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 whitespace-nowrap {% if active_category == category.slug %}bg-brand-accent text-white shadow-md ring-2 ring-brand-accent/50 ring-offset-2 scale-[1.02]{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-borderdhover:text-brand-heading1B]{% endif %}"
       >
         {{ category.name }}
       </a>
@@ -82,14 +82,14 @@
 
     <!-- Media Type Filters -->
     <div
-      class="flex items-center gap-2 border-t sm:border-t-0 sm:border-l border-[#E4E4E7] pt-2 sm:pt-0 sm:pl-4 w-full sm:w-auto justify-end"
+      class="flex items-center gap-2 border-t sm:border-t-0 sm:border-l border-brand-border pt-4 sm:pt-0 sm:pl-6 w-full sm:w-auto justify-start sm:justify-end overflow-x-auto hide-scrollbar"
     >
       <a
         href="{% url 'gallery:gallery_list' %}{% if active_category %}?category={{ active_category }}{% endif %}"
         hx-get="{% url 'gallery:gallery_list' %}{% if active_category %}?category={{ active_category }}{% endif %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="px-3 py-1.5 text-xs font-medium rounded-lg transition {% if not active_type %}text-[#C62828] font-bold bg-[#C62828]/10{% else %}text-[#71717A] hover:text-[#18181B]{% endif %}"
+        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors {% if not active_type %}text-brand-accent bg-brand-accent/10 font-bold{% else %}text-brand-muted hover:text-brand-heading hover:bg-[#F4F4F5]{% endif %}"
       >
         All
       </a>
@@ -98,7 +98,7 @@
         hx-get="{% url 'gallery:gallery_list' %}?type=IMAGE{% if active_category %}&category={{ active_category }}{% endif %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="px-3 py-1.5 text-xs font-medium rounded-lg transition flex items-center gap-1.5 {% if active_type == 'IMAGE' %}text-[#C62828] font-bold bg-[#C62828]/10{% else %}text-[#71717A] hover:text-[#18181B]{% endif %}"
+        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 {% if active_type == 'IMAGE' %}text-brand-accent bg-brand-accent/10/10 font-bold{% else %}text-brand-muted hover:text-brand-heading hover:bg-[#F4F4F5]{% endif %}"
       >
         <i class="fas fa-image"></i> Photos
       </a>
@@ -107,9 +107,27 @@
         hx-get="{% url 'gallery:gallery_list' %}?type=VIDEO{% if active_category %}&category={{ active_category }}{% endif %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="px-3 py-1.5 text-xs font-medium rounded-lg transition flex items-center gap-1.5 {% if active_type == 'VIDEO' %}text-[#C62828] font-bold bg-[#C62828]/10{% else %}text-[#71717A] hover:text-[#18181B]{% endif %}"
+        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 {% if active_type == 'VIDEO' %}text-brand-accent bg-brand-accent/10 font-bold{% else %}text-brand-muted hover:text-brand-heading hover:bg-[#F4F4F5]{% endif %}"
       >
         <i class="fas fa-video"></i> Videos
+      </a>
+      <a
+        href="{% url 'gallery:gallery_list' %}?type=PDF{% if active_category %}&category={{ active_category }}{% endif %}"
+        hx-get="{% url 'gallery:gallery_list' %}?type=PDF{% if active_category %}&category={{ active_category }}{% endif %}"
+        hx-target="#main-content"
+        hx-push-url="true"
+        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 {% if active_type == 'PDF' %}text-brand-accent bg-brand-accent/10 font-bold{% else %}text-brand-muted hover:text-brand-heading hover:bg-[#F4F4F5]{% endif %}"
+      >
+        <i class="fas fa-file-pdf"></i> PDFs
+      </a>
+      <a
+        href="{% url 'gallery:gallery_list' %}?type=CERTIFICATE{% if active_category %}&category={{ active_category }}{% endif %}"
+        hx-get="{% url 'gallery:gallery_list' %}?type=CERTIFICATE{% if active_category %}&category={{ active_category }}{% endif %}"
+        hx-target="#main-content"
+        hx-push-url="true"
+        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 {% if active_type == 'CERTIFICATE' %}text-brand-accent bg-brand-accent/10 font-bold{% else %}text-brand-muted hover:text-brand-heading hover:bg-[#F4F4F5]{% endif %}"
+      >
+        <i class="fas fa-certificate"></i> Certificates
       </a>
     </div>
   </div>
@@ -120,7 +138,7 @@
   >
     {% for item in items %}
     <div
-      class="group bg-white rounded-2xl border border-[#E4E4E7] overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between"
+      class="group bg-white rounded-2xl border border-brand-border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1"
     >
       <!-- Media Container -->
       <a
@@ -128,104 +146,127 @@
         hx-get="{% url 'gallery:gallery_detail' item.pk %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="block relative h-52 bg-black overflow-hidden group"
+        class="block relative h-56 bg-brand-card overflow-hidden group"
       >
         {% if item.media_type == 'IMAGE' and item.image %}
         <img
           src="{{ item.image.url }}"
-          alt="{{ item.title }}"
-          class="w-full h-full object-cover group-hover:scale-105 transition duration-300 opacity-95 group-hover:opacity-100"
+          alt="{{ item.alt_text|default:item.title }}"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         {% elif item.media_type == 'VIDEO' %} {% if item.image %}
         <img
           src="{{ item.image.url }}"
-          alt="{{ item.title }}"
-          class="w-full h-full object-cover group-hover:scale-105 transition duration-300 opacity-80"
+          alt="{{ item.alt_text|default:item.title }}"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
         />
         {% else %}
         <div
-          class="w-full h-full bg-[#202124] flex items-center justify-center text-gray-500"
+          class="w-full h-full bg-brand-heading flex items-center justify-center text-gray-500 group-hover:scale-105 transition-transform duration-500"
         >
-          <i class="fas fa-film text-4xl"></i>
+          <i class="fas fa-film text-5xl"></i>
         </div>
         {% endif %}
-
         <!-- Play Icon Overlay for Videos -->
         <div
-          class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition"
+          class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors duration-300"
         >
           <div
-            class="w-12 h-12 rounded-full bg-[#C62828] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition"
+            class="w-14 h-14 rounded-full bg-brand-accent text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300"
           >
-            <i class="fas fa-play text-lg ml-0.5"></i>
+            <i class="fas fa-play text-xl ml-1"></i>
           </div>
         </div>
+        {% elif item.media_type == 'PDF' or item.media_type == 'CERTIFICATE' %}
+        {% if item.image %}
+        <img
+          src="{{ item.image.url }}"
+          alt="{{ item.alt_text|default:item.title }}"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        {% else %}
+        <div
+          class="w-full h-full bg-brand-card flex items-center justify-center text-[#A1A1AA] group-hover:scale-105 transition-transform duration-500"
+        >
+          {% if item.media_type == 'PDF' %}
+          <i class="fas fa-file-pdf text-5xl"></i>
+          {% else %}
+          <i class="fas fa-certificate text-5xl"></i>
+          {% endif %}
+        </div>
+        {% endif %}
         {% endif %}
 
         <!-- Media Badge -->
         <div
-          class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1"
+          class="absolute top-3 right-3 bg-black/70 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-md flex items-center gap-1.5 shadow-sm"
         >
           {% if item.media_type == 'IMAGE' %}
-          <i class="fas fa-camera"></i> Photo {% else %}
-          <i class="fas fa-video"></i> Video {% endif %}
+          <i class="fas fa-camera"></i> Photo
+          {% elif item.media_type == 'VIDEO' %}
+          <i class="fas fa-video"></i> Video
+          {% elif item.media_type == 'PDF' %}
+          <i class="fas fa-file-pdf"></i> PDF
+          {% else %}
+          <i class="fas fa-certificate"></i> Certificate
+          {% endif %}
         </div>
       </a>
 
       <!-- Info Content -->
-      <div class="p-4 flex-1 flex flex-col justify-between">
+      <div class="p-5 flex-1 flex flex-col justify-between bg-white relative z-10">
         <div>
           {% if item.category %}
           <span
-            class="text-[10px] font-bold uppercase tracking-wider text-[#C62828] bg-[#C62828]/10 px-2 py-0.5 rounded"
+            class="inline-block text-[10px] font-bold uppercase tracking-wider text-brand-accent bg-brand-accent/10 px-2.5 py-1 rounded-md mb-2"
           >
             {{ item.category.name }}
           </span>
           {% endif %}
 
           <h3
-            class="font-bold text-[#18181B] text-sm mt-2 line-clamp-1 group-hover:text-[#C62828] transition"
+            class="font-bold text-brand-heading text-base line-clamp-1 group-hover:text-brand-accent transition-colors"
           >
             {{ item.title }}
           </h3>
 
           {% if item.description %}
-          <p class="text-xs text-[#71717A] mt-1 line-clamp-2 leading-relaxed">
+          <p class="text-sm text-brand-muted mt-2 line-clamp-2 leading-relaxed">
             {{ item.description }}
           </p>
           {% endif %}
         </div>
 
         <div
-          class="mt-4 pt-3 border-t border-[#E4E4E7] flex items-center justify-between text-xs text-[#71717A]"
+          class="mt-5 pt-4 border-t border-brand-border flex items-center justify-between text-xs text-[#A1A1AA] font-medium"
         >
-          <span
-            ><i class="far fa-calendar-alt mr-1"></i> {{ item.uploaded_at|date:"M d, Y" }}</span
+          <span class="flex items-center gap-1.5"
+            ><i class="far fa-calendar-alt"></i> {{ item.uploaded_at|date:"M d, Y" }}</span
           >
           <a
             href="{% url 'gallery:gallery_detail' item.pk %}"
             hx-get="{% url 'gallery:gallery_detail' item.pk %}"
             hx-target="#main-content"
             hx-push-url="true"
-            class="text-[#C62828] font-semibold hover:underline"
+            class="text-brand-accent font-bold hover:text-brand-accentHover transition-colors flex items-center gap-1 group-hover:translate-x-1 duration-300"
           >
-            View Details &rarr;
+            View <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </div>
     </div>
     {% empty %}
     <div
-      class="col-span-full text-center py-16 bg-white rounded-2xl border border-[#E4E4E7]"
+      class="col-span-full text-center py-24 bg-white rounded-3xl border border-brand-border shadow-sm"
     >
       <div
-        class="w-16 h-16 bg-[#F7F7F5] rounded-full flex items-center justify-center mx-auto text-[#71717A] mb-3"
+        class="w-20 h-20 bg-brand-card rounded-2xl flex items-center justify-center mx-auto text-[#A1A1AA] mb-5 border border-brand-borderder rotate-3 hover:-rotate-3 transition-transform"
       >
-        <i class="fas fa-images text-2xl"></i>
+        <i class="fas fa-images text-3xl"></i>
       </div>
-      <h3 class="text-base font-bold text-[#18181B]">No gallery items found</h3>
-      <p class="text-xs text-[#71717A] mt-1">
-        Try selecting a different category or filter option.
+      <h3 class="text-lg font-bold text-brand-heading">No media found in this category</h3>
+      <p class="text-sm text-brand-muteded mt-2 max-w-sm mx-auto">
+        There are currently no items matching your selected filters. Try selecting a different category or media type.
       </p>
     </div>
     {% endfor %}
@@ -240,13 +281,13 @@
       hx-get="?page={{ page_obj.previous_page_number }}{% if active_category %}&category={{ active_category }}{% endif %}{% if active_type %}&type={{ active_type }}{% endif %}"
       hx-target="#main-content"
       hx-push-url="true"
-      class="px-3.5 py-2 text-xs font-semibold rounded-lg bg-white border border-[#E4E4E7] text-[#18181B] hover:bg-[#F7F7F5] transition"
+      class="px-3.5 py-2 text-xs font-semibold rounded-lg bg-white border border-brand-border text-brand-heading hover:bg-brand-secondaryBg transition"
     >
       &larr; Previous
     </a>
     {% endif %}
 
-    <span class="text-xs text-[#71717A] font-medium px-3 py-2">
+    <span class="text-xs text-brand-muted font-medium px-3 py-2">
       Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
     </span>
 
@@ -256,7 +297,7 @@
       hx-get="?page={{ page_obj.next_page_number }}{% if active_category %}&category={{ active_category }}{% endif %}{% if active_type %}&type={{ active_type }}{% endif %}"
       hx-target="#main-content"
       hx-push-url="true"
-      class="px-3.5 py-2 text-xs font-semibold rounded-lg bg-white border border-[#E4E4E7] text-[#18181B] hover:bg-[#F7F7F5] transition"
+      class="px-3.5 py-2 text-xs font-semibold rounded-lg bg-white border border-brand-border text-brand-heading hover:bg-brand-secondaryBg transition"
     >
       Next &rarr;
     </a>

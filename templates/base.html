@@ -60,6 +60,11 @@
         "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo/logo.png' %}",
         "image": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}",
         "description": "Manufacturer and provider of precision industrial engineering components and fasteners.",
+        "sameAs": [
+          "https://www.linkedin.com/company/m.i.-engineering-works/",
+          "https://www.instagram.com/miengineeringworks",
+          "https://share.google/vsRjFuXOCFplTZLta"
+        ],
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer service",
@@ -96,6 +101,13 @@
           const cookieMatch = document.cookie.match(/csrftoken=([^;]+)/);
           if (cookieMatch) {
             evt.detail.headers["X-CSRFToken"] = cookieMatch[1];
+          }
+        });
+
+        // Globally scroll to top when main content is swapped via HTMX
+        document.body.addEventListener("htmx:afterSwap", function (evt) {
+          if (evt.detail.target.id === "main-content") {
+            window.scrollTo({ top: 0, behavior: "smooth" });
           }
         });
       });
@@ -140,7 +152,7 @@
     {% endif %}
 
     <!-- Main Dynamic View Container -->
-    <main id="main-content" class="w-full flex-grow" role="main">
+    <main id="main-content" class="w-full grow" role="main">
 {% endif %}
 
 

@@ -40,8 +40,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto py-8 px-4">
-  <div class="bg-white rounded-3xl border border-brand-border p-8 md:p-12 shadow-sm">
+<div class="max-w-6xl mx-auto py-8 px-4">
+  <div class="bg-white rounded-3xl border border-brand-border p-8 md:p-12 shadow-sm max-w-4xl mx-auto">
     <h1 class="text-3xl font-bold text-brand-heading mb-2">
       Contact Industrial Sales
     </h1>
@@ -115,6 +115,61 @@
         Submit Inquiry
       </button>
     </form>
+  </div>
+
+  <!-- Locations Section -->
+  <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Office -->
+    <div class="bg-white rounded-3xl border border-brand-border p-6 sm:p-8 shadow-sm flex flex-col">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-brand-accent/10 text-brand-accent rounded-full flex items-center justify-center">
+          <i class="fas fa-building"></i>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-bold text-brand-heading">Office</h2>
+      </div>
+      <p class="text-brand-body mb-6 flex-1 text-sm sm:text-base leading-relaxed">
+        17, FLOOR-2ND, PLOT-15/17, RATAN BUILDING, <br>
+        NARAYAN DHURU STREET, PYDHONIE, MANDVI, <br>
+        MUMBAI-400003
+      </p>
+      <div class="rounded-xl overflow-hidden border border-brand-border shadow-inner">
+        <iframe
+          width="100%"
+          height="350"
+          style="border:0;"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=Ratan+Building,+Narayan+Dhuru+Street,+Pydhonie,+Mandvi,+Mumbai+400003&t=&z=15&ie=UTF8&iwloc=&output=embed">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Manufacturing Place -->
+    <div class="bg-white rounded-3xl border border-brand-border p-6 sm:p-8 shadow-sm flex flex-col">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 bg-brand-accent/10 text-brand-accent rounded-full flex items-center justify-center">
+          <i class="fas fa-industry"></i>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-bold text-brand-heading">Manufacturing Place</h2>
+      </div>
+      <p class="text-brand-body mb-6 flex-1 text-sm sm:text-base leading-relaxed">
+        20 Floor, GRD Plot 222, Chhota Sonapur Compound, <br>
+        Maulana Shaukat Ali Road, Anjuman High School Mumbai, <br>
+        Chhota Sonapur Compound, Mumbai, Maharashtra, 400008
+      </p>
+      <div class="rounded-xl overflow-hidden border border-brand-border shadow-inner">
+        <iframe
+          width="100%"
+          height="350"
+          style="border:0;"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=Plot+222,+Chhota+Sonapur+Compound,+Maulana+Shaukat+Ali+Road,+Mumbai+400008&t=&z=15&ie=UTF8&iwloc=&output=embed">
+        </iframe>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

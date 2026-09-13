@@ -1,7 +1,7 @@
 {% load static %}
 <!-- Footer -->
 <footer
-  class="bg-[#151515] text-[#FAFAF9] py-16 mt-auto border-t border-[#202124]"
+  class="bg-brand-primaryHover text-brand-card py-16 mt-auto border-t border-brand-primary"
 >
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -13,30 +13,59 @@
           hx-get="{% url 'home:homepage' %}"
           hx-target="#main-content"
           hx-push-url="true"
-          class="inline-block mb-4 text-2xl font-extrabold tracking-wider text-white hover:text-[#C62828] transition-colors"
+          class="inline-block mb-4 text-2xl font-extrabold tracking-wider text-white hover:text-brand-accentent transition-colors"
         >
           M.I. ENGINEERING WORKS
         </a>
         <h4
-          class="text-lg font-bold text-white mb-4 relative after:content-[''] after:block after:w-12 after:h-0.5 after:bg-[#C62828] after:mt-2"
+          class="text-lg font-bold text-white mb-4 relative after:content-[''] after:block after:w-12 after:h-0.5 after:bg-brand-accent after:mt-2"
         >
           M.I. Engineering Works
         </h4>
-        <p class="text-[#71717A] text-sm leading-relaxed mb-4">
+        <p class="text-brand-muted text-sm leading-relaxed mb-6">
           Serving industrial customers with quality, reliable engineering
           products tailored to your precise technical requirements and
           application standards.
         </p>
+        <div class="flex items-center gap-4">
+          <a
+            href="https://www.linkedin.com/company/m.i.-engineering-works/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-full bg-brand-primary flex items-center justify-center text-brand-muteded hover:bg-brand-accent hover:text-white transition-all duration-300"
+            aria-label="LinkedIn Profile"
+          >
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a
+            href="https://www.instagram.com/miengineeringworks?stkn=MWl0d3g1MTMza2J5YQ=="
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-full bg-brand-primary flex items-center justify-center text-brand-muted hover:bg-brand-accent hover:text-white transition-all duration-300"
+            aria-label="Instagram Profile"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a
+            href="https://share.google/vsRjFuXOCFplTZLta"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-full bg-brand-primary flex items-center justify-center text-brand-muted hover:bg-brand-accentent hover:text-white transition-all duration-300"
+            aria-label="Google Business Profile"
+          >
+            <i class="fab fa-google"></i>
+          </a>
+        </div>
       </div>
 
       <!-- Quick Navigation -->
       <div>
         <h4
-          class="text-lg font-bold text-white mb-4 relative after:content-[''] after:block after:w-12 after:h-0.5 after:bg-[#C62828] after:mt-2"
+          class="text-lg font-bold text-white mb-4 relative after:content-[''] after:block after:w-12 after:h-0.5 after:bg-brand-accent after:mt-2"
         >
           Engineering Solutions
         </h4>
-        <ul class="space-y-2.5 text-sm text-[#71717A]">
+        <ul class="space-y-2.5 text-sm text-brand-muted">
           <li>
             <a
               href="{% url 'home:homepage' %}"
@@ -93,11 +122,11 @@
       <!-- Procurement & Support -->
       <div>
         <h4
-          class="text-lg font-bold text-white mb-4 relative after:content-[''] after:block after:w-12 after:h-0.5 after:bg-[#C62828] after:mt-2"
+          class="text-lg font-bold text-white mb-4 relative after:content-[''] after:block after:w-12 after:h-0.5 after:bg-brand-accent after:mt-2"
         >
           Client Procurement
         </h4>
-        <ul class="space-y-2.5 text-sm text-[#71717A]">
+        <ul class="space-y-2.5 text-sm text-brand-muteded">
           <li>
             <a
               href="{% url 'home:contact-us' %}"
@@ -144,25 +173,25 @@
       <!-- Contact Details -->
       <div>
         <h4
-          class="text-lg font-bold text-white mb-4 relative after:content-[''] after:block after:w-12 after:h-0.5 after:bg-[#C62828] after:mt-2"
+          class="text-lg font-bold text-white mb-4 relative after:content-[''] after:block after:w-12 after:h-0.5 after:bg-brand-accent after:mt-2"
         >
           Get In Touch
         </h4>
-        <ul class="space-y-3 text-sm text-[#71717A]">
+        <ul class="space-y-3 text-sm text-brand-muteded">
           <li class="flex items-start gap-3">
-            <i class="fas fa-user text-[#C62828] mt-1"></i>
-            <span class="text-[#FAFAF9]">Mohd Iliyas (Owner)</span>
+            <i class="fas fa-user text-brand-accent mt-1"></i>
+            <span class="text-brand-card">Mohd Iliyas (Owner)</span>
           </li>
           <li class="flex items-start gap-3">
-            <i class="fas fa-map-marker-alt text-[#C62828] mt-1"></i>
+            <i class="fas fa-map-marker-alt text-brand-accent mt-1"></i>
             <span>Industrial Area Procurement Hub</span>
           </li>
           <li class="flex items-center gap-3">
-            <i class="fas fa-envelope text-[#C62828]"></i>
-            <span class="text-[#FAFAF9]">miengineering17@gmail.com</span>
+            <i class="fas fa-envelope text-brand-accent"></i>
+            <span class="text-brand-card">miengineering17@gmail.com</span>
           </li>
           <li class="flex items-start gap-3">
-            <i class="fas fa-phone text-[#C62828] mt-1"></i>
+            <i class="fas fa-phone text-brand-accent mt-1"></i>
             <div class="flex flex-col space-y-1">
               <a href="tel:+919819972301" class="hover:text-white transition-colors">+91 9819972301</a>
               <a href="tel:+919137658733" class="hover:text-white transition-colors">+91 9137658733</a>
@@ -175,7 +204,7 @@
 
     <!-- Bottom Bar -->
     <div
-      class="border-t border-[#202124] mt-12 pt-6 flex flex-col md:flex-row justify-between items-center text-[#71717A] text-sm"
+      class="border-t border-brand-primary mt-12 pt-6 flex flex-col md:flex-row justify-between items-center text-brand-muted text-sm"
     >
       <p>© {% now "Y" %} M.I. ENGINEERING WORKS. All rights reserved.</p>
       <div class="flex space-x-6 mt-4 md:mt-0">

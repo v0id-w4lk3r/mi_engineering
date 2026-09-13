@@ -2,17 +2,17 @@
 {% load static %}
 
 <!-- SEO Meta Blocks -->
-{% block title %}{{ item.title }} | Engineering Gallery - M.I. Engineering Works{% endblock %}
+{% block title %}{% if item.meta_title %}{{ item.meta_title }}{% else %}{{ item.title }} | Engineering Gallery - M.I. Engineering Works{% endif %}{% endblock %}
 
-{% block meta_description %}{% if item.description %}{{ item.description|truncatewords:25 }}{% else %}View {{ item.title }} in the M.I. Engineering Works engineering and media gallery.{% endif %}{% endblock %}
+{% block meta_description %}{% if item.meta_description %}{{ item.meta_description }}{% elif item.description %}{{ item.description|truncatewords:25 }}{% else %}View {{ item.title }} in the M.I. Engineering Works engineering and media gallery.{% endif %}{% endblock %}
 
 {% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'gallery:gallery_detail' item.pk %}{% endblock %}
 
 {% block og_type %}article{% endblock %}
-{% block og_title %}{{ item.title }} - M.I. Engineering Works Gallery{% endblock %}
-{% block og_description %}{% if item.description %}{{ item.description|truncatewords:25 }}{% else %}View {{ item.title }} in the M.I. Engineering Works gallery.{% endif %}{% endblock %}
+{% block og_title %}{% if item.meta_title %}{{ item.meta_title }}{% else %}{{ item.title }} - M.I. Engineering Works Gallery{% endif %}{% endblock %}
+{% block og_description %}{% if item.meta_description %}{{ item.meta_description }}{% elif item.description %}{{ item.description|truncatewords:25 }}{% else %}View {{ item.title }} in the M.I. Engineering Works gallery.{% endif %}{% endblock %}
 {% block og_image %}{% if item.image %}{{ request.scheme }}://{{ request.get_host }}{{ item.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endif %}{% endblock %}
-{% block og_image_alt %}{{ item.title }} - M.I. Engineering Works{% endblock %}
+{% block og_image_alt %}{% if item.alt_text %}{{ item.alt_text }}{% else %}{{ item.title }} - M.I. Engineering Works{% endif %}{% endblock %}
 
 {% block schema_json %}
 {
@@ -40,28 +40,29 @@
     hx-get="{% url 'gallery:gallery_list' %}"
     hx-target="#main-content"
     hx-push-url="true"
-    class="inline-flex items-center gap-2 text-xs font-bold text-[#71717A] hover:text-[#C62828] transition mb-6"
+    class="inline-flex items-center gap-2 text-xs font-bold text-brand-muted hover:text-brand-accent transition mb-6"
   >
     <i class="fas fa-arrow-left"></i> Back to Gallery
   </a>
 
   <div
-    class="bg-white rounded-2xl border border-[#E4E4E7] overflow-hidden shadow-sm"
+    class="bg-white rounded-2xl border border-brand-border overflow-hidden shadow-sm"
   >
     <!-- Media Viewer Header -->
     <div
-      class="bg-[#18181B] flex items-center justify-center p-2 sm:p-4 min-h-[350px] sm:min-h-[500px]"
+      class="bg-brand-heading flex items-center justify-center p-2 sm:p-4 min-h-87.5 sm:min-h-125"
     >
       {% if item.media_type == 'IMAGE' and item.image %}
       <img
         src="{{ item.image.url }}"
-        alt="{{ item.title }}"
-        class="max-h-[600px] w-auto max-w-full object-contain rounded-lg shadow-md"
+        alt="{% if item.alt_text %}{{ item.alt_text }}{% else %}{{ item.title }}{% endif %}"
+        class="max-h-150 w-auto max-w-full object-contain rounded-lg shadow-md"
       />
-      {% elif item.media_type == 'VIDEO' %} {% if item.video %}
+      {% elif item.media_type == 'VIDEO' %} 
+      {% if item.video %}
       <video
         controls
-        class="w-full max-h-[550px] rounded-lg shadow-md bg-black"
+        class="w-full max-h-137.5 rounded-lg shadow-md bg-black"
       >
         <source src="{{ item.video.url }}" type="video/mp4" />
         Your browser does not support the video tag.
@@ -82,41 +83,70 @@
           allowfullscreen
         ></iframe>
       </div>
-      {% endif %} {% endif %}
+      {% else %}
+      <div class="py-24 flex flex-col items-center justify-center text-gray-500 w-full h-full">
+        <i class="fas fa-film text-6xl mb-4"></i>
+        <p class="text-sm">Video media is unavailable.</p>
+      </div>
+      {% endif %}
+      
+      {% elif item.media_type == 'PDF' or item.media_type == 'CERTIFICATE' %}
+      {% if item.document %}
+      <div class="w-full h-full min-h-125 flex items-center justify-center bg-white rounded-lg shadow-md overflow-hidden">
+        <embed src="{{ item.document.url }}" type="application/pdf" width="100%" height="600px" class="w-full h-150" />
+      </div>
+      {% elif item.image %}
+      <img
+        src="{{ item.image.url }}"
+        alt="{% if item.alt_text %}{{ item.alt_text }}{% else %}{{ item.title }}{% endif %}"
+        class="max-h-150 w-auto max-w-full object-contain rounded-lg shadow-md"
+      />
+      {% else %}
+      <div class="py-24 flex flex-col items-center justify-center text-gray-500 w-full h-full">
+        {% if item.media_type == 'PDF' %}
+        <i class="fas fa-file-pdf text-6xl mb-4"></i>
+        <p class="text-sm">PDF document is unavailable.</p>
+        {% else %}
+        <i class="fas fa-certificate text-6xl mb-4"></i>
+        <p class="text-sm">Certificate is unavailable.</p>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endif %}
     </div>
 
     <!-- Media Info Footer -->
     <div class="p-6 sm:p-8">
       <div
-        class="flex flex-wrap items-center justify-between gap-4 border-b border-[#E4E4E7] pb-4 mb-6"
+        class="flex flex-wrap items-center justify-between gap-4 border-b border-brand-border pb-4 mb-6"
       >
         <div>
           {% if item.category %}
           <span
-            class="text-xs font-bold uppercase tracking-wider text-[#C62828] bg-[#C62828]/10 px-3 py-1 rounded-md"
+            class="text-xs font-bold uppercase tracking-wider text-brand-accent bg-brand-accent/10 px-3 py-1 rounded-md"
           >
             {{ item.category.name }}
           </span>
           {% endif %}
-          <h1 class="text-2xl sm:text-3xl font-extrabold text-[#18181B] mt-2">
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-brand-heading mt-2">
             {{ item.title }}
           </h1>
         </div>
 
-        <div class="text-xs text-[#71717A] text-right">
+        <div class="text-xs text-brand-muted text-right">
           <p>
             <i class="far fa-calendar-alt mr-1"></i> Uploaded: {{ item.uploaded_at|date:"F d, Y" }}
           </p>
-          <p class="mt-1 font-semibold text-[#18181B]">
+          <p class="mt-1 font-semibold text-brand-heading">
             Type: {{ item.media_type_label }}
           </p>
         </div>
       </div>
 
       {% if item.description %}
-      <div class="prose max-w-none text-[#52525B] text-sm leading-relaxed">
+      <div class="prose max-w-none text-brand-body text-sm leading-relaxed">
         <h3
-          class="text-xs font-bold uppercase tracking-wider text-[#18181B] mb-2"
+          class="text-xs font-bold uppercase tracking-wider text-brand-heading mb-2"
         >
           Description
         </h3>

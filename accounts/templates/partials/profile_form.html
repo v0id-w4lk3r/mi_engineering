@@ -9,16 +9,16 @@
   >
     {% csrf_token %}
 
-    <div class="bg-white rounded-xl border border-[#E4E4E7] p-6 shadow-sm space-y-6">
-      <div class="border-b border-[#E4E4E7] pb-4">
-        <h2 class="text-base font-bold text-[#18181B]">Account Details</h2>
+    <div class="bg-white rounded-xl border border-brand-border p-6 shadow-sm space-y-6">
+      <div class="border-b border-brand-border pb-4">
+        <h2 class="text-base font-bold text-brand-heading">Account Details</h2>
         <p class="text-xs text-gray-500 mt-0.5">Manage organization details for inquiry follow-ups.</p>
       </div>
 
       <!-- User Fields (Company & Phone) -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-bold uppercase text-[#71717A] mb-1.5" for="{{ profile_form.company_name.id_for_label }}">
+          <label class="block text-xs font-bold uppercase text-brand-muted mb-1.5" for="{{ profile_form.company_name.id_for_label }}">
             Company Name
           </label>
           {{ profile_form.company_name }}
@@ -28,7 +28,7 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase text-[#71717A] mb-1.5" for="{{ profile_form.phone_number.id_for_label }}">
+          <label class="block text-xs font-bold uppercase text-brand-muted mb-1.5" for="{{ profile_form.phone_number.id_for_label }}">
             Phone Number
           </label>
           {{ profile_form.phone_number }}
@@ -41,7 +41,7 @@
       <div class="pt-2 flex justify-end">
         <button
           type="submit"
-          class="px-6 py-2.5 bg-[#C62828] hover:bg-[#b71c1c] text-white font-bold text-xs rounded-xl shadow-sm transition"
+          class="px-6 py-2.5 bg-brand-accent hover:bg-[#b71c1c] text-white font-bold text-xs rounded-xl shadow-sm transition"
         >
           Save Changes
         </button>

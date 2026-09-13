@@ -1,6 +1,6 @@
 {% load static %}
 <nav
-  class="bg-[#FFFFFF]/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-[#E4E4E7]"
+  class="bg-brand-bg/95backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-brand-border"
   x-data="{ open: false }"
 >
   <div class="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
@@ -19,14 +19,14 @@
     </a>
 
     <div
-      class="hidden md:flex items-center space-x-8 text-[#52525B] font-medium"
+      class="hidden md:flex items-center space-x-8 text-brand-body font-medium"
     >
       <a
         href="{% url 'home:homepage' %}"
         hx-get="{% url 'home:homepage' %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="flex items-center gap-2 hover:text-[#C62828] transition {% if request.path == '/' %}text-[#C62828] font-semibold{% endif %}"
+        class="flex items-center gap-2 hover:text-brand-accent transition {% if request.path == '/' %}text-brand-accent font-semibold{% endif %}"
       >
         <i class="fas fa-home"></i> Home
       </a>
@@ -36,27 +36,66 @@
         hx-get="{% url 'home:about-us' %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="flex items-center gap-2 hover:text-[#C62828] transition {% if '/about' in request.path %}text-[#C62828] font-semibold{% endif %}"
+        class="flex items-center gap-2 hover:text-brand-accent transition {% if '/about' in request.path %}text-brand-accent font-semibold{% endif %}"
       >
         <i class="fas fa-building"></i> About Us
       </a>
 
-      <a
-        href="{% url 'products:product_list' %}"
-        hx-get="{% url 'products:product_list' %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        class="flex items-center gap-2 hover:text-[#C62828] transition {% if '/products' in request.path %}text-[#C62828] font-semibold{% endif %}"
-      >
-        <i class="fas fa-boxes"></i> Products
-      </a>
+      <!-- Catalog Dropdown -->
+      <div class="relative" x-data="{ dropdownOpen: false }" @click.away="dropdownOpen = false">
+        <button
+          @click="dropdownOpen = !dropdownOpen"
+          class="flex items-center gap-2 hover:text-brand-accent transition {% if '/products' in request.path or '/applications' in request.path or '/standards' in request.path %}text-brand-accent font-semibold{% endif %}"
+        >
+          <i class="fas fa-boxes"></i> Catalog
+          <i class="fas fa-chevron-down text-[10px] ml-0.5 transition-transform duration-200" :class="dropdownOpen ? 'rotate-180' : ''"></i>
+        </button>
+        
+        <div
+          x-show="dropdownOpen"
+          x-transition.opacity.duration.200ms
+          class="absolute top-full left-0 mt-6 w-52 bg-white border border-brand-border rounded-xl shadow-lg py-2 z-50 flex flex-col"
+          style="display: none;"
+        >
+          <a
+            href="{% url 'products:product_list' %}"
+            hx-get="{% url 'products:product_list' %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            @click="dropdownOpen = false"
+            class="px-4 py-2.5 text-sm hover:bg-brand-secondaryBg hover:text-brand-accent transition flex items-center gap-3 {% if request.path == '/products/' %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
+          >
+            <i class="fas fa-box w-4 text-center"></i> All Products
+          </a>
+          <a
+            href="{% url 'products:application_list' %}"
+            hx-get="{% url 'products:application_list' %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            @click="dropdownOpen = false"
+            class="px-4 py-2.5 text-sm hover:bg-brand-secondaryBg hover:text-brand-accent transition flex items-center gap-3 {% if '/applications' in request.path %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
+          >
+            <i class="fas fa-industry w-4 text-center"></i> Applications
+          </a>
+          <a
+            href="{% url 'products:standard_list' %}"
+            hx-get="{% url 'products:standard_list' %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            @click="dropdownOpen = false"
+            class="px-4 py-2.5 text-sm hover:bg-brand-secondaryBg hover:text-brand-accent transition flex items-center gap-3 {% if '/standards' in request.path %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
+          >
+            <i class="fas fa-certificate w-4 text-center"></i> Standards
+          </a>
+        </div>
+      </div>
 
       <a
         href="{% url 'gallery:gallery_list' %}"
         hx-get="{% url 'gallery:gallery_list' %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="flex items-center gap-2 hover:text-[#C62828] transition {% if '/gallery' in request.path %}text-[#C62828] font-semibold{% endif %}"
+        class="flex items-center gap-2 hover:text-brand-accent transition {% if '/gallery' in request.path %}text-brand-accent font-semibold{% endif %}"
       >
         <i class="fas fa-images"></i> Gallery
       </a>
@@ -66,18 +105,18 @@
         hx-get="{% url 'home:contact-us' %}"
         hx-target="#main-content"
         hx-push-url="true"
-        class="flex items-center gap-2 hover:text-[#C62828] transition {% if '/contact' in request.path %}text-[#C62828] font-semibold{% endif %}"
+        class="flex items-center gap-2 hover:text-brand-accent transition {% if '/contact' in request.path %}text-brand-accent font-semibold{% endif %}"
       >
         <i class="fas fa-envelope"></i> Contact Us
       </a>
 
       {% if request.user.is_authenticated %}
-      <div class="flex items-center space-x-4 pl-4 border-l border-[#E4E4E7]">
+      <div class="flex items-center space-x-4 pl-4 border-l border-brand-border">
         {% if request.user.is_staff or request.user.is_superuser %}
         <a
           href="{% url 'admin:index' %}"
           target="_blank"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#202124] text-[#FAFAF9] hover:bg-[#151515] transition text-xs font-semibold shadow-sm"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-primary text-brand-card hover:bg-brand-primaryHover transition text-xs font-semibold shadow-sm"
           title="Open Admin Panel"
         >
           <i class="fas fa-user-shield text-xs"></i> Admin Panel
@@ -89,15 +128,15 @@
           hx-get="{% url 'accounts:profile' %}"
           hx-target="#main-content"
           hx-push-url="true"
-          class="flex items-center gap-2 text-sm hover:text-[#C62828] transition group {% if '/accounts/profile' in request.path %}text-[#C62828] font-semibold{% endif %}"
+          class="flex items-center gap-2 text-sm hover:text-brand-accent transition group {% if '/accounts/profile' in request.path %}text-brand-accent font-semibold{% endif %}"
         >
           <div
-            class="w-8 h-8 rounded-full bg-[#C62828]/10 text-[#C62828] font-bold flex items-center justify-center group-hover:bg-[#C62828] group-hover:text-white transition"
+            class="w-8 h-8 rounded-full bg-brand-accent/10 text-brand-accent font-bold flex items-center justify-center group-hover:bg-brand-accent group-hover:text-white transition"
           >
             {{ request.user.username|slice:":1"|upper }}
           </div>
           <span
-            class="font-semibold text-[#18181B] group-hover:text-[#C62828] max-w-[120px] truncate transition"
+            class="font-semibold text-brand-headingding group-hover:text-brand-accent max-w-30 truncate transition"
           >
             {{ request.user.get_full_name|default:request.user.username }}
           </span>
@@ -107,20 +146,20 @@
           {% csrf_token %}
           <button
             type="submit"
-            class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#F7F7F5] text-[#18181B] hover:bg-[#FFF5F5] hover:text-[#C62828] transition border border-[#E4E4E7] text-sm font-semibold"
+            class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-brand-secondaryBg text-brand-heading hover:bg-brand-lightAccentBg hover:text-brand-accent transition border border-brand-borderder text-sm font-semibold"
           >
             <i class="fas fa-sign-out-alt"></i> Logout
           </button>
         </form>
       </div>
       {% else %}
-      <div class="flex items-center space-x-4 pl-4 border-l border-[#E4E4E7]">
+      <div class="flex items-center space-x-4 pl-4 border-l border-brand-border">
         <a
           href="{% url 'accounts:login' %}"
           hx-get="{% url 'accounts:login' %}"
           hx-target="#main-content"
           hx-push-url="true"
-          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#202124] text-[#FAFAF9] hover:bg-[#151515] transition shadow-sm text-sm font-semibold"
+          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-primary text-brand-card hover:bg-brand-primaryHover hover:text-white transition shadow-sm text-sm font-semibold"
         >
           <i class="fas fa-sign-in-alt"></i> Client Login
         </a>
@@ -130,7 +169,7 @@
 
     <button
       @click="open = !open"
-      class="md:hidden text-[#18181B] focus:outline-none"
+      class="md:hidden text-brand-heading focus:outline-none"
     >
       <i class="fas fa-bars text-xl"></i>
     </button>
@@ -140,9 +179,9 @@
     x-show="open"
     x-transition
     @click.away="open = false"
-    class="md:hidden bg-[#FFFFFF] border-t border-[#E4E4E7]"
+    class="md:hidden bg-brand-bgborder-t border-brand-border"
   >
-    <div class="px-4 py-4 space-y-2 text-[#52525B]">
+    <div class="px-4 py-4 space-y-2 text-brand-body">
       {% if request.user.is_authenticated %}
       <a
         href="{% url 'accounts:profile' %}"
@@ -150,19 +189,19 @@
         hx-target="#main-content"
         hx-push-url="true"
         @click="open = false"
-        class="flex items-center gap-3 px-3 py-2 border-b border-[#E4E4E7] mb-2 pb-3 rounded-lg hover:bg-[#F7F7F5] transition"
+        class="flex items-center gap-3 px-3 py-2 border-b border-brand-border mb-2 pb-3 rounded-lg hover:bg-brand-secondaryBg transition"
       >
         <div
-          class="w-8 h-8 rounded-full bg-[#C62828]/10 text-[#C62828] font-bold flex items-center justify-center"
+          class="w-8 h-8 rounded-full bg-brand-accent/10 text-brand-accent font-bold flex items-center justify-center"
         >
           {{ request.user.username|slice:":1"|upper }}
         </div>
         <div class="flex flex-col">
-          <span class="font-bold text-[#18181B] text-sm">
+          <span class="font-bold text-brand-heading text-sm">
             {{ request.user.get_full_name|default:request.user.username }}
           </span>
           <span
-            class="text-[10px] uppercase font-semibold text-[#C62828] tracking-wider"
+            class="text-[10px] uppercase font-semibold text-brand-accent tracking-wider"
           >
             {{ request.user.role|default:"Client" }} &bull; View Profile
           </span>
@@ -176,7 +215,7 @@
         hx-target="#main-content"
         hx-push-url="true"
         @click="open = false"
-        class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if request.path == '/' %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}"
+        class="block px-3 py-2 rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accentent {% if request.path == '/' %}text-brand-accent font-semibold bg-brand-secondaryBgondaryBg{% endif %}"
       >
         <i class="fas fa-home mr-2"></i>Home
       </a>
@@ -187,21 +226,54 @@
         hx-target="#main-content"
         hx-push-url="true"
         @click="open = false"
-        class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if '/about' in request.path %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}"
+        class="block px-3 py-2 rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if '/about' in request.path %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
       >
         <i class="fas fa-building mr-2"></i>About Us
       </a>
 
-      <a
-        href="{% url 'products:product_list' %}"
-        hx-get="{% url 'products:product_list' %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        @click="open = false"
-        class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if '/products' in request.path %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}"
-      >
-        <i class="fas fa-boxes mr-2"></i>Products
-      </a>
+      <!-- Mobile Catalog Dropdown -->
+      <div x-data="{ mobileCatalogOpen: false }" class="block">
+        <button
+          @click="mobileCatalogOpen = !mobileCatalogOpen"
+          class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if '/products' in request.path or '/applications' in request.path or '/standards' in request.path %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
+        >
+          <span class="flex items-center"><i class="fas fa-boxes mr-2 w-5"></i>Catalog</span>
+          <i class="fas fa-chevron-down text-xs transition-transform duration-200" :class="mobileCatalogOpen ? 'rotate-180' : ''"></i>
+        </button>
+        
+        <div x-show="mobileCatalogOpen" class="pl-8 space-y-1 mt-1 pb-2">
+          <a
+            href="{% url 'products:product_list' %}"
+            hx-get="{% url 'products:product_list' %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            @click="open = false"
+            class="block px-3 py-2 text-sm rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if request.path == '/products/' %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
+          >
+            All Products
+          </a>
+          <a
+            href="{% url 'products:application_list' %}"
+            hx-get="{% url 'products:application_list' %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            @click="open = false"
+            class="block px-3 py-2 text-sm rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if '/applications' in request.path %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
+          >
+            By Application
+          </a>
+          <a
+            href="{% url 'products:standard_list' %}"
+            hx-get="{% url 'products:standard_list' %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            @click="open = false"
+            class="block px-3 py-2 text-sm rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if '/standards' in request.path %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
+          >
+            By Standard
+          </a>
+        </div>
+      </div>
 
       <a
         href="{% url 'gallery:gallery_list' %}"
@@ -209,7 +281,7 @@
         hx-target="#main-content"
         hx-push-url="true"
         @click="open = false"
-        class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if '/gallery' in request.path %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}"
+        class="block px-3 py-2 rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if '/gallery' in request.path %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
       >
         <i class="fas fa-images mr-2"></i>Gallery
       </a>
@@ -220,7 +292,7 @@
         hx-target="#main-content"
         hx-push-url="true"
         @click="open = false"
-        class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if '/contact' in request.path %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}"
+        class="block px-3 py-2 rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if '/contact' in request.path %}text-brand-accentent font-semibold bg-brand-secondaryBg{% endif %}"
       >
         <i class="fas fa-envelope mr-2"></i>Contact Us
       </a>
@@ -231,7 +303,7 @@
         href="{% url 'admin:index' %}"
         target="_blank"
         @click="open = false"
-        class="block px-3 py-2 rounded-lg bg-[#202124] text-[#FAFAF9] font-semibold text-center hover:bg-[#151515] transition"
+        class="block px-3 py-2 rounded-lg bg-brand-primary text-brand-card font-semibold text-center hover:bg-brand-primaryHover transition"
       >
         <i class="fas fa-user-shield mr-2"></i>Admin Panel
       </a>
@@ -243,7 +315,7 @@
         hx-target="#main-content"
         hx-push-url="true"
         @click="open = false"
-        class="block px-3 py-2 rounded-lg hover:bg-[#F7F7F5] hover:text-[#C62828] {% if '/accounts/profile' in request.path %}text-[#C62828] font-semibold bg-[#F7F7F5]{% endif %}"
+        class="block px-3 py-2 rounded-lg hover:bg-brand-secondaryBg hover:text-brand-accent {% if '/accounts/profile' in request.path %}text-brand-accent font-semibold bg-brand-secondaryBg{% endif %}"
       >
         <i class="fas fa-user-circle mr-2"></i>My Profile & Dashboard
       </a>
@@ -252,7 +324,7 @@
         {% csrf_token %}
         <button
           type="submit"
-          class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#FFF5F5] text-[#C62828] font-semibold"
+          class="w-full text-left px-3 py-2 rounded-lg hover:bg-brand-lightAccentBg text-brand-accent font-semibold"
         >
           <i class="fas fa-sign-out-alt mr-2"></i>Logout
         </button>
@@ -264,7 +336,7 @@
         hx-target="#main-content"
         hx-push-url="true"
         @click="open = false"
-        class="block px-3 py-2 rounded-lg bg-[#202124] text-[#FAFAF9] text-center hover:bg-[#151515] font-semibold"
+        class="block px-3 py-2 rounded-lg bg-brand-primary text-white text-center hover:bg-brand-primaryHover hover:text-white font-semibold transition"
       >
         <i class="fas fa-sign-in-alt mr-2"></i>Client Login
       </a>

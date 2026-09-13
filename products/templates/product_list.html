@@ -5,6 +5,10 @@
 {% block title %}
   {% if category_obj %}
     {{ category_obj.name }} | Industrial Fasteners & Components - M.I. Engineering Works
+  {% elif application_obj %}
+    {{ application_obj.name }} Products | Industrial Fasteners & Components - M.I. Engineering Works
+  {% elif standard_obj %}
+    {{ standard_obj.name }} Standards | Industrial Fasteners & Components - M.I. Engineering Works
   {% else %}
     Industrial Engineering Products & Fasteners Catalog | M.I. Engineering Works
   {% endif %}
@@ -13,6 +17,10 @@
 {% block meta_description %}
   {% if category_obj %}
     Browse our catalog of high-precision {{ category_obj.name }} manufactured to ISO, DIN, and ASTM specifications. Bulk orders and custom sizes available.
+  {% elif application_obj %}
+    Browse our catalog of products for {{ application_obj.name }} applications.
+  {% elif standard_obj %}
+    Browse our catalog of products conforming to {{ standard_obj.name }} standard.
   {% else %}
     Explore the full industrial catalog of M.I. Engineering Works, featuring precision bolts, nuts, stud rods, washers, and custom turned components.
   {% endif %}
@@ -21,6 +29,10 @@
 {% block meta_keywords %}
   {% if category_obj %}
     {{ category_obj.name }}, precision {{ category_obj.name }}, industrial fasteners, M.I. Engineering Works
+  {% elif application_obj %}
+    {{ application_obj.name }}, {{ application_obj.name }} fasteners, industrial fasteners, M.I. Engineering Works
+  {% elif standard_obj %}
+    {{ standard_obj.name }}, {{ standard_obj.name }} fasteners, industrial fasteners, M.I. Engineering Works
   {% else %}
     industrial fasteners, engineering components, ISO DIN bolts, custom studs, precision engineering catalog
   {% endif %}
@@ -33,6 +45,10 @@
 {% block og_title %}
   {% if category_obj %}
     {{ category_obj.name }} - M.I. Engineering Works
+  {% elif application_obj %}
+    {{ application_obj.name }} - M.I. Engineering Works
+  {% elif standard_obj %}
+    {{ standard_obj.name }} - M.I. Engineering Works
   {% else %}
     Engineering Products & Industrial Solutions - M.I. Engineering Works
   {% endif %}
@@ -41,6 +57,10 @@
 {% block og_description %}
   {% if category_obj %}
     High-grade industrial {{ category_obj.name }} built for heavy machinery, construction, and structural applications.
+  {% elif application_obj %}
+    High-grade industrial products for {{ application_obj.name }}.
+  {% elif standard_obj %}
+    High-grade industrial products for {{ standard_obj.name }}.
   {% else %}
     Quality-certified fasteners, bolts, studs, and custom precision components built to strict international standards.
   {% endif %}
@@ -54,7 +74,7 @@
   {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "{% if category_obj %}{{ category_obj.name|escapejs }}{% else %}Industrial Engineering Products Catalog{% endif %}",
+    "name": "{% if category_obj %}{{ category_obj.name|escapejs }}{% elif application_obj %}{{ application_obj.name|escapejs }}{% elif standard_obj %}{{ standard_obj.name|escapejs }}{% else %}Industrial Engineering Products Catalog{% endif %}",
     "url": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}",
     "numberOfItems": {{ page_obj.paginator.count|default:0 }},
     "itemListElement": [
@@ -79,6 +99,10 @@
       {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ request.scheme }}://{{ request.get_host }}/"},
       {"@type": "ListItem", "position": 2, "name": "Catalog", "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'products:product_list' %}"}{% if category_obj %},
       {"@type": "ListItem", "position": 3, "name": "{{ category_obj.name|escapejs }}", "item": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}"}
+      {% elif application_obj %},
+      {"@type": "ListItem", "position": 3, "name": "{{ application_obj.name|escapejs }}", "item": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}"}
+      {% elif standard_obj %},
+      {"@type": "ListItem", "position": 3, "name": "{{ standard_obj.name|escapejs }}", "item": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}"}
       {% endif %}
     ]
   }

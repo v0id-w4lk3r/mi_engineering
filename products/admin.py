@@ -1,8 +1,19 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Category, Product, ProductImage, ProductSpecification
+from .models import Category, Product, ProductImage, ProductSpecification, Application, Standard
 
+@admin.register(Application)
+class ApplicationAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug")
+    search_fields = ("name",)
+    prepopulated_fields = {"slug": ("name",)}
+
+@admin.register(Standard)
+class StandardAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug")
+    search_fields = ("name",)
+    prepopulated_fields = {"slug": ("name",)}
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
@@ -40,16 +51,16 @@ class ProductAdmin(admin.ModelAdmin):
         "primary_thumbnail",
         "title",
         "category",
-        "min_order_quantity",
         "material",
         "is_featured",
         "is_active",
     )
-    list_editable = ("min_order_quantity", "is_featured", "is_active")
+    list_editable = ("is_featured", "is_active")
     list_filter = ("category", "is_active", "is_featured", "material")
-    search_fields = ("title", "material", "grade", "standard")
+    search_fields = ("title", "material", "grade")
     prepopulated_fields = {"slug": ("title", )}
     raw_id_fields = ("category", )
+    filter_horizontal = ("applications", "standards")
     inlines = [ProductImageInline, ProductSpecificationInline]
 
     fieldsets = (
@@ -60,18 +71,17 @@ class ProductAdmin(admin.ModelAdmin):
                     "title",
                     "slug",
                     "category",
+                    "applications",
+                    "standards",
                     "short_description",
                     "description",
                 )
             },
         ),
-        ("Minimum Order Quantity", {
-            "fields": ("min_order_quantity", )
-        }),
         (
             "Specifications & Attributes",
             {
-                "fields": ("material", "grade", "standard", "size_range")
+                "fields": ("material", "grade", "size_range")
             },
         ),
         (

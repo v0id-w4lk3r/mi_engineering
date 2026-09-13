@@ -40,4 +40,17 @@ class GalleryItemAdmin(admin.ModelAdmin):
             return format_html(
                 '<span style="color: #C62828; font-weight: bold;">[Video]</span>'
             )
+        elif obj.media_type == GalleryItem.MediaType.PDF:
+            return format_html(
+                '<span style="color: #1565C0; font-weight: bold;">[PDF]</span>'
+            )
+        elif obj.media_type == GalleryItem.MediaType.CERTIFICATE:
+            if obj.image:
+                return format_html(
+                    '<img src="{}" style="width: 60px; height: 40px; object-fit: cover; border-radius: 6px;" />',
+                    obj.image.url,
+                )
+            return format_html(
+                '<span style="color: #2E7D32; font-weight: bold;">[Certificate]</span>'
+            )
         return "No Media"

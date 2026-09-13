@@ -42,6 +42,8 @@ class GalleryItem(models.Model):
     class MediaType(models.TextChoices):
         IMAGE = "IMAGE", "Image"
         VIDEO = "VIDEO", "Video"
+        PDF = "PDF", "PDF Document"
+        CERTIFICATE = "CERTIFICATE", "Certificate"
 
     title = models.CharField(max_length=255,
                              help_text="Title or caption for the media item")
@@ -53,10 +55,10 @@ class GalleryItem(models.Model):
         related_name="gallery_items",
     )
     media_type = models.CharField(
-        max_length=10,
+        max_length=15,
         choices=MediaType.choices,
         default=MediaType.IMAGE,
-        help_text="Select whether this item is an image or a video",
+        help_text="Select whether this item is an image, video, pdf, or certificate",
     )
 
     # File handling
@@ -74,6 +76,17 @@ class GalleryItem(models.Model):
         null=True,
         help_text="Optional YouTube or Vimeo embed URL",
     )
+    document = models.FileField(
+        upload_to="gallery/documents/",
+        blank=True,
+        null=True,
+        help_text="Upload PDF or document files for PDF/Certificate",
+    )
+
+    # SEO fields
+    meta_title = models.CharField(max_length=255, blank=True, help_text="SEO Meta Title (optional)")
+    meta_description = models.TextField(blank=True, help_text="SEO Meta Description (optional)")
+    alt_text = models.CharField(max_length=255, blank=True, help_text="Alt Text for SEO (optional)")
 
     description = models.TextField(blank=True,
                                    help_text="Optional detailed explanation")
@@ -94,6 +107,8 @@ class GalleryItem(models.Model):
             raise ValidationError({"image": "An image file is required for items with media type Image."})
         if self.media_type == self.MediaType.VIDEO and not self.video and not self.video_url:
             raise ValidationError({"video": "Either a video file or a video URL is required for Video items."})
+        if self.media_type in [self.MediaType.PDF, self.MediaType.CERTIFICATE] and not self.document and not self.image:
+            raise ValidationError({"document": "A document or image file is required for PDF/Certificate items."})
 
     @property
     def embed_url(self) -> str | None:

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Applications | M.I. Engineering Works{% endblock %}
+
+{% block content %}
+<div class="bg-brand-secondaryBg min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">
+  <div class="max-w-7xl mx-auto">
+    <header class="bg-brand-bg rounded-2xl shadow-sm border border-brand-border p-8 mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div>
+        <span class="inline-block px-3 py-1 bg-brand-lightAccentBg text-brand-accent text-xs font-semibold rounded-full uppercase tracking-wider mb-2">
+          Applications
+        </span>
+        <h1 class="text-3xl font-extrabold text-brand-heading tracking-tight">
+          Browse by Application
+        </h1>
+        <p class="mt-1 text-sm text-brand-body">
+          Explore products suited for various industrial applications.
+        </p>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {% for application in applications %}
+        <a href="{% url 'products:application_product_list' application.slug %}" class="block group">
+          <div class="bg-brand-bg rounded-2xl shadow-sm border border-brand-border p-6 hover:shadow-md transition-shadow h-full flex flex-col items-center text-center">
+            {% if application.image %}
+              <div class="w-24 h-24 mb-4 rounded-full overflow-hidden border border-brand-border">
+                <img src="{{ application.image.url }}" alt="{{ application.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+            {% endif %}
+            <h2 class="text-xl font-bold text-brand-heading group-hover:text-brand-accent transition-colors">{{ application.name }}</h2>
+            {% if application.description %}
+              <p class="mt-2 text-sm text-brand-muted line-clamp-3">{{ application.description }}</p>
+            {% endif %}
+          </div>
+        </a>
+      {% empty %}
+        <div class="col-span-full py-12 text-center text-brand-muted bg-brand-bg border border-brand-border rounded-xl">
+          <p>No applications found.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
