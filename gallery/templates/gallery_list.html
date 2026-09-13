@@ -49,92 +49,91 @@
     </p>
   </div>
 
-  <!-- Filter Toolbar (HTMX Powered) -->
-  <div
-    class="bg-white p-4 rounded-2xl border border-brand-border shadow-sm mb-8 flex flex-wrap items-center justify-between gap-4"
-  >
-    <!-- Category Tabs -->
-    <div
-      class="flex items-center gap-3 overflow-x-auto pb-4 sm:pb-0 w-full lg:w-auto hide-scrollbar"
-    >
-      <a
-        href="{% url 'gallery:gallery_list' %}{% if active_type %}?type={{ active_type }}{% endif %}"
-        hx-get="{% url 'gallery:gallery_list' %}{% if active_type %}?type={{ active_type }}{% endif %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        class="px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 whitespace-nowrap {% if not active_category %}bg-brand-accent text-white shadow-md ring-2 ring-brand-accent/50 ring-offset-2 scale-[1.02]{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-border hover:text-brand-heading{% endif %}"
-      >
-        All Categories
-      </a>
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+    <!-- Sidebar -->
+    <div class="lg:col-span-1">
+      <div class="bg-white p-6 rounded-2xl border border-brand-border shadow-sm sticky top-24">
+        <h3 class="text-sm font-extrabold text-brand-heading uppercase tracking-wider mb-4">Categories</h3>
+        <div class="flex flex-col gap-2">
+          <a
+            href="{% url 'gallery:gallery_list' %}{% if active_type %}?type={{ active_type }}{% endif %}"
+            hx-get="{% url 'gallery:gallery_list' %}{% if active_type %}?type={{ active_type }}{% endif %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            class="px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 flex items-center {% if not active_category %}bg-brand-accent text-white shadow-md{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-border hover:text-brand-heading{% endif %}"
+          >
+            All Categories
+          </a>
 
-      {% for category in categories %}
-      <a
-        href="{% url 'gallery:gallery_list' %}?category={{ category.slug }}{% if active_type %}&type={{ active_type }}{% endif %}"
-        hx-get="{% url 'gallery:gallery_list' %}?category={{ category.slug }}{% if active_type %}&type={{ active_type }}{% endif %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        class="px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 whitespace-nowrap {% if active_category == category.slug %}bg-brand-accent text-white shadow-md ring-2 ring-brand-accent/50 ring-offset-2 scale-[1.02]{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-borderdhover:text-brand-heading1B]{% endif %}"
-      >
-        {{ category.name }}
-      </a>
-      {% endfor %}
+          {% for category in categories %}
+          <a
+            href="{% url 'gallery:gallery_list' %}?category={{ category.slug }}{% if active_type %}&type={{ active_type }}{% endif %}"
+            hx-get="{% url 'gallery:gallery_list' %}?category={{ category.slug }}{% if active_type %}&type={{ active_type }}{% endif %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            class="px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 flex items-center {% if active_category == category.slug %}bg-brand-accent text-white shadow-md{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-border hover:text-brand-heading{% endif %}"
+          >
+            {{ category.name }}
+          </a>
+          {% endfor %}
+        </div>
+
+        <h3 class="text-sm font-extrabold text-brand-heading uppercase tracking-wider mt-8 mb-4">Media Type</h3>
+        <div class="flex flex-col gap-2">
+          <a
+            href="{% url 'gallery:gallery_list' %}{% if active_category %}?category={{ active_category }}{% endif %}"
+            hx-get="{% url 'gallery:gallery_list' %}{% if active_category %}?category={{ active_category }}{% endif %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            class="px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 {% if not active_type %}bg-brand-accent text-white shadow-md{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-border hover:text-brand-heading{% endif %}"
+          >
+            <i class="fas fa-th-large w-5"></i> All Media
+          </a>
+          <a
+            href="{% url 'gallery:gallery_list' %}?type=IMAGE{% if active_category %}&category={{ active_category }}{% endif %}"
+            hx-get="{% url 'gallery:gallery_list' %}?type=IMAGE{% if active_category %}&category={{ active_category }}{% endif %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            class="px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 {% if active_type == 'IMAGE' %}bg-brand-accent text-white shadow-md{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-border hover:text-brand-heading{% endif %}"
+          >
+            <i class="fas fa-image w-5"></i> Photos
+          </a>
+          <a
+            href="{% url 'gallery:gallery_list' %}?type=VIDEO{% if active_category %}&category={{ active_category }}{% endif %}"
+            hx-get="{% url 'gallery:gallery_list' %}?type=VIDEO{% if active_category %}&category={{ active_category }}{% endif %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            class="px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 {% if active_type == 'VIDEO' %}bg-brand-accent text-white shadow-md{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-border hover:text-brand-heading{% endif %}"
+          >
+            <i class="fas fa-video w-5"></i> Videos
+          </a>
+          <a
+            href="{% url 'gallery:gallery_list' %}?type=PDF{% if active_category %}&category={{ active_category }}{% endif %}"
+            hx-get="{% url 'gallery:gallery_list' %}?type=PDF{% if active_category %}&category={{ active_category }}{% endif %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            class="px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 {% if active_type == 'PDF' %}bg-brand-accent text-white shadow-md{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-border hover:text-brand-heading{% endif %}"
+          >
+            <i class="fas fa-file-pdf w-5"></i> PDFs
+          </a>
+          <a
+            href="{% url 'gallery:gallery_list' %}?type=CERTIFICATE{% if active_category %}&category={{ active_category }}{% endif %}"
+            hx-get="{% url 'gallery:gallery_list' %}?type=CERTIFICATE{% if active_category %}&category={{ active_category }}{% endif %}"
+            hx-target="#main-content"
+            hx-push-url="true"
+            class="px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-300 flex items-center gap-2 {% if active_type == 'CERTIFICATE' %}bg-brand-accent text-white shadow-md{% else %}bg-[#F4F4F5] text-brand-body hover:bg-brand-border hover:text-brand-heading{% endif %}"
+          >
+            <i class="fas fa-certificate w-5"></i> Certificates
+          </a>
+        </div>
+      </div>
     </div>
 
-    <!-- Media Type Filters -->
-    <div
-      class="flex items-center gap-2 border-t sm:border-t-0 sm:border-l border-brand-border pt-4 sm:pt-0 sm:pl-6 w-full sm:w-auto justify-start sm:justify-end overflow-x-auto hide-scrollbar"
-    >
-      <a
-        href="{% url 'gallery:gallery_list' %}{% if active_category %}?category={{ active_category }}{% endif %}"
-        hx-get="{% url 'gallery:gallery_list' %}{% if active_category %}?category={{ active_category }}{% endif %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors {% if not active_type %}text-brand-accent bg-brand-accent/10 font-bold{% else %}text-brand-muted hover:text-brand-heading hover:bg-[#F4F4F5]{% endif %}"
-      >
-        All
-      </a>
-      <a
-        href="{% url 'gallery:gallery_list' %}?type=IMAGE{% if active_category %}&category={{ active_category }}{% endif %}"
-        hx-get="{% url 'gallery:gallery_list' %}?type=IMAGE{% if active_category %}&category={{ active_category }}{% endif %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 {% if active_type == 'IMAGE' %}text-brand-accent bg-brand-accent/10/10 font-bold{% else %}text-brand-muted hover:text-brand-heading hover:bg-[#F4F4F5]{% endif %}"
-      >
-        <i class="fas fa-image"></i> Photos
-      </a>
-      <a
-        href="{% url 'gallery:gallery_list' %}?type=VIDEO{% if active_category %}&category={{ active_category }}{% endif %}"
-        hx-get="{% url 'gallery:gallery_list' %}?type=VIDEO{% if active_category %}&category={{ active_category }}{% endif %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 {% if active_type == 'VIDEO' %}text-brand-accent bg-brand-accent/10 font-bold{% else %}text-brand-muted hover:text-brand-heading hover:bg-[#F4F4F5]{% endif %}"
-      >
-        <i class="fas fa-video"></i> Videos
-      </a>
-      <a
-        href="{% url 'gallery:gallery_list' %}?type=PDF{% if active_category %}&category={{ active_category }}{% endif %}"
-        hx-get="{% url 'gallery:gallery_list' %}?type=PDF{% if active_category %}&category={{ active_category }}{% endif %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 {% if active_type == 'PDF' %}text-brand-accent bg-brand-accent/10 font-bold{% else %}text-brand-muted hover:text-brand-heading hover:bg-[#F4F4F5]{% endif %}"
-      >
-        <i class="fas fa-file-pdf"></i> PDFs
-      </a>
-      <a
-        href="{% url 'gallery:gallery_list' %}?type=CERTIFICATE{% if active_category %}&category={{ active_category }}{% endif %}"
-        hx-get="{% url 'gallery:gallery_list' %}?type=CERTIFICATE{% if active_category %}&category={{ active_category }}{% endif %}"
-        hx-target="#main-content"
-        hx-push-url="true"
-        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 {% if active_type == 'CERTIFICATE' %}text-brand-accent bg-brand-accent/10 font-bold{% else %}text-brand-muted hover:text-brand-heading hover:bg-[#F4F4F5]{% endif %}"
-      >
-        <i class="fas fa-certificate"></i> Certificates
-      </a>
-    </div>
-  </div>
-
+    <!-- Main Content -->
+    <div class="lg:col-span-3">
   <!-- Media Grid -->
   <div
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-6"
   >
     {% for item in items %}
     <div
@@ -304,5 +303,8 @@
     {% endif %}
   </div>
   {% endif %}
+
+    </div>
+  </div>
 </div>
 {% endblock %}
