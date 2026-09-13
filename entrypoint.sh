@@ -20,6 +20,15 @@ uv run python manage.py makemigrations products
 echo "Applying migrations..."
 uv run python manage.py migrate --noinput
 
+echo "Checking / Installing frontend dependencies..."
+if [ ! -d "node_modules" ]; then
+    bun install --frozen-lockfile || bun install
+fi
+
+echo "Building Tailwind CSS..."
+bun i
+bun run build:css
+
 echo "Collecting static files..."
 # Ignores input.css so WhiteNoise does not fail on @import "tailwindcss"
 uv run python manage.py collectstatic --noinput -i "css/input.css"
