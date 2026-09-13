@@ -8,7 +8,6 @@ node_modules/
 bun.lockb
 
 # Compiled CSS output (generated via bun build)
-static/css/index.css
 
 # Bun / Tailwind / PostCSS Caches
 .bun/
