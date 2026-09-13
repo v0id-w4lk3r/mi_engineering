@@ -26,6 +26,7 @@ if [ ! -d "node_modules" ]; then
 fi
 
 echo "Building Tailwind CSS..."
+bun i
 bun run build:css
 
 echo "Collecting static files..."
