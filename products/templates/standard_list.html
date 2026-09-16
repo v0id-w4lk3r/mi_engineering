@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Standards | M.I. Engineering Works{% endblock %}
+<!-- Dynamic SEO Meta Blocks -->
+{% block title %}International Manufacturing Standards & Specifications | M.I. Engineering Works{% endblock %}
+{% block meta_description %}Browse industrial fasteners and engineering components conforming to international standards including ISO, DIN, ASTM, BS, and IS at M.I. Engineering Works.{% endblock %}
+{% block meta_keywords %}manufacturing standards, ISO fasteners, DIN specifications, ASTM bolts, BS standards, IS specifications, industrial fasteners, M.I. Engineering Works{% endblock %}
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'products:standard_list' %}{% endblock %}
+
+<!-- Open Graph / Social Media Overrides -->
+{% block og_type %}website{% endblock %}
+{% block og_title %}Manufacturing Standards & Specifications - M.I. Engineering Works{% endblock %}
+{% block og_description %}Browse products conforming to ISO, DIN, ASTM, and IS engineering standards manufactured with high precision.{% endblock %}
+{% block twitter_title %}Manufacturing Standards & Specifications - M.I. Engineering Works{% endblock %}
+{% block twitter_description %}Browse products conforming to ISO, DIN, ASTM, and IS engineering standards manufactured with high precision.{% endblock %}
 
 {% block content %}
 <div class="bg-brand-secondaryBg min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">

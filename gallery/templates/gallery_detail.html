@@ -90,7 +90,7 @@
       </div>
       {% endif %}
       
-      {% elif item.media_type == 'PDF' %}
+      {% elif item.media_type == 'PDF' or item.media_type == 'CERTIFICATE' %}
       <div class="w-full py-12 sm:py-16 flex flex-col items-center justify-center bg-white">
           {% if item.image %}
           <img
@@ -99,17 +99,25 @@
             class="max-h-96 w-auto max-w-full object-contain rounded-lg shadow-md mb-8 border border-gray-200"
           />
           {% else %}
-          <i class="fas fa-file-pdf text-red-500 text-8xl mb-8 opacity-80"></i>
+            {% if item.media_type == 'CERTIFICATE' %}
+            <i class="fas fa-certificate text-brand-accent text-8xl mb-8 opacity-80"></i>
+            {% else %}
+            <i class="fas fa-file-pdf text-red-500 text-8xl mb-8 opacity-80"></i>
+            {% endif %}
           {% endif %}
           
           {% if item.document %}
           <a href="{{ item.document.url }}" target="_blank" rel="noopener noreferrer" class="bg-brand-accent text-white px-8 py-3.5 rounded-xl hover:bg-opacity-90 transition font-bold shadow-md flex items-center gap-3 text-base sm:text-lg hover:-translate-y-1 duration-300">
               <i class="fas fa-external-link-alt"></i> 
+              {% if item.media_type == 'CERTIFICATE' %}
+              Open Certificate in New Tab
+              {% else %}
               Open PDF Document in New Tab
+              {% endif %}
           </a>
           {% else %}
           <p class="text-sm text-gray-500 font-medium bg-gray-100 px-6 py-3 rounded-lg">
-              <i class="fas fa-info-circle mr-2"></i> Document file is unavailable.
+              <i class="fas fa-info-circle mr-2"></i> {% if item.media_type == 'CERTIFICATE' %}Certificate{% else %}Document{% endif %} file is unavailable.
           </p>
           {% endif %}
       </div>

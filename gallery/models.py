@@ -43,6 +43,7 @@ class GalleryItem(models.Model):
         IMAGE = "IMAGE", "Image"
         VIDEO = "VIDEO", "Video"
         PDF = "PDF", "PDF Document"
+        CERTIFICATE = "CERTIFICATE", "Certificate"
 
     title = models.CharField(max_length=255,
                              help_text="Title or caption for the media item")
@@ -57,7 +58,7 @@ class GalleryItem(models.Model):
         max_length=15,
         choices=MediaType.choices,
         default=MediaType.IMAGE,
-        help_text="Select whether this item is an image, video, or pdf",
+        help_text="Select whether this item is an image, video, pdf, or certificate",
     )
 
     # File handling
@@ -106,8 +107,8 @@ class GalleryItem(models.Model):
             raise ValidationError({"image": "An image file is required for items with media type Image."})
         if self.media_type == self.MediaType.VIDEO and not self.video and not self.video_url:
             raise ValidationError({"video": "Either a video file or a video URL is required for Video items."})
-        if self.media_type == self.MediaType.PDF and not self.document:
-            raise ValidationError({"document": "A PDF document file is required for PDF items."})
+        if self.media_type in [self.MediaType.PDF, self.MediaType.CERTIFICATE] and not self.document:
+            raise ValidationError({"document": "A PDF document or certificate file is required."})
 
     @property
     def embed_url(self) -> str | None:
@@ -175,9 +176,21 @@ class GalleryVideo(GalleryItem):
 class GalleryDocument(GalleryItem):
     class Meta:
         proxy = True
-        verbose_name = "PDF Document"
-        verbose_name_plural = "PDF Documents"
+        verbose_name = "PDF Document / Certificate"
+        verbose_name_plural = "PDF Documents & Certificates"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.media_type = self.MediaType.PDF
+        if not self.media_type or self.media_type not in [self.MediaType.PDF, self.MediaType.CERTIFICATE]:
+            self.media_type = self.MediaType.PDF
+
+
+class GalleryCertificate(GalleryItem):
+    class Meta:
+        proxy = True
+        verbose_name = "Certificate"
+        verbose_name_plural = "Certificates"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.media_type = self.MediaType.CERTIFICATE

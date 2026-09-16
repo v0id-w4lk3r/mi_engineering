@@ -2,7 +2,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from products.models import Category, Product, ProductImage
+from products.models import Application, Category, Product, ProductImage, Standard
 
 
 class ProductModelTests(TestCase):
@@ -194,3 +194,117 @@ class ProductDetailViewTests(TestCase):
         url = reverse("products:product_detail", kwargs={"slug": self.product.slug})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+
+
+class ApplicationAndStandardSEOTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.application = Application.objects.create(
+            name="Aerospace Engineering",
+            description="Components for aerospace and aviation.",
+            meta_title="Aerospace Fasteners & Parts | M.I. Engineering Works",
+            meta_description="High-precision aerospace fasteners certified to critical specs.",
+            meta_keywords="aerospace fasteners, aviation components, mil-spec hardware",
+        )
+        self.standard = Standard.objects.create(
+            name="ISO 4014",
+            description="Hexagon head bolts - Product grades A and B.",
+            meta_title="ISO 4014 Hex Bolts Specification | M.I. Engineering Works",
+            meta_description="Conforming to ISO 4014 standard for precision hexagon head bolts.",
+            meta_keywords="ISO 4014, DIN 931, hex head bolts ISO standard",
+        )
+        self.category = Category.objects.create(
+            name="Fasteners",
+            meta_title="Industrial Fasteners Supplier | M.I. Engineering Works",
+            meta_description="Top manufacturer of standard and custom industrial fasteners.",
+            meta_keywords="fasteners supplier, precision bolts, industrial screws",
+        )
+        self.product = Product.objects.create(
+            category=self.category,
+            title="ISO 4014 Aerospace Hex Bolt",
+            short_description="Certified ISO 4014 bolt for aerospace",
+            material="Titanium",
+            meta_title="Titanium ISO 4014 Aerospace Bolt | M.I. Engineering Works",
+            meta_description="Titanium aerospace hex bolt compliant with ISO 4014 standards.",
+            meta_keywords="titanium bolt, ISO 4014 aerospace, high-strength fastener",
+            is_active=True,
+        )
+        self.product.applications.add(self.application)
+        self.product.standards.add(self.standard)
+
+    def test_application_list_seo_meta_tags(self):
+        url = reverse("products:application_list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Industrial Fastener & Component Applications | M.I. Engineering Works")
+        self.assertContains(response, "Explore industrial fastener and component applications")
+        self.assertContains(response, "industrial applications, fastener applications")
+
+    def test_standard_list_seo_meta_tags(self):
+        url = reverse("products:standard_list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "International Manufacturing Standards & Specifications | M.I. Engineering Works")
+        self.assertContains(response, "Browse industrial fasteners and engineering components")
+        self.assertContains(response, "manufacturing standards, ISO fasteners")
+
+    def test_application_product_list_custom_meta_tags(self):
+        url = reverse("products:application_product_list", kwargs={"application_slug": self.application.slug})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Aerospace Fasteners &amp; Parts | M.I. Engineering Works")
+        self.assertContains(response, self.application.meta_description)
+        self.assertContains(response, self.application.meta_keywords)
+
+    def test_standard_product_list_custom_meta_tags(self):
+        url = reverse("products:standard_product_list", kwargs={"standard_slug": self.standard.slug})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.standard.meta_title)
+        self.assertContains(response, self.standard.meta_description)
+        self.assertContains(response, self.standard.meta_keywords)
+
+    def test_category_product_list_custom_meta_tags(self):
+        url = reverse("products:category_product_list", kwargs={"category_slug": self.category.slug})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.category.meta_title)
+        self.assertContains(response, self.category.meta_description)
+        self.assertContains(response, self.category.meta_keywords)
+
+    def test_product_detail_custom_meta_tags(self):
+        url = reverse("products:product_detail", kwargs={"slug": self.product.slug})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.product.meta_title)
+        self.assertContains(response, self.product.meta_description)
+        self.assertContains(response, self.product.meta_keywords)
+
+    def test_product_admin_category_dropdown_and_seo_fieldsets(self):
+        from django.contrib.admin.sites import site
+        from products.admin import ProductAdmin, ApplicationAdmin, StandardAdmin
+        admin_instance = ProductAdmin(Product, site)
+        # raw_id_fields must NOT contain 'category' so that it renders as a dropdown
+        self.assertNotIn("category", getattr(admin_instance, "raw_id_fields", ()))
+        
+        # Verify SEO fieldsets are defined
+        app_admin = ApplicationAdmin(Application, site)
+        app_fieldsets = [f[0] for f in app_admin.get_fieldsets(None)]
+        self.assertIn("SEO & Meta Tags", app_fieldsets)
+
+        std_admin = StandardAdmin(Standard, site)
+        std_fieldsets = [f[0] for f in std_admin.get_fieldsets(None)]
+        self.assertIn("SEO & Meta Tags", std_fieldsets)
+
+        prod_fieldsets = [f[0] for f in admin_instance.get_fieldsets(None)]
+        self.assertIn("SEO & Meta Tags", prod_fieldsets)
+
+    def test_sitemap_includes_applications_and_standards(self):
+        url = reverse("django.contrib.sitemaps.views.sitemap")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn(f"/products/applications/{self.application.slug}/", content)
+        self.assertIn(f"/products/standards/{self.standard.slug}/", content)
+        self.assertIn("/products/applications/", content)
+        self.assertIn("/products/standards/", content)

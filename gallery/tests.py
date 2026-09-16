@@ -141,3 +141,82 @@ class GalleryViewTests(TestCase):
         url = reverse("gallery:gallery_detail", kwargs={"pk": self.item_inactive.pk})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+
+
+class GalleryCertificateTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.category = Category.objects.create(name="Quality Certifications")
+        self.dummy_pdf = SimpleUploadedFile("iso_9001.pdf", b"%PDF-1.4 content", content_type="application/pdf")
+        self.item_pdf = GalleryItem.objects.create(
+            title="Company Brochure",
+            category=self.category,
+            media_type=GalleryItem.MediaType.PDF,
+            document=self.dummy_pdf,
+            is_active=True,
+        )
+        self.item_cert = GalleryItem.objects.create(
+            title="ISO 9001:2015 Certificate",
+            category=self.category,
+            media_type=GalleryItem.MediaType.CERTIFICATE,
+            document=self.dummy_pdf,
+            is_active=True,
+        )
+
+    def test_clean_certificate_requires_document(self):
+        cert = GalleryItem(
+            title="Missing File Cert",
+            category=self.category,
+            media_type=GalleryItem.MediaType.CERTIFICATE,
+        )
+        with self.assertRaises(ValidationError) as ctx:
+            cert.clean()
+        self.assertIn("document", ctx.exception.message_dict)
+
+    def test_clean_certificate_with_document_validates(self):
+        cert = GalleryItem(
+            title="Valid Cert",
+            category=self.category,
+            media_type=GalleryItem.MediaType.CERTIFICATE,
+            document=self.dummy_pdf,
+        )
+        try:
+            cert.clean()
+        except ValidationError:
+            self.fail("clean() raised ValidationError unexpectedly for valid certificate!")
+
+    def test_gallery_list_filter_certificate(self):
+        url = reverse("gallery:gallery_list")
+        response = self.client.get(url, {"type": "CERTIFICATE"})
+        self.assertEqual(response.status_code, 200)
+        items = list(response.context["items"])
+        self.assertIn(self.item_cert, items)
+        self.assertNotIn(self.item_pdf, items)
+        self.assertContains(response, "Certificates")
+        self.assertContains(response, "View Certificate")
+        self.assertContains(response, "Certificate")
+
+    def test_gallery_detail_certificate_rendering(self):
+        url = reverse("gallery:gallery_detail", kwargs={"pk": self.item_cert.pk})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Open Certificate in New Tab")
+
+    def test_admin_document_form_can_mark_certificate(self):
+        from gallery.admin import GalleryDocumentForm
+        from gallery.models import GalleryDocument
+
+        form_data = {
+            "title": "EN 10204 3.1 Mill Certificate",
+            "category": self.category.pk,
+            "media_type": GalleryItem.MediaType.CERTIFICATE,
+            "display_order": 0,
+            "is_active": True,
+        }
+        file_data = {
+            "document": SimpleUploadedFile("en10204.pdf", b"%PDF-1.4 test", content_type="application/pdf"),
+        }
+        form = GalleryDocumentForm(data=form_data, files=file_data)
+        self.assertTrue(form.is_valid(), form.errors)
+        instance = form.save(commit=False)
+        self.assertEqual(instance.media_type, GalleryItem.MediaType.CERTIFICATE)

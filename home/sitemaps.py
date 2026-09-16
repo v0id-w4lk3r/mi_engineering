@@ -1,6 +1,6 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
-from products.models import Category, Product
+from products.models import Application, Category, Product, Standard
 
 
 class StaticViewSitemap(Sitemap):
@@ -14,6 +14,9 @@ class StaticViewSitemap(Sitemap):
             "home:homepage",
             "home:about-us",
             "home:contact-us",
+            "products:product_list",
+            "products:application_list",
+            "products:standard_list",
         ]
 
     def location(self, item):
@@ -49,4 +52,36 @@ class CategorySitemap(Sitemap):
         return reverse(
             "products:category_product_list",
             kwargs={"category_slug": obj.slug},
+        )
+
+
+class ApplicationSitemap(Sitemap):
+    """Sitemap for products filtered by application."""
+    changefreq = "weekly"
+    priority = 0.7
+    protocol = "https"
+
+    def items(self):
+        return Application.objects.all().order_by("name")
+
+    def location(self, obj):
+        return reverse(
+            "products:application_product_list",
+            kwargs={"application_slug": obj.slug},
+        )
+
+
+class StandardSitemap(Sitemap):
+    """Sitemap for products filtered by standard."""
+    changefreq = "weekly"
+    priority = 0.7
+    protocol = "https"
+
+    def items(self):
+        return Standard.objects.all().order_by("name")
+
+    def location(self, obj):
+        return reverse(
+            "products:standard_product_list",
+            kwargs={"standard_slug": obj.slug},
         )

@@ -6,14 +6,34 @@ from .models import Category, Product, ProductImage, ProductSpecification, Appli
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ("name", "slug")
-    search_fields = ("name",)
+    search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name",)}
+    fieldsets = (
+        (None, {"fields": ("name", "slug", "description", "image")}),
+        (
+            "SEO & Meta Tags",
+            {
+                "classes": ("collapse",),
+                "fields": ("meta_title", "meta_description", "meta_keywords"),
+            },
+        ),
+    )
 
 @admin.register(Standard)
 class StandardAdmin(admin.ModelAdmin):
     list_display = ("name", "slug")
-    search_fields = ("name",)
+    search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name",)}
+    fieldsets = (
+        (None, {"fields": ("name", "slug", "description")}),
+        (
+            "SEO & Meta Tags",
+            {
+                "classes": ("collapse",),
+                "fields": ("meta_title", "meta_description", "meta_keywords"),
+            },
+        ),
+    )
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
@@ -43,6 +63,19 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ("is_active", )
     search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name", )}
+    fieldsets = (
+        (
+            None,
+            {"fields": ("name", "slug", "description", "image", "is_active")},
+        ),
+        (
+            "SEO & Meta Tags",
+            {
+                "classes": ("collapse",),
+                "fields": ("meta_title", "meta_description", "meta_keywords"),
+            },
+        ),
+    )
 
 
 @admin.register(Product)
@@ -59,7 +92,6 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ("category", "is_active", "is_featured", "material")
     search_fields = ("title", "material", "grade")
     prepopulated_fields = {"slug": ("title", )}
-    raw_id_fields = ("category", )
     filter_horizontal = ("applications", "standards")
     inlines = [ProductImageInline, ProductSpecificationInline]
 
@@ -89,6 +121,13 @@ class ProductAdmin(admin.ModelAdmin):
             {
                 "classes": ("collapse", ),
                 "fields": ("chemical_composition", "mechanical_properties"),
+            },
+        ),
+        (
+            "SEO & Meta Tags",
+            {
+                "classes": ("collapse", ),
+                "fields": ("meta_title", "meta_description", "meta_keywords"),
             },
         ),
         ("Visibility", {

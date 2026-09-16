@@ -6,12 +6,20 @@ from django.urls import include, path, re_path
 from django.views.generic import TemplateView
 from django.views.static import serve
 
-from home.sitemaps import CategorySitemap, ProductSitemap, StaticViewSitemap
+from home.sitemaps import (
+    ApplicationSitemap,
+    CategorySitemap,
+    ProductSitemap,
+    StandardSitemap,
+    StaticViewSitemap,
+)
 
 sitemaps = {
     "static": StaticViewSitemap,
     "products": ProductSitemap,
     "categories": CategorySitemap,
+    "applications": ApplicationSitemap,
+    "standards": StandardSitemap,
 }
 
 urlpatterns = [

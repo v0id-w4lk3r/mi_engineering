@@ -4,11 +4,11 @@
 <!-- Dynamic SEO Meta Blocks -->
 {% block title %}
   {% if category_obj %}
-    {{ category_obj.name }} | Industrial Fasteners & Components - M.I. Engineering Works
+    {% if category_obj.meta_title %}{{ category_obj.meta_title }}{% else %}{{ category_obj.name }} | Industrial Fasteners & Components - M.I. Engineering Works{% endif %}
   {% elif application_obj %}
-    {{ application_obj.name }} Products | Industrial Fasteners & Components - M.I. Engineering Works
+    {% if application_obj.meta_title %}{{ application_obj.meta_title }}{% else %}{{ application_obj.name }} Products | Industrial Fasteners & Components - M.I. Engineering Works{% endif %}
   {% elif standard_obj %}
-    {{ standard_obj.name }} Standards | Industrial Fasteners & Components - M.I. Engineering Works
+    {% if standard_obj.meta_title %}{{ standard_obj.meta_title }}{% else %}{{ standard_obj.name }} Standards | Industrial Fasteners & Components - M.I. Engineering Works{% endif %}
   {% else %}
     Industrial Engineering Products & Fasteners Catalog | M.I. Engineering Works
   {% endif %}
@@ -16,11 +16,11 @@
 
 {% block meta_description %}
   {% if category_obj %}
-    Browse our catalog of high-precision {{ category_obj.name }} manufactured to ISO, DIN, and ASTM specifications. Bulk orders and custom sizes available.
+    {% if category_obj.meta_description %}{{ category_obj.meta_description }}{% elif category_obj.description %}{{ category_obj.description|striptags|truncatewords:30 }}{% else %}Browse our catalog of high-precision {{ category_obj.name }} manufactured to ISO, DIN, and ASTM specifications. Bulk orders and custom sizes available.{% endif %}
   {% elif application_obj %}
-    Browse our catalog of products for {{ application_obj.name }} applications.
+    {% if application_obj.meta_description %}{{ application_obj.meta_description }}{% elif application_obj.description %}{{ application_obj.description|striptags|truncatewords:30 }}{% else %}Browse our catalog of products for {{ application_obj.name }} applications.{% endif %}
   {% elif standard_obj %}
-    Browse our catalog of products conforming to {{ standard_obj.name }} standard.
+    {% if standard_obj.meta_description %}{{ standard_obj.meta_description }}{% elif standard_obj.description %}{{ standard_obj.description|striptags|truncatewords:30 }}{% else %}Browse our catalog of products conforming to {{ standard_obj.name }} standard.{% endif %}
   {% else %}
     Explore the full industrial catalog of M.I. Engineering Works, featuring precision bolts, nuts, stud rods, washers, and custom turned components.
   {% endif %}
@@ -28,11 +28,11 @@
 
 {% block meta_keywords %}
   {% if category_obj %}
-    {{ category_obj.name }}, precision {{ category_obj.name }}, industrial fasteners, M.I. Engineering Works
+    {% if category_obj.meta_keywords %}{{ category_obj.meta_keywords }}{% else %}{{ category_obj.name }}, precision {{ category_obj.name }}, industrial fasteners, M.I. Engineering Works{% endif %}
   {% elif application_obj %}
-    {{ application_obj.name }}, {{ application_obj.name }} fasteners, industrial fasteners, M.I. Engineering Works
+    {% if application_obj.meta_keywords %}{{ application_obj.meta_keywords }}{% else %}{{ application_obj.name }}, {{ application_obj.name }} fasteners, industrial fasteners, M.I. Engineering Works{% endif %}
   {% elif standard_obj %}
-    {{ standard_obj.name }}, {{ standard_obj.name }} fasteners, industrial fasteners, M.I. Engineering Works
+    {% if standard_obj.meta_keywords %}{{ standard_obj.meta_keywords }}{% else %}{{ standard_obj.name }}, {{ standard_obj.name }} fasteners, industrial fasteners, M.I. Engineering Works{% endif %}
   {% else %}
     industrial fasteners, engineering components, ISO DIN bolts, custom studs, precision engineering catalog
   {% endif %}
@@ -44,11 +44,11 @@
 {% block og_type %}website{% endblock %}
 {% block og_title %}
   {% if category_obj %}
-    {{ category_obj.name }} - M.I. Engineering Works
+    {% if category_obj.meta_title %}{{ category_obj.meta_title }}{% else %}{{ category_obj.name }} - M.I. Engineering Works{% endif %}
   {% elif application_obj %}
-    {{ application_obj.name }} - M.I. Engineering Works
+    {% if application_obj.meta_title %}{{ application_obj.meta_title }}{% else %}{{ application_obj.name }} - M.I. Engineering Works{% endif %}
   {% elif standard_obj %}
-    {{ standard_obj.name }} - M.I. Engineering Works
+    {% if standard_obj.meta_title %}{{ standard_obj.meta_title }}{% else %}{{ standard_obj.name }} - M.I. Engineering Works{% endif %}
   {% else %}
     Engineering Products & Industrial Solutions - M.I. Engineering Works
   {% endif %}
@@ -56,17 +56,50 @@
 
 {% block og_description %}
   {% if category_obj %}
-    High-grade industrial {{ category_obj.name }} built for heavy machinery, construction, and structural applications.
+    {% if category_obj.meta_description %}{{ category_obj.meta_description }}{% elif category_obj.description %}{{ category_obj.description|striptags|truncatewords:30 }}{% else %}High-grade industrial {{ category_obj.name }} built for heavy machinery, construction, and structural applications.{% endif %}
   {% elif application_obj %}
-    High-grade industrial products for {{ application_obj.name }}.
+    {% if application_obj.meta_description %}{{ application_obj.meta_description }}{% elif application_obj.description %}{{ application_obj.description|striptags|truncatewords:30 }}{% else %}High-grade industrial products for {{ application_obj.name }}.{% endif %}
   {% elif standard_obj %}
-    High-grade industrial products for {{ standard_obj.name }}.
+    {% if standard_obj.meta_description %}{{ standard_obj.meta_description }}{% elif standard_obj.description %}{{ standard_obj.description|striptags|truncatewords:30 }}{% else %}High-grade industrial products for {{ standard_obj.name }}.{% endif %}
   {% else %}
     Quality-certified fasteners, bolts, studs, and custom precision components built to strict international standards.
   {% endif %}
 {% endblock %}
 
-{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endblock %}
+{% block og_image %}
+  {% if application_obj and application_obj.image %}
+    {{ request.scheme }}://{{ request.get_host }}{{ application_obj.image.url }}
+  {% elif category_obj and category_obj.image %}
+    {{ request.scheme }}://{{ request.get_host }}{{ category_obj.image.url }}
+  {% else %}
+    {{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}
+  {% endif %}
+{% endblock %}
+
+<!-- Twitter Card -->
+{% block twitter_title %}
+  {% if category_obj %}
+    {% if category_obj.meta_title %}{{ category_obj.meta_title }}{% else %}{{ category_obj.name }} - M.I. Engineering Works{% endif %}
+  {% elif application_obj %}
+    {% if application_obj.meta_title %}{{ application_obj.meta_title }}{% else %}{{ application_obj.name }} - M.I. Engineering Works{% endif %}
+  {% elif standard_obj %}
+    {% if standard_obj.meta_title %}{{ standard_obj.meta_title }}{% else %}{{ standard_obj.name }} - M.I. Engineering Works{% endif %}
+  {% else %}
+    Engineering Products & Industrial Solutions - M.I. Engineering Works
+  {% endif %}
+{% endblock %}
+
+{% block twitter_description %}
+  {% if category_obj %}
+    {% if category_obj.meta_description %}{{ category_obj.meta_description }}{% elif category_obj.description %}{{ category_obj.description|striptags|truncatewords:30 }}{% else %}High-grade industrial {{ category_obj.name }} built for heavy machinery, construction, and structural applications.{% endif %}
+  {% elif application_obj %}
+    {% if application_obj.meta_description %}{{ application_obj.meta_description }}{% elif application_obj.description %}{{ application_obj.description|striptags|truncatewords:30 }}{% else %}High-grade industrial products for {{ application_obj.name }}.{% endif %}
+  {% elif standard_obj %}
+    {% if standard_obj.meta_description %}{{ standard_obj.meta_description }}{% elif standard_obj.description %}{{ standard_obj.description|striptags|truncatewords:30 }}{% else %}High-grade industrial products for {{ standard_obj.name }}.{% endif %}
+  {% else %}
+    Quality-certified fasteners, bolts, studs, and custom precision components built to strict international standards.
+  {% endif %}
+{% endblock %}
 
 <!-- ItemList Structured Data (Schema.org) for Google Listing -->
 {% block schema_json %}

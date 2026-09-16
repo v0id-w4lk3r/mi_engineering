@@ -44,6 +44,10 @@ JAZZMIN_SETTINGS = {
         # Gallery App Models
         "gallery.Category": "fas fa-folder-open",
         "gallery.GalleryItem": "fas fa-images",
+        "gallery.GalleryImage": "fas fa-image",
+        "gallery.GalleryVideo": "fas fa-video",
+        "gallery.GalleryDocument": "fas fa-file-pdf",
+        "gallery.GalleryCertificate": "fas fa-certificate",
     },
 
     # Top Menu Navigation

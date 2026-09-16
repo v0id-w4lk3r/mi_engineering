@@ -14,6 +14,25 @@ class Category(models.Model):
     image = models.ImageField(upload_to="categories/", blank=True, null=True)
     is_active = models.BooleanField(default=True, db_index=True)
 
+    # SEO fields
+    meta_title = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="SEO Meta Title (optional)",
+    )
+    meta_description = models.TextField(
+        blank=True,
+        default="",
+        help_text="SEO Meta Description (optional)",
+    )
+    meta_keywords = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="SEO Meta Keywords, comma-separated (optional)",
+    )
+
     class Meta:
         verbose_name_plural = "Categories"
         ordering = ["name"]
@@ -39,6 +58,28 @@ class Application(models.Model):
     description = models.TextField(blank=True, default="")
     image = models.ImageField(upload_to="applications/", blank=True, null=True)
 
+    # SEO fields
+    meta_title = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="SEO Meta Title (optional)",
+    )
+    meta_description = models.TextField(
+        blank=True,
+        default="",
+        help_text="SEO Meta Description (optional)",
+    )
+    meta_keywords = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="SEO Meta Keywords, comma-separated (optional)",
+    )
+
+    class Meta:
+        ordering = ["name"]
+
     def save(self, *args, **kwargs):
         if not self.slug:
             base_slug = slugify(self.name) or "application"
@@ -58,6 +99,28 @@ class Standard(models.Model):
     name = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=150, unique=True, blank=True)
     description = models.TextField(blank=True, default="")
+
+    # SEO fields
+    meta_title = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="SEO Meta Title (optional)",
+    )
+    meta_description = models.TextField(
+        blank=True,
+        default="",
+        help_text="SEO Meta Description (optional)",
+    )
+    meta_keywords = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="SEO Meta Keywords, comma-separated (optional)",
+    )
+
+    class Meta:
+        ordering = ["name"]
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -128,6 +191,25 @@ class Product(models.Model):
         blank=True,
         default="",
         help_text="Tensile strength, yield strength, elongation, and hardness",
+    )
+
+    # SEO fields
+    meta_title = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="SEO Meta Title (optional)",
+    )
+    meta_description = models.TextField(
+        blank=True,
+        default="",
+        help_text="SEO Meta Description (optional)",
+    )
+    meta_keywords = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="SEO Meta Keywords, comma-separated (optional)",
     )
 
     is_featured = models.BooleanField(default=False, db_index=True)

@@ -2,20 +2,20 @@
 {% load static %}
 
 <!-- Dynamic SEO Meta Blocks -->
-{% block title %}{{ product.title }} | {{ product.category.name|default:"Industrial Component" }} - M.I. Engineering Works{% endblock %}
+{% block title %}{% if product.meta_title %}{{ product.meta_title }}{% else %}{{ product.title }} | {{ product.category.name|default:"Industrial Component" }} - M.I. Engineering Works{% endif %}{% endblock %}
 
 {% block meta_description %}
-  {% if product.short_description %}{{ product.short_description }}{% else %}High-precision {{ product.title }} manufactured by M.I. Engineering Works. Made from {{ product.material|default:"industrial grade materials" }}.{% endif %}
+  {% if product.meta_description %}{{ product.meta_description }}{% elif product.short_description %}{{ product.short_description }}{% else %}High-precision {{ product.title }} manufactured by M.I. Engineering Works. Made from {{ product.material|default:"industrial grade materials" }}.{% endif %}
 {% endblock %}
 
-{% block meta_keywords %}{{ product.title }}, {{ product.category.name }}, {{ product.material }}, industrial fasteners, precision engineering{% endblock %}
+{% block meta_keywords %}{% if product.meta_keywords %}{{ product.meta_keywords }}{% else %}{{ product.title }}, {{ product.category.name }}, {{ product.material }}, industrial fasteners, precision engineering{% endif %}{% endblock %}
 
 {% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'products:product_detail' product.slug %}{% endblock %}
 
 <!-- Open Graph / Social Media Overrides -->
 {% block og_type %}product{% endblock %}
-{% block og_title %}{{ product.title }} - M.I. Engineering Works{% endblock %}
-{% block og_description %}{{ product.short_description|default:product.title }}{% endblock %}
+{% block og_title %}{% if product.meta_title %}{{ product.meta_title }}{% else %}{{ product.title }} - M.I. Engineering Works{% endif %}{% endblock %}
+{% block og_description %}{% if product.meta_description %}{{ product.meta_description }}{% else %}{{ product.short_description|default:product.title }}{% endif %}{% endblock %}
 {% block og_image %}
   {% with product.primary_image as primary_image %}
     {% if primary_image and primary_image.image %}{{ request.scheme }}://{{ request.get_host }}{{ primary_image.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endif %}
@@ -24,8 +24,8 @@
 {% block og_image_alt %}{{ product.title }} - M.I. Engineering Works{% endblock %}
 
 <!-- Twitter Card -->
-{% block twitter_title %}{{ product.title }} - M.I. Engineering Works{% endblock %}
-{% block twitter_description %}{{ product.short_description|default:product.title }}{% endblock %}
+{% block twitter_title %}{% if product.meta_title %}{{ product.meta_title }}{% else %}{{ product.title }} - M.I. Engineering Works{% endif %}{% endblock %}
+{% block twitter_description %}{% if product.meta_description %}{{ product.meta_description }}{% else %}{{ product.short_description|default:product.title }}{% endif %}{% endblock %}
 {% block twitter_image %}
   {% with product.primary_image as primary_image %}
     {% if primary_image and primary_image.image %}{{ request.scheme }}://{{ request.get_host }}{{ primary_image.image.url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/bg/login_bg.jpg' %}{% endif %}
