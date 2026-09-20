@@ -105,7 +105,7 @@ class ProductAdmin(admin.ModelAdmin):
         "is_active",
     )
     list_editable = ("is_featured", "is_active")
-    list_filter = ("category", "is_active", "is_featured", "materials", "material")
+    list_filter = ("category", "is_active", "is_featured", "materials")
     search_fields = ("title", "materials__name", "material", "grade")
     prepopulated_fields = {"slug": ("title", )}
     filter_horizontal = ("materials", "applications", "standards")
@@ -130,7 +130,7 @@ class ProductAdmin(admin.ModelAdmin):
         (
             "Specifications & Attributes",
             {
-                "fields": ("material", "grade", "size_range")
+                "fields": ("grade", "size_range")
             },
         ),
         (
