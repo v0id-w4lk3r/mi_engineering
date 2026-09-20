@@ -1,7 +1,7 @@
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView
-from ..models import Category, Product, Application, Standard
+from ..models import Category, Product, Application, Standard, Material
 
 
 class ProductListView(ListView):
@@ -12,7 +12,7 @@ class ProductListView(ListView):
 
     def get_queryset(self):
         queryset = Product.objects.filter(is_active=True).select_related(
-            "category").prefetch_related("images", "applications", "standards")
+            "category").prefetch_related("images", "materials", "applications", "standards")
 
         # Category Filtering
         category_slug = self.kwargs.get("category_slug")
@@ -29,13 +29,23 @@ class ProductListView(ListView):
         if standard_slug:
             queryset = queryset.filter(standards__slug=standard_slug)
 
+        # Material Filtering
+        material_slug = self.kwargs.get("material_slug")
+        if material_slug:
+            material_obj = get_object_or_404(Material, slug=material_slug)
+            queryset = queryset.filter(
+                Q(materials=material_obj) | Q(material__iexact=material_obj.name)
+            ).distinct()
+
         # Search Query Filtering
         search_query = self.request.GET.get("q")
         if search_query:
             queryset = queryset.filter(
                 Q(title__icontains=search_query)
                 | Q(short_description__icontains=search_query)
-                | Q(material__icontains=search_query))
+                | Q(material__icontains=search_query)
+                | Q(materials__name__icontains=search_query)
+            ).distinct()
 
         return queryset
 
@@ -44,6 +54,7 @@ class ProductListView(ListView):
         category_slug = self.kwargs.get("category_slug")
         application_slug = self.kwargs.get("application_slug")
         standard_slug = self.kwargs.get("standard_slug")
+        material_slug = self.kwargs.get("material_slug")
 
         context["categories"] = Category.objects.filter(is_active=True).annotate(
             active_products_count=Count("products", filter=Q(products__is_active=True))
@@ -59,6 +70,10 @@ class ProductListView(ListView):
         context["selected_standard"] = standard_slug
         context["standard_obj"] = (get_object_or_404(
             Standard, slug=standard_slug) if standard_slug else None)
+
+        context["selected_material"] = material_slug
+        context["material_obj"] = (get_object_or_404(
+            Material, slug=material_slug) if material_slug else None)
 
         return context
 

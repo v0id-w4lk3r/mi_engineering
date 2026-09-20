@@ -11,6 +11,8 @@
         {{ application_obj.name }}
       {% elif standard_obj %}
         {{ standard_obj.name }}
+      {% elif material_obj %}
+        {{ material_obj.name }}
       {% else %}
         Engineering Products
       {% endif %}
@@ -22,6 +24,8 @@
         Explore our range of precision-manufactured components for {{ application_obj.name|lower }}.
       {% elif standard_obj %}
         Explore our range of precision-manufactured components conforming to {{ standard_obj.name }}.
+      {% elif material_obj %}
+        Explore our range of precision-manufactured components crafted from {{ material_obj.name }}.
       {% else %}
         Explore our range of precision-manufactured components and custom engineering solutions.
       {% endif %}
@@ -31,8 +35,8 @@
   <!-- Quick Search Bar -->
   <form
     method="get"
-    action="{% if category_obj %}{% url 'products:category_product_list' category_obj.slug %}{% elif application_obj %}{% url 'products:application_product_list' application_obj.slug %}{% elif standard_obj %}{% url 'products:standard_product_list' standard_obj.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
-    hx-get="{% if category_obj %}{% url 'products:category_product_list' category_obj.slug %}{% elif application_obj %}{% url 'products:application_product_list' application_obj.slug %}{% elif standard_obj %}{% url 'products:standard_product_list' standard_obj.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
+    action="{% if category_obj %}{% url 'products:category_product_list' category_obj.slug %}{% elif application_obj %}{% url 'products:application_product_list' application_obj.slug %}{% elif standard_obj %}{% url 'products:standard_product_list' standard_obj.slug %}{% elif material_obj %}{% url 'products:material_product_list' material_obj.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
+    hx-get="{% if category_obj %}{% url 'products:category_product_list' category_obj.slug %}{% elif application_obj %}{% url 'products:application_product_list' application_obj.slug %}{% elif standard_obj %}{% url 'products:standard_product_list' standard_obj.slug %}{% elif material_obj %}{% url 'products:material_product_list' material_obj.slug %}{% else %}{% url 'products:product_list' %}{% endif %}"
     hx-target="#catalog-content"
     hx-push-url="true"
     hx-trigger="submit, keyup changed delay:400ms from:#catalog-search"

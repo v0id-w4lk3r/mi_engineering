@@ -9,6 +9,7 @@ from django.views.static import serve
 from home.sitemaps import (
     ApplicationSitemap,
     CategorySitemap,
+    MaterialSitemap,
     ProductSitemap,
     StandardSitemap,
     StaticViewSitemap,
@@ -20,6 +21,7 @@ sitemaps = {
     "categories": CategorySitemap,
     "applications": ApplicationSitemap,
     "standards": StandardSitemap,
+    "materials": MaterialSitemap,
 }
 
 urlpatterns = [

@@ -2,7 +2,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from products.models import Application, Category, Product, ProductImage, Standard
+from products.models import Application, Category, Material, Product, ProductImage, Standard
 
 
 class ProductModelTests(TestCase):
@@ -308,3 +308,137 @@ class ApplicationAndStandardSEOTests(TestCase):
         self.assertIn(f"/products/standards/{self.standard.slug}/", content)
         self.assertIn("/products/applications/", content)
         self.assertIn("/products/standards/", content)
+
+
+class MaterialModelAndCatalogTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.category = Category.objects.create(name="Bolts")
+        self.material1 = Material.objects.create(
+            name="Stainless Steel 316",
+            description="Marine grade stainless steel with high corrosion resistance.",
+            meta_title="SS316 Stainless Steel Components | M.I. Engineering Works",
+            meta_description="High-quality SS316 fasteners and custom components.",
+            meta_keywords="SS316, marine grade steel, stainless fasteners",
+        )
+        self.material2 = Material.objects.create(
+            name="Brass",
+            description="Corrosion resistant copper-zinc alloy for electrical and plumbing.",
+        )
+        self.product = Product.objects.create(
+            category=self.category,
+            title="SS316 Hex Bolt M12",
+            short_description="Marine grade hex bolt",
+            is_active=True,
+        )
+        self.product.materials.add(self.material1)
+
+    def test_material_slug_generation_and_uniqueness(self):
+        self.assertEqual(self.material1.slug, "stainless-steel-316")
+        mat_dup = Material.objects.create(name="Stainless-Steel-316")
+        self.assertEqual(mat_dup.slug, "stainless-steel-316-1")
+
+    def test_material_list_view(self):
+        url = reverse("products:material_list")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "material_list.html")
+        self.assertContains(response, "Browse by Material")
+        self.assertContains(response, "Stainless Steel 316")
+        self.assertContains(response, "Brass")
+
+    def test_material_product_list_view(self):
+        url = reverse("products:material_product_list", kwargs={"material_slug": self.material1.slug})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "SS316 Hex Bolt M12")
+        self.assertContains(response, self.material1.meta_title)
+
+    def test_material_admin_registration(self):
+        from django.contrib.admin.sites import site
+        from products.admin import MaterialAdmin, ProductAdmin
+        self.assertIn(Material, site._registry)
+        mat_admin = site._registry[Material]
+        self.assertIsInstance(mat_admin, MaterialAdmin)
+
+        prod_admin = site._registry[Product]
+        self.assertIn("materials", prod_admin.filter_horizontal)
+        self.assertIn("applications", prod_admin.filter_horizontal)
+        self.assertIn("standards", prod_admin.filter_horizontal)
+
+    def test_sitemap_includes_materials(self):
+        url = reverse("django.contrib.sitemaps.views.sitemap")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertIn(f"/products/materials/{self.material1.slug}/", content)
+        self.assertIn("/products/materials/", content)
+
+
+class ProductApplicationStandardMaterialDisplayTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.category = Category.objects.create(name="Structural Fasteners")
+        self.material = Material.objects.create(
+            name="Alloy Steel Grade B7",
+            description="Chromium-molybdenum high tensile heat treated alloy steel.",
+        )
+        self.application1 = Application.objects.create(
+            name="Oil & Gas Petrochemical",
+            description="Refineries, offshore rigs, and pipelines.",
+        )
+        self.application2 = Application.objects.create(
+            name="Heavy Machinery",
+            description="Heavy earthmoving and industrial machinery.",
+        )
+        self.standard1 = Standard.objects.create(
+            name="ASTM A193 B7",
+            description="Specification for alloy-steel stud bolts.",
+        )
+        self.standard2 = Standard.objects.create(
+            name="DIN 976",
+            description="Metric threaded rods and studs specification.",
+        )
+        self.product = Product.objects.create(
+            category=self.category,
+            title="ASTM A193 B7 High Tensile Stud Rod",
+            short_description="High-strength stud bolt for pressure vessels and flanges.",
+            grade="Grade B7",
+            size_range="M12 to M48",
+            is_active=True,
+        )
+        self.product.materials.add(self.material)
+        self.product.applications.add(self.application1, self.application2)
+        self.product.standards.add(self.standard1, self.standard2)
+
+    def test_product_detail_displays_applications_and_standards(self):
+        url = reverse("products:product_detail", kwargs={"slug": self.product.slug})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        # Check applications are displayed in product detail
+        self.assertContains(response, "Oil &amp; Gas Petrochemical")
+        self.assertContains(response, "Heavy Machinery")
+        self.assertContains(response, reverse("products:application_product_list", kwargs={"application_slug": self.application1.slug}))
+        self.assertContains(response, reverse("products:application_product_list", kwargs={"application_slug": self.application2.slug}))
+
+        # Check standards are displayed in product detail
+        self.assertContains(response, "ASTM A193 B7")
+        self.assertContains(response, "DIN 976")
+        self.assertContains(response, reverse("products:standard_product_list", kwargs={"standard_slug": self.standard1.slug}))
+        self.assertContains(response, reverse("products:standard_product_list", kwargs={"standard_slug": self.standard2.slug}))
+
+        # Check material is displayed and links to by-material catalog
+        self.assertContains(response, "Alloy Steel Grade B7")
+        self.assertContains(response, reverse("products:material_product_list", kwargs={"material_slug": self.material.slug}))
+
+        # Check specifications tab and applications & standards tab content
+        self.assertContains(response, "Applications &amp; Standards")
+
+    def test_footer_displays_complete_business_address(self):
+        url = reverse("home:homepage")
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "17, 2nd Floor, Plot-15/17, Ratan Building, Narayan Dhuru Street, Pydhonie, Mandvi, Mumbai - 400003")
+        self.assertContains(response, "Plot 222, Chhota Sonapur Compound, Maulana Shaukat Ali Road, Mumbai - 400008")
+        self.assertNotContains(response, "Industrial Area Procurement Hub")

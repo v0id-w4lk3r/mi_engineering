@@ -1,7 +1,23 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Category, Product, ProductImage, ProductSpecification, Application, Standard
+from .models import Category, Product, ProductImage, ProductSpecification, Application, Standard, Material
+
+@admin.register(Material)
+class MaterialAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug")
+    search_fields = ("name", "description")
+    prepopulated_fields = {"slug": ("name",)}
+    fieldsets = (
+        (None, {"fields": ("name", "slug", "description", "image")}),
+        (
+            "SEO & Meta Tags",
+            {
+                "classes": ("collapse",),
+                "fields": ("meta_title", "meta_description", "meta_keywords"),
+            },
+        ),
+    )
 
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
@@ -84,15 +100,15 @@ class ProductAdmin(admin.ModelAdmin):
         "primary_thumbnail",
         "title",
         "category",
-        "material",
+        "display_material",
         "is_featured",
         "is_active",
     )
     list_editable = ("is_featured", "is_active")
-    list_filter = ("category", "is_active", "is_featured", "material")
-    search_fields = ("title", "material", "grade")
+    list_filter = ("category", "is_active", "is_featured", "materials", "material")
+    search_fields = ("title", "materials__name", "material", "grade")
     prepopulated_fields = {"slug": ("title", )}
-    filter_horizontal = ("applications", "standards")
+    filter_horizontal = ("materials", "applications", "standards")
     inlines = [ProductImageInline, ProductSpecificationInline]
 
     fieldsets = (
@@ -103,6 +119,7 @@ class ProductAdmin(admin.ModelAdmin):
                     "title",
                     "slug",
                     "category",
+                    "materials",
                     "applications",
                     "standards",
                     "short_description",
@@ -145,3 +162,15 @@ class ProductAdmin(admin.ModelAdmin):
         return "—"
 
     primary_thumbnail.short_description = "Image"
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        if form.instance.materials.exists():
+            mat_names = ", ".join(m.name for m in form.instance.materials.all())
+            if not form.instance.material or form.instance.material != mat_names:
+                form.instance.material = mat_names
+                form.instance.save(update_fields=["material"])
+        elif form.instance.material:
+            mat = Material.objects.filter(name__iexact=form.instance.material.strip()).first()
+            if mat:
+                form.instance.materials.add(mat)

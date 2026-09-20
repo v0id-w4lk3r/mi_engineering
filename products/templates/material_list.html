@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- Dynamic SEO Meta Blocks -->
+{% block title %}Industrial Fastener &amp; Component Materials | M.I. Engineering Works{% endblock %}
+{% block meta_description %}Explore our range of precision-manufactured fasteners and industrial components available in Stainless Steel, High-Tensile Alloy, Brass, Mild Steel, and specialty metals.{% endblock %}
+{% block meta_keywords %}fastener materials, stainless steel fasteners, alloy steel bolts, brass components, mild steel hardware, precision metals, M.I. Engineering Works{% endblock %}
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'products:material_list' %}{% endblock %}
+
+<!-- Open Graph / Social Media Overrides -->
+{% block og_type %}website{% endblock %}
+{% block og_title %}Industrial Materials &amp; Alloys - M.I. Engineering Works{% endblock %}
+{% block og_description %}Explore precision fasteners and engineered components crafted in high-grade stainless steel, alloy steel, brass, and custom materials.{% endblock %}
+{% block twitter_title %}Industrial Materials &amp; Alloys - M.I. Engineering Works{% endblock %}
+{% block twitter_description %}Explore precision fasteners and engineered components crafted in high-grade stainless steel, alloy steel, brass, and custom materials.{% endblock %}
+
+{% block content %}
+<div class="bg-brand-secondaryBg min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans">
+  <div class="max-w-7xl mx-auto">
+    <header class="bg-brand-bg rounded-2xl shadow-sm border border-brand-border p-8 mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div>
+        <span class="inline-block px-3 py-1 bg-brand-lightAccentBg text-brand-accent text-xs font-semibold rounded-full uppercase tracking-wider mb-2">
+          Materials
+        </span>
+        <h1 class="text-3xl font-extrabold text-brand-heading tracking-tight">
+          Browse by Material
+        </h1>
+        <p class="mt-1 text-sm text-brand-body">
+          Explore products manufactured in specialized industrial materials and alloys.
+        </p>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {% for material in materials %}
+        <a href="{% url 'products:material_product_list' material.slug %}" class="block group">
+          <div class="bg-brand-bg rounded-2xl shadow-sm border border-brand-border p-6 hover:shadow-md transition-shadow h-full flex flex-col items-center text-center">
+            {% if material.image %}
+              <div class="w-24 h-24 mb-4 rounded-full overflow-hidden border border-brand-border">
+                <img src="{{ material.image.url }}" alt="{{ material.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+            {% else %}
+              <div class="w-16 h-16 mb-4 rounded-2xl bg-brand-lightAccentBg border border-brand-accent/20 flex items-center justify-center text-brand-accent group-hover:bg-brand-accent group-hover:text-white transition-all duration-300">
+                <i class="fas fa-layer-group text-2xl"></i>
+              </div>
+            {% endif %}
+            <h2 class="text-xl font-bold text-brand-heading group-hover:text-brand-accent transition-colors">{{ material.name }}</h2>
+            {% if material.description %}
+              <p class="mt-2 text-sm text-brand-muted line-clamp-3">{{ material.description }}</p>
+            {% endif %}
+          </div>
+        </a>
+      {% empty %}
+        <div class="col-span-full py-12 text-center text-brand-muted bg-brand-bg border border-brand-border rounded-xl">
+          <p>No materials found.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

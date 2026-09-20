@@ -56,8 +56,14 @@
         <!-- Spec Badges & CTA -->
         <div>
           <div class="flex flex-wrap gap-1.5 mb-4 text-[11px]">
-            {% if product.material %}
-            <span class="px-2 py-0.5 bg-brand-secondaryBg border border-brand-border rounded text-brand-body">
+            {% if product.materials.all %}
+              {% for mat in product.materials.all %}
+              <span class="px-2 py-0.5 bg-brand-secondaryBg border border-brand-border rounded text-brand-body font-medium">
+                {{ mat.name }}
+              </span>
+              {% endfor %}
+            {% elif product.material %}
+            <span class="px-2 py-0.5 bg-brand-secondaryBg border border-brand-border rounded text-brand-body font-medium">
               {{ product.material }}
             </span>
             {% endif %}
@@ -65,6 +71,13 @@
             <span class="px-2 py-0.5 bg-brand-secondaryBg border border-brand-border rounded text-brand-body">
               {{ product.grade }}
             </span>
+            {% endif %}
+            {% if product.standards.all %}
+              {% for std in product.standards.all|slice:":2" %}
+              <span class="px-2 py-0.5 bg-brand-lightAccentBg border border-brand-accent/20 rounded text-brand-accent font-medium">
+                {{ std.name }}
+              </span>
+              {% endfor %}
             {% endif %}
           </div>
 

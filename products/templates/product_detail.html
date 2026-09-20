@@ -110,7 +110,17 @@
           <h1 class="text-3xl font-extrabold text-brand-heading tracking-tight">{{ product.title }}</h1>
           
           <div class="flex flex-wrap gap-2 text-xs">
-            {% if product.material %}
+            {% if product.materials.all %}
+              {% for mat in product.materials.all %}
+              <a
+                href="{% url 'products:material_product_list' mat.slug %}"
+                class="px-2.5 py-1 bg-brand-secondaryBg hover:bg-brand-lightAccentBg hover:text-brand-accent hover:border-brand-accent/40 border border-brand-border rounded-md text-brand-body font-medium transition"
+                title="Browse {{ mat.name }} products"
+              >
+                Material: {{ mat.name }}
+              </a>
+              {% endfor %}
+            {% elif product.material %}
             <span class="px-2.5 py-1 bg-brand-secondaryBg border border-brand-border rounded-md text-brand-body font-medium">
               Material: {{ product.material }}
             </span>
@@ -120,17 +130,64 @@
               Grade: {{ product.grade }}
             </span>
             {% endif %}
+            {% if product.size_range %}
+            <span class="px-2.5 py-1 bg-brand-secondaryBg border border-brand-border rounded-md text-brand-body font-medium">
+              Size: {{ product.size_range }}
+            </span>
+            {% endif %}
           </div>
 
           <p class="text-sm text-brand-body leading-relaxed pt-2">
             {{ product.short_description }}
           </p>
+
+          <!-- Selected Standards Display -->
+          {% if product.standards.all %}
+          <div class="pt-3 border-t border-brand-border/60">
+            <span class="text-xs font-bold text-brand-heading block mb-1.5 flex items-center gap-1.5">
+              <i class="fas fa-certificate text-brand-accent text-xs"></i> Compliance Standards:
+            </span>
+            <div class="flex flex-wrap gap-2">
+              {% for standard in product.standards.all %}
+              <a
+                href="{% url 'products:standard_product_list' standard.slug %}"
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-brand-lightAccentBg text-brand-accent border border-brand-accent/20 hover:bg-brand-accent hover:text-white transition text-xs font-semibold shadow-xs"
+                title="View all {{ standard.name }} products"
+              >
+                <i class="fas fa-check text-[10px]"></i>
+                {{ standard.name }}
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Selected Applications Display -->
+          {% if product.applications.all %}
+          <div class="pt-3 border-t border-brand-border/60">
+            <span class="text-xs font-bold text-brand-heading block mb-1.5 flex items-center gap-1.5">
+              <i class="fas fa-industry text-brand-accent text-xs"></i> Industrial Applications:
+            </span>
+            <div class="flex flex-wrap gap-2">
+              {% for app in product.applications.all %}
+              <a
+                href="{% url 'products:application_product_list' app.slug %}"
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-brand-secondaryBg text-brand-heading border border-brand-border hover:border-brand-accent hover:text-brand-accent transition text-xs font-medium"
+                title="View all {{ app.name }} products"
+              >
+                <i class="fas fa-wrench text-brand-accent text-[10px]"></i>
+                {{ app.name }}
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
         </div>
 
         <!-- Action CTAs -->
         <div class="pt-6 border-t border-brand-border flex flex-col sm:flex-row gap-3">
           <a
-            href="{% url 'home:contact-us' %}?product={{ product.title|urlencode }}{% if product.material %}&material={{ product.material|urlencode }}{% endif %}{% if product.grade %}&grade={{ product.grade|urlencode }}{% endif %}"
+            href="{% url 'home:contact-us' %}?product={{ product.title|urlencode }}{% if product.display_material %}&material={{ product.display_material|urlencode }}{% endif %}{% if product.grade %}&grade={{ product.grade|urlencode }}{% endif %}"
             class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-brand-primary text-white text-xs font-bold rounded-xl hover:bg-brand-accent transition-colors shadow-sm"
           >
             <i class="fas fa-envelope text-xs" aria-hidden="true"></i> Request Bulk Quote

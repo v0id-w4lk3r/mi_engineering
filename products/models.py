@@ -137,6 +137,49 @@ class Standard(models.Model):
         return self.name
 
 
+class Material(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    slug = models.SlugField(max_length=150, unique=True, blank=True)
+    description = models.TextField(blank=True, default="")
+    image = models.ImageField(upload_to="materials/", blank=True, null=True)
+
+    # SEO fields
+    meta_title = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="SEO Meta Title (optional)",
+    )
+    meta_description = models.TextField(
+        blank=True,
+        default="",
+        help_text="SEO Meta Description (optional)",
+    )
+    meta_keywords = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="SEO Meta Keywords, comma-separated (optional)",
+    )
+
+    class Meta:
+        ordering = ["name"]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.name) or "material"
+            slug = base_slug
+            counter = 1
+            while Material.objects.filter(slug=slug).exclude(id=self.id).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     if TYPE_CHECKING:
         id: int
@@ -148,6 +191,7 @@ class Product(models.Model):
         related_name="products",
         db_index=True,
     )
+    materials = models.ManyToManyField(Material, blank=True, related_name="products")
     applications = models.ManyToManyField(Application, blank=True, related_name="products")
     standards = models.ManyToManyField(Standard, blank=True, related_name="products")
     title = models.CharField(max_length=255)
@@ -163,7 +207,11 @@ class Product(models.Model):
 
     # Common Industrial Attributes
     material = models.CharField(
-        max_length=150, help_text="e.g. Stainless Steel, Mild Steel, Brass")
+        max_length=150,
+        blank=True,
+        default="",
+        help_text="e.g. Stainless Steel, Mild Steel, Brass",
+    )
     grade = models.CharField(
         max_length=150,
         blank=True,
@@ -230,6 +278,17 @@ class Product(models.Model):
             images = self._prefetched_objects_cache["images"]
             return next((img for img in images if img.is_primary), None) or (images[0] if images else None)
         return self.images.filter(is_primary=True).first() or self.images.first()
+
+    @property
+    def display_material(self):
+        """Returns comma-separated material names or falls back to the material text."""
+        if hasattr(self, "_prefetched_objects_cache") and "materials" in self._prefetched_objects_cache:
+            mats = self._prefetched_objects_cache["materials"]
+            if mats:
+                return ", ".join(m.name for m in mats)
+        elif self.pk and self.materials.exists():
+            return ", ".join(m.name for m in self.materials.all())
+        return self.material or "Industrial Grade"
 
     def save(self, *args, **kwargs):
         if not self.slug:
