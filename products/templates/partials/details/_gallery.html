@@ -1,22 +1,18 @@
 {% with product.images.all as images %}
 {% with product.primary_image as primary_img %}
-<div class="space-y-4">
+<div x-data="{ activeImage: '{% if primary_img and primary_img.image %}{{ primary_img.image.url }}{% elif images %}{{ images.0.image.url }}{% endif %}' }" class="space-y-4">
   <!-- Main Display Image -->
-  <div class="aspect-square bg-brand-secondaryBg rounded-xl border border-brand-border overflow-hidden flex items-center justify-center p-6 relative group">
-    {% if primary_img and primary_img.image %}
+  <div class="aspect-square bg-brand-secondaryBg rounded-xl border border-brand-border overflow-hidden flex items-center justify-center p-6 relative group cursor-zoom-in" @click="$dispatch('open-lightbox')">
+    {% if primary_img and primary_img.image or images %}
     <img
-      id="main-product-image"
-      src="{{ primary_img.image.url }}"
-      alt="{{ primary_img.alt_text|default:product.title }}"
-      class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+      :src="activeImage"
+      alt="{{ product.title }}"
+      class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
     />
-    {% elif images %}
-    <img
-      id="main-product-image"
-      src="{{ images.0.image.url }}"
-      alt="{{ images.0.alt_text|default:product.title }}"
-      class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
-    />
+    <!-- Lightbox Hint -->
+    <div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur text-brand-heading w-8 h-8 rounded-full flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+      <i class="fas fa-expand-alt text-sm"></i>
+    </div>
     {% else %}
     <div class="text-center text-brand-muted">
       <i class="fas fa-boxes text-5xl mb-3" aria-hidden="true"></i>
@@ -31,8 +27,9 @@
     {% for img in images %}
     <button
       type="button"
-      onclick="document.getElementById('main-product-image').src='{{ img.image.url }}'; document.querySelectorAll('.thumb-btn').forEach(b => b.classList.remove('border-brand-accent')); this.classList.add('border-brand-accent')"
-      class="thumb-btn aspect-square rounded-xl border-2 {% if primary_img and img.id == primary_img.id or not primary_img and forloop.first %}border-brand-accent{% else %}border-brand-border{% endif %} overflow-hidden bg-brand-secondaryBg p-1.5 transition focus:outline-none"
+      @click="activeImage = '{{ img.image.url }}'"
+      :class="activeImage === '{{ img.image.url }}' ? 'border-brand-accent' : 'border-brand-border'"
+      class="aspect-square rounded-xl border-2 overflow-hidden bg-brand-secondaryBg p-1.5 transition focus:outline-none hover:border-brand-accent/50"
     >
       <img
         src="{{ img.image.url }}"
@@ -43,6 +40,27 @@
     {% endfor %}
   </div>
   {% endif %}
+
+  <!-- Alpine Lightbox Modal -->
+  <div 
+    x-data="{ isOpen: false }" 
+    @open-lightbox.window="isOpen = true"
+    x-show="isOpen" 
+    style="display: none;"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 sm:p-10"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+  >
+    <button @click="isOpen = false" class="absolute top-6 right-6 text-white hover:text-brand-accent transition text-3xl focus:outline-none">
+      &times;
+    </button>
+    <img :src="activeImage" class="max-w-full max-h-full object-contain rounded-lg" @click.away="isOpen = false">
+  </div>
+
 </div>
 {% endwith %}
 {% endwith %}

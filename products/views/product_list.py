@@ -34,7 +34,7 @@ class ProductListView(ListView):
         if material_slug:
             material_obj = get_object_or_404(Material, slug=material_slug)
             queryset = queryset.filter(
-                Q(materials=material_obj) | Q(material__iexact=material_obj.name)
+                Q(materials=material_obj)
             ).distinct()
 
         # Search Query Filtering
@@ -43,7 +43,6 @@ class ProductListView(ListView):
             queryset = queryset.filter(
                 Q(title__icontains=search_query)
                 | Q(short_description__icontains=search_query)
-                | Q(material__icontains=search_query)
                 | Q(materials__name__icontains=search_query)
             ).distinct()
 

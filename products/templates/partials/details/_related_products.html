@@ -54,7 +54,7 @@
 
       <div class="pt-3 border-t border-brand-border flex items-center justify-between">
         <span class="text-[11px] font-semibold text-brand-accent bg-brand-lightAccentBg px-2 py-0.5 rounded">
-          {{ rel.material|default:"Industrial Grade" }}
+          {{ rel.display_material }}
         </span>
         <a
           href="{% url 'products:product_detail' rel.slug %}"

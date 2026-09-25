@@ -68,8 +68,47 @@ class ProductImageInline(admin.TabularInline):
     image_preview.short_description = "Preview"
 
 
+from django import forms
+from django.forms import widgets
+
+class DatalistWidget(widgets.TextInput):
+    def __init__(self, datalist, *args, **kwargs):
+        self.datalist = datalist
+        super().__init__(*args, **kwargs)
+
+    def render(self, name, value, attrs=None, renderer=None):
+        list_id = f"datalist_{name}"
+        if attrs is None:
+            attrs = {}
+        attrs['list'] = list_id
+        html = super().render(name, value, attrs, renderer)
+        datalist_html = f'<datalist id="{list_id}">' + "".join(f'<option value="{item}">' for item in self.datalist) + '</datalist>'
+        return html + datalist_html
+
+class ProductSpecificationForm(forms.ModelForm):
+    class Meta:
+        model = ProductSpecification
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from django.db.utils import OperationalError, ProgrammingError
+        try:
+            db_keys = set(ProductSpecification.objects.values_list('key', flat=True).distinct())
+        except (OperationalError, ProgrammingError):
+            db_keys = set()
+            
+        defaults = {
+            'Length Size', 'Class', 'Thread Type', 'Surface Finish', 
+            'Strength Features', 'Manufacturing Process', 'Customization', 'Mark'
+        }
+        all_keys = sorted(list(db_keys | defaults))
+        self.fields['key'].widget = DatalistWidget(datalist=all_keys)
+
+
 class ProductSpecificationInline(admin.TabularInline):
     model = ProductSpecification
+    form = ProductSpecificationForm
     extra = 1
 
 
@@ -106,9 +145,9 @@ class ProductAdmin(admin.ModelAdmin):
     )
     list_editable = ("is_featured", "is_active")
     list_filter = ("category", "is_active", "is_featured", "materials")
-    search_fields = ("title", "materials__name", "material", "grade")
+    search_fields = ("title", "materials__name", "grade")
     prepopulated_fields = {"slug": ("title", )}
-    filter_horizontal = ("materials", "applications", "standards")
+    autocomplete_fields = ("materials", "applications", "standards")
     inlines = [ProductImageInline, ProductSpecificationInline]
 
     fieldsets = (
@@ -130,7 +169,7 @@ class ProductAdmin(admin.ModelAdmin):
         (
             "Specifications & Attributes",
             {
-                "fields": ("grade", "size_range")
+                "fields": ("specification_system", "grade", "size_range")
             },
         ),
         (
@@ -152,6 +191,11 @@ class ProductAdmin(admin.ModelAdmin):
         }),
     )
 
+    def get_queryset(self, request):
+        """Optimize list view performance by prefetching related models."""
+        qs = super().get_queryset(request)
+        return qs.prefetch_related("materials", "images")
+
     def primary_thumbnail(self, obj):
         img = obj.primary_image
         if img and img.image:
@@ -162,15 +206,3 @@ class ProductAdmin(admin.ModelAdmin):
         return "—"
 
     primary_thumbnail.short_description = "Image"
-
-    def save_related(self, request, form, formsets, change):
-        super().save_related(request, form, formsets, change)
-        if form.instance.materials.exists():
-            mat_names = ", ".join(m.name for m in form.instance.materials.all())
-            if not form.instance.material or form.instance.material != mat_names:
-                form.instance.material = mat_names
-                form.instance.save(update_fields=["material"])
-        elif form.instance.material:
-            mat = Material.objects.filter(name__iexact=form.instance.material.strip()).first()
-            if mat:
-                form.instance.materials.add(mat)

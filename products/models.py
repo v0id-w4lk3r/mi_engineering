@@ -206,17 +206,23 @@ class Product(models.Model):
     )
 
     # Common Industrial Attributes
-    material = models.CharField(
-        max_length=150,
+    SPEC_SYSTEM_CHOICES = [
+        ("Inch", "Inch"),
+        ("MM", "MM"),
+    ]
+    specification_system = models.CharField(
+        max_length=10,
+        choices=SPEC_SYSTEM_CHOICES,
         blank=True,
         default="",
-        help_text="e.g. Stainless Steel, Mild Steel, Brass",
+        help_text="Specification System (Inch or MM)",
     )
     grade = models.CharField(
+        "Grade / Class",
         max_length=150,
         blank=True,
         default="",
-        help_text="e.g. SS304, SS316, Grade 8.8",
+        help_text="Inch uses Grade, MM uses Class. E.g. Grade 8, Class 8.8",
     )
     size_range = models.CharField(
         max_length=150,
@@ -281,14 +287,14 @@ class Product(models.Model):
 
     @property
     def display_material(self):
-        """Returns comma-separated material names or falls back to the material text."""
+        """Returns comma-separated material names."""
         if hasattr(self, "_prefetched_objects_cache") and "materials" in self._prefetched_objects_cache:
             mats = self._prefetched_objects_cache["materials"]
             if mats:
                 return ", ".join(m.name for m in mats)
         elif self.pk and self.materials.exists():
             return ", ".join(m.name for m in self.materials.all())
-        return self.material or "Industrial Grade"
+        return "Industrial Grade"
 
     def save(self, *args, **kwargs):
         if not self.slug:

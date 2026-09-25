@@ -5,10 +5,10 @@
 {% block title %}{% if product.meta_title %}{{ product.meta_title }}{% else %}{{ product.title }} | {{ product.category.name|default:"Industrial Component" }} - M.I. Engineering Works{% endif %}{% endblock %}
 
 {% block meta_description %}
-  {% if product.meta_description %}{{ product.meta_description }}{% elif product.short_description %}{{ product.short_description }}{% else %}High-precision {{ product.title }} manufactured by M.I. Engineering Works. Made from {{ product.material|default:"industrial grade materials" }}.{% endif %}
+  {% if product.meta_description %}{{ product.meta_description }}{% elif product.short_description %}{{ product.short_description }}{% else %}High-precision {{ product.title }} manufactured by M.I. Engineering Works. Made from {{ product.display_material }}.{% endif %}
 {% endblock %}
 
-{% block meta_keywords %}{% if product.meta_keywords %}{{ product.meta_keywords }}{% else %}{{ product.title }}, {{ product.category.name }}, {{ product.material }}, industrial fasteners, precision engineering{% endif %}{% endblock %}
+{% block meta_keywords %}{% if product.meta_keywords %}{{ product.meta_keywords }}{% else %}{{ product.title }}, {{ product.category.name }}, {{ product.display_material }}, industrial fasteners, precision engineering{% endif %}{% endblock %}
 
 {% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'products:product_detail' product.slug %}{% endblock %}
 
@@ -47,7 +47,7 @@
     ],
     "description": "{% if product.short_description %}{{ product.short_description|escapejs }}{% else %}{{ product.title|escapejs }}{% endif %}",
     "category": "{{ product.category.name|escapejs }}",
-    {% if product.material %}"material": "{{ product.material|escapejs }}",{% endif %}
+    {% if product.display_material %}"material": "{{ product.display_material|escapejs }}",{% endif %}
     {% if product.grade %}"additionalProperty": [{"@type": "PropertyValue", "name": "Grade", "value": "{{ product.grade|escapejs }}"}],{% endif %}
     "brand": {
       "@type": "Brand",
@@ -100,7 +100,7 @@
       {% include 'partials/details/_gallery.html' %}
 
       <!-- Detail Brief & CTA -->
-      <div class="flex flex-col justify-between space-y-6">
+      <div class="flex flex-col space-y-6">
         <div class="space-y-4">
           {% if product.category %}
             <span class="inline-block px-3 py-1 bg-brand-lightAccentBg text-brand-accent text-xs font-semibold rounded-full uppercase tracking-wider">
@@ -109,76 +109,42 @@
           {% endif %}
           <h1 class="text-3xl font-extrabold text-brand-heading tracking-tight">{{ product.title }}</h1>
           
-          <div class="flex flex-wrap gap-2 text-xs">
-            {% if product.materials.all %}
-              {% for mat in product.materials.all %}
-              <a
-                href="{% url 'products:material_product_list' mat.slug %}"
-                class="px-2.5 py-1 bg-brand-secondaryBg hover:bg-brand-lightAccentBg hover:text-brand-accent hover:border-brand-accent/40 border border-brand-border rounded-md text-brand-body font-medium transition"
-                title="Browse {{ mat.name }} products"
-              >
-                Material: {{ mat.name }}
-              </a>
-              {% endfor %}
-            {% elif product.material %}
-            <span class="px-2.5 py-1 bg-brand-secondaryBg border border-brand-border rounded-md text-brand-body font-medium">
-              Material: {{ product.material }}
-            </span>
-            {% endif %}
-            {% if product.grade %}
-            <span class="px-2.5 py-1 bg-brand-secondaryBg border border-brand-border rounded-md text-brand-body font-medium">
-              Grade: {{ product.grade }}
-            </span>
-            {% endif %}
-            {% if product.size_range %}
-            <span class="px-2.5 py-1 bg-brand-secondaryBg border border-brand-border rounded-md text-brand-body font-medium">
-              Size: {{ product.size_range }}
-            </span>
-            {% endif %}
-          </div>
-
           <p class="text-sm text-brand-body leading-relaxed pt-2">
             {{ product.short_description }}
           </p>
 
-          <!-- Selected Standards Display -->
-          {% if product.standards.all %}
-          <div class="pt-3 border-t border-brand-border/60">
-            <span class="text-xs font-bold text-brand-heading block mb-1.5 flex items-center gap-1.5">
-              <i class="fas fa-certificate text-brand-accent text-xs"></i> Compliance Standards:
-            </span>
-            <div class="flex flex-wrap gap-2">
-              {% for standard in product.standards.all %}
-              <a
-                href="{% url 'products:standard_product_list' standard.slug %}"
-                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-brand-lightAccentBg text-brand-accent border border-brand-accent/20 hover:bg-brand-accent hover:text-white transition text-xs font-semibold shadow-xs"
-                title="View all {{ standard.name }} products"
-              >
-                <i class="fas fa-check text-[10px]"></i>
-                {{ standard.name }}
-              </a>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-
-          <!-- Selected Applications Display -->
-          {% if product.applications.all %}
-          <div class="pt-3 border-t border-brand-border/60">
-            <span class="text-xs font-bold text-brand-heading block mb-1.5 flex items-center gap-1.5">
-              <i class="fas fa-industry text-brand-accent text-xs"></i> Industrial Applications:
-            </span>
-            <div class="flex flex-wrap gap-2">
-              {% for app in product.applications.all %}
-              <a
-                href="{% url 'products:application_product_list' app.slug %}"
-                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-brand-secondaryBg text-brand-heading border border-brand-border hover:border-brand-accent hover:text-brand-accent transition text-xs font-medium"
-                title="View all {{ app.name }} products"
-              >
-                <i class="fas fa-wrench text-brand-accent text-[10px]"></i>
-                {{ app.name }}
-              </a>
-              {% endfor %}
+          {% if product.materials.all or product.grade or product.size_range or product.specification_system %}
+          <div class="pt-4 pb-2 border-t border-brand-border/60">
+            <div class="grid grid-cols-2 gap-y-6 gap-x-6" style="grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));">
+              {% if product.materials.all %}
+              <div class="flex flex-col">
+                <span class="text-[10px] uppercase tracking-wider font-bold text-brand-muted mb-1">Material</span>
+                <span class="font-semibold text-sm text-brand-heading block break-words">{{ product.display_material }}</span>
+              </div>
+              {% endif %}
+              
+              {% if product.size_range %}
+              <div class="flex flex-col">
+                <span class="text-[10px] uppercase tracking-wider font-bold text-brand-muted mb-1">Size Range</span>
+                <span class="font-semibold text-sm text-brand-heading block break-words">{{ product.size_range }}</span>
+              </div>
+              {% endif %}
+              
+              {% if product.grade %}
+              <div class="flex flex-col">
+                <span class="text-[10px] uppercase tracking-wider font-bold text-brand-muted mb-1">
+                  {% if product.specification_system == 'MM' %}Class{% else %}Grade{% endif %}
+                </span>
+                <span class="font-semibold text-sm text-brand-heading block break-words">{{ product.grade }}</span>
+              </div>
+              {% endif %}
+              
+              {% if product.specification_system %}
+              <div class="flex flex-col">
+                <span class="text-[10px] uppercase tracking-wider font-bold text-brand-muted mb-1">System</span>
+                <span class="font-semibold text-sm text-brand-heading block break-words">{{ product.get_specification_system_display|default:product.specification_system }}</span>
+              </div>
+              {% endif %}
             </div>
           </div>
           {% endif %}

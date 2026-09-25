@@ -13,7 +13,7 @@ class AuthenticationBackendTests(TestCase):
     def setUp(self):
         self.user = UserModel.objects.create_user(
             username="engineering_lead",
-            email="lead@miengineeringworks.in",
+            email="miengineering17@gmail.com",
             password="SecurePassword123!",
         )
 
@@ -29,7 +29,7 @@ class AuthenticationBackendTests(TestCase):
     def test_authenticate_with_email(self):
         user = authenticate(
             request=None,
-            username="lead@miengineeringworks.in",
+            username="miengineering17@gmail.com",
             password="SecurePassword123!",
         )
         self.assertIsNotNone(user)
@@ -38,7 +38,7 @@ class AuthenticationBackendTests(TestCase):
     def test_authenticate_with_email_case_insensitive(self):
         user = authenticate(
             request=None,
-            username="LEAD@miengineeringworks.in",
+            username="miengineering17@gmail.com",
             password="SecurePassword123!",
         )
         self.assertIsNotNone(user)
@@ -47,7 +47,7 @@ class AuthenticationBackendTests(TestCase):
     def test_authenticate_invalid_credentials(self):
         user = authenticate(
             request=None,
-            username="lead@miengineeringworks.in",
+            username="miengineering17@gmail.com",
             password="WrongPassword",
         )
         self.assertIsNone(user)
