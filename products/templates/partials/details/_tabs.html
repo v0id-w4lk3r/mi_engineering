@@ -13,16 +13,7 @@
       Detailed Overview
     </button>
 
-    {% if product.specification_system or product.materials.all or product.grade or product.size_range or product.specifications.all %}
-    <button
-      type="button"
-      @click="activeTab = 'specs'"
-      :class="{ 'border-brand-accent text-brand-accent': activeTab === 'specs', 'border-transparent text-brand-muted hover:text-brand-heading': activeTab !== 'specs' }"
-      class="pb-3 text-sm font-bold border-b-2 transition whitespace-nowrap focus:outline-none flex items-center gap-2"
-    >
-      Technical Specifications
-    </button>
-    {% endif %}
+
 
     {% if product.applications.all or product.standards.all %}
     <button
@@ -72,81 +63,6 @@
       {% endif %}
     </div>
 
-    <!-- Technical Specifications Panel -->
-    <div x-show="activeTab === 'specs'" style="display: none">
-      {% if product.specification_system or product.materials.all or product.grade or product.size_range or product.specifications.all %}
-      <div class="overflow-x-auto rounded-xl border border-brand-border shadow-sm bg-white">
-        <table class="w-full text-left text-sm border-collapse">
-          <tbody class="divide-y divide-brand-border/60">
-            
-            {% if product.specification_system %}
-            <tr class="hover:bg-brand-secondaryBg/50 transition">
-              <th style="width: 28%; min-width: 160px;" class="py-3 px-4 font-semibold text-brand-heading bg-brand-secondaryBg/50 border-r border-brand-border/60 align-middle">
-                Specification System
-              </th>
-              <td class="py-3 px-4 text-brand-body font-medium align-middle">
-                {{ product.get_specification_system_display|default:product.specification_system }}
-              </td>
-            </tr>
-            {% endif %}
-
-            {% if product.materials.all %}
-            <tr class="hover:bg-brand-secondaryBg/50 transition">
-              <th style="width: 28%; min-width: 160px;" class="py-3 px-4 font-semibold text-brand-heading bg-brand-secondaryBg/50 border-r border-brand-border/60 align-middle">
-                Material
-              </th>
-              <td class="py-3 px-4 text-brand-body font-medium align-middle">
-                <div class="flex flex-wrap gap-1.5">
-                  {% for mat in product.materials.all %}
-                  <a href="{% url 'products:material_product_list' mat.slug %}" class="inline-flex items-center px-2.5 py-1 rounded-md bg-brand-secondaryBg border border-brand-border text-brand-heading text-xs font-semibold hover:border-brand-accent hover:text-brand-accent transition">
-                    {{ mat.name }}
-                  </a>
-                  {% endfor %}
-                </div>
-              </td>
-            </tr>
-            {% endif %}
-
-            {% if product.size_range %}
-            <tr class="hover:bg-brand-secondaryBg/50 transition">
-              <th style="width: 28%; min-width: 160px;" class="py-3 px-4 font-semibold text-brand-heading bg-brand-secondaryBg/50 border-r border-brand-border/60 align-middle">
-                Size Range
-              </th>
-              <td class="py-3 px-4 text-brand-body font-medium align-middle break-words">
-                {{ product.size_range }}
-              </td>
-            </tr>
-            {% endif %}
-
-            {% if product.grade %}
-            <tr class="hover:bg-brand-secondaryBg/50 transition">
-              <th style="width: 28%; min-width: 160px;" class="py-3 px-4 font-semibold text-brand-heading bg-brand-secondaryBg/50 border-r border-brand-border/60 align-middle">
-                {% if product.specification_system == 'MM' %}Class{% else %}Grade{% endif %}
-              </th>
-              <td class="py-3 px-4 text-brand-body font-medium align-middle break-words">
-                {{ product.grade }}
-              </td>
-            </tr>
-            {% endif %}
-
-            {% for spec in product.specifications.all %}
-            <tr class="hover:bg-brand-secondaryBg/50 transition">
-              <th style="width: 28%; min-width: 160px;" class="py-3 px-4 font-semibold text-brand-heading bg-brand-secondaryBg/50 border-r border-brand-border/60 align-middle break-words">
-                {{ spec.key }}
-              </th>
-              <td class="py-3 px-4 text-brand-body font-medium align-middle break-words">
-                {{ spec.value }}
-              </td>
-            </tr>
-            {% endfor %}
-            
-          </tbody>
-        </table>
-      </div>
-      {% else %}
-      <p class="text-brand-muted text-sm italic">No additional technical specifications listed.</p>
-      {% endif %}
-    </div>
 
     <!-- Applications & Standards Panel -->
     {% if product.applications.all or product.standards.all %}

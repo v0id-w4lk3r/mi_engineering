@@ -403,8 +403,6 @@ class ProductApplicationStandardMaterialDisplayTests(TestCase):
             category=self.category,
             title="ASTM A193 B7 High Tensile Stud Rod",
             short_description="High-strength stud bolt for pressure vessels and flanges.",
-            grade="Grade B7",
-            size_range="M12 to M48",
             is_active=True,
         )
         self.product.materials.add(self.material)

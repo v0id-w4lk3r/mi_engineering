@@ -206,30 +206,6 @@ class Product(models.Model):
     )
 
     # Common Industrial Attributes
-    SPEC_SYSTEM_CHOICES = [
-        ("Inch", "Inch"),
-        ("MM", "MM"),
-    ]
-    specification_system = models.CharField(
-        max_length=10,
-        choices=SPEC_SYSTEM_CHOICES,
-        blank=True,
-        default="",
-        help_text="Specification System (Inch or MM)",
-    )
-    grade = models.CharField(
-        "Grade / Class",
-        max_length=150,
-        blank=True,
-        default="",
-        help_text="Inch uses Grade, MM uses Class. E.g. Grade 8, Class 8.8",
-    )
-    size_range = models.CharField(
-        max_length=150,
-        blank=True,
-        default="",
-        help_text="e.g. M3 to M64 / 1/2' to 4'",
-    )
 
     # Technical Data Rich Content
     chemical_composition = CKEditor5Field(

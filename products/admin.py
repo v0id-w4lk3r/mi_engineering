@@ -145,7 +145,7 @@ class ProductAdmin(admin.ModelAdmin):
     )
     list_editable = ("is_featured", "is_active")
     list_filter = ("category", "is_active", "is_featured", "materials")
-    search_fields = ("title", "materials__name", "grade")
+    search_fields = ("title", "materials__name")
     prepopulated_fields = {"slug": ("title", )}
     autocomplete_fields = ("materials", "applications", "standards")
     inlines = [ProductImageInline, ProductSpecificationInline]
@@ -164,12 +164,6 @@ class ProductAdmin(admin.ModelAdmin):
                     "short_description",
                     "description",
                 )
-            },
-        ),
-        (
-            "Specifications & Attributes",
-            {
-                "fields": ("specification_system", "grade", "size_range")
             },
         ),
         (
