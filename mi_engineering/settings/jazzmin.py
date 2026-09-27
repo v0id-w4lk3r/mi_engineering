@@ -69,7 +69,7 @@ JAZZMIN_SETTINGS = {
     "hide_apps": [],
     "hide_models": [],
     "show_ui_builder":
-    False,
+    True,
     "changeform_format":
     "horizontal_tabs",
     "related_modal_active":
