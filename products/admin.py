@@ -74,7 +74,9 @@ from django.forms import widgets
 
 from django.utils.safestring import mark_safe
 
-class DatalistWidget(widgets.TextInput):
+from unfold.widgets import UnfoldAdminTextInputWidget
+
+class DatalistWidget(UnfoldAdminTextInputWidget):
     def __init__(self, datalist, *args, **kwargs):
         self.datalist = datalist
         super().__init__(*args, **kwargs)
