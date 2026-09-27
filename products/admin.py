@@ -71,6 +71,8 @@ class ProductImageInline(admin.TabularInline):
 from django import forms
 from django.forms import widgets
 
+from django.utils.safestring import mark_safe
+
 class DatalistWidget(widgets.TextInput):
     def __init__(self, datalist, *args, **kwargs):
         self.datalist = datalist
@@ -83,7 +85,7 @@ class DatalistWidget(widgets.TextInput):
         attrs['list'] = list_id
         html = super().render(name, value, attrs, renderer)
         datalist_html = f'<datalist id="{list_id}">' + "".join(f'<option value="{item}">' for item in self.datalist) + '</datalist>'
-        return html + datalist_html
+        return mark_safe(html + datalist_html)
 
 class ProductSpecificationForm(forms.ModelForm):
     class Meta:
