@@ -5,8 +5,8 @@ UNFOLD = {
     "SITE_HEADER": "M.I. Engineering Works",
     "SITE_URL": "/",
     "SITE_ICON": {
-        "light": lambda request: static("img/logo.png"),  # Light mode
-        "dark": lambda request: static("img/logo.png"),  # Dark mode
+        "light": lambda request: static("img/logo/logo.png"),  # Light mode
+        "dark": lambda request: static("img/logo/logo.png"),  # Dark mode
     },
     "THEME": "light", # Enforce light theme
     "COLORS": {
