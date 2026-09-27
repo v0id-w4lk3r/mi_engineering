@@ -23,7 +23,6 @@ class ProductModelTests(TestCase):
             category=self.category,
             title="High Tensile Hex Bolt",
             short_description="Grade 8.8 Hex Bolt",
-            material="Carbon Steel",
         )
         self.assertEqual(p1.slug, "high-tensile-hex-bolt")
 
@@ -31,7 +30,6 @@ class ProductModelTests(TestCase):
             category=self.category,
             title="High Tensile Hex Bolt",
             short_description="Another batch",
-            material="Carbon Steel",
         )
         self.assertEqual(p2.slug, "high-tensile-hex-bolt-1")
 
@@ -40,7 +38,6 @@ class ProductModelTests(TestCase):
             category=self.category,
             title="Stainless Steel Washer",
             short_description="SS304 Washer",
-            material="Stainless Steel",
         )
         dummy_img = SimpleUploadedFile("test.jpg", b"image_data", content_type="image/jpeg")
         img1 = ProductImage.objects.create(product=product, image=dummy_img, is_primary=False)
@@ -59,7 +56,6 @@ class ProductModelTests(TestCase):
             category=self.category,
             title="Plain Rivet",
             short_description="Rivet without primary tag",
-            material="Aluminum",
         )
         dummy_img = SimpleUploadedFile("rivet.jpg", b"image_data", content_type="image/jpeg")
         img = ProductImage.objects.create(product=product, image=dummy_img, is_primary=False)
@@ -71,7 +67,6 @@ class ProductModelTests(TestCase):
             category=self.category,
             title="Imageless Bolt",
             short_description="No images yet",
-            material="Steel",
         )
         self.assertIsNone(product.primary_image)
 
@@ -80,7 +75,6 @@ class ProductModelTests(TestCase):
             category=self.category,
             title="Flange Nut",
             short_description="Nut with flange",
-            material="Steel",
         )
         dummy_img = SimpleUploadedFile("nut.jpg", b"image_data", content_type="image/jpeg")
         img1 = ProductImage.objects.create(product=product, image=dummy_img, is_primary=True)
@@ -101,21 +95,18 @@ class ProductListViewTests(TestCase):
             category=self.cat_fasteners,
             title="Stainless Hex Bolt",
             short_description="SS Hex Bolt",
-            material="Stainless Steel",
             is_active=True,
         )
         self.prod_active2 = Product.objects.create(
             category=self.cat_pipes,
             title="Seamless Steel Pipe",
             short_description="ASTM A106 pipe",
-            material="Carbon Steel",
             is_active=True,
         )
         self.prod_inactive = Product.objects.create(
             category=self.cat_fasteners,
             title="Discontinued Screw",
             short_description="Obsolete",
-            material="Iron",
             is_active=False,
         )
 
@@ -175,7 +166,6 @@ class ProductDetailViewTests(TestCase):
             category=self.category,
             title="High Pressure Ball Valve",
             short_description="Class 800 valve",
-            material="Forged Steel",
             chemical_composition="<p><strong>Carbon:</strong> 0.25% max</p>",
             mechanical_properties="<p><strong>Tensile:</strong> 485 MPa</p>",
             is_active=True,
@@ -223,7 +213,6 @@ class ApplicationAndStandardSEOTests(TestCase):
             category=self.category,
             title="ISO 4014 Aerospace Hex Bolt",
             short_description="Certified ISO 4014 bolt for aerospace",
-            material="Titanium",
             meta_title="Titanium ISO 4014 Aerospace Bolt | M.I. Engineering Works",
             meta_description="Titanium aerospace hex bolt compliant with ISO 4014 standards.",
             meta_keywords="titanium bolt, ISO 4014 aerospace, high-strength fastener",
@@ -362,9 +351,9 @@ class MaterialModelAndCatalogTests(TestCase):
         self.assertIsInstance(mat_admin, MaterialAdmin)
 
         prod_admin = site._registry[Product]
-        self.assertIn("materials", prod_admin.filter_horizontal)
-        self.assertIn("applications", prod_admin.filter_horizontal)
-        self.assertIn("standards", prod_admin.filter_horizontal)
+        self.assertIn("materials", prod_admin.autocomplete_fields)
+        self.assertIn("applications", prod_admin.autocomplete_fields)
+        self.assertIn("standards", prod_admin.autocomplete_fields)
 
     def test_sitemap_includes_materials(self):
         url = reverse("django.contrib.sitemaps.views.sitemap")
