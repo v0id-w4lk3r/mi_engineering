@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from .jazzmin import *
+from .unfold import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -11,7 +11,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # Application definition
 INSTALLED_APPS = [
-    'jazzmin', 'django_htmx', 'django_ckeditor_5', 'django.contrib.admin',
+    'unfold', 'django_htmx', 'django_ckeditor_5', 'django.contrib.admin',
     'django.contrib.auth', 'django.contrib.contenttypes',
     'django.contrib.sessions', 'django.contrib.messages',
     'django.contrib.staticfiles', 'django.contrib.sitemaps',

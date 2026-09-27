@@ -1,10 +1,11 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin, TabularInline, StackedInline
 from django.utils.html import format_html
 
 from .models import Category, Product, ProductImage, ProductSpecification, Application, Standard, Material
 
 @admin.register(Material)
-class MaterialAdmin(admin.ModelAdmin):
+class MaterialAdmin(ModelAdmin):
     list_display = ("name", "slug")
     search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name",)}
@@ -20,7 +21,7 @@ class MaterialAdmin(admin.ModelAdmin):
     )
 
 @admin.register(Application)
-class ApplicationAdmin(admin.ModelAdmin):
+class ApplicationAdmin(ModelAdmin):
     list_display = ("name", "slug")
     search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name",)}
@@ -36,7 +37,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     )
 
 @admin.register(Standard)
-class StandardAdmin(admin.ModelAdmin):
+class StandardAdmin(ModelAdmin):
     list_display = ("name", "slug")
     search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name",)}
@@ -51,7 +52,7 @@ class StandardAdmin(admin.ModelAdmin):
         ),
     )
 
-class ProductImageInline(admin.TabularInline):
+class ProductImageInline(TabularInline):
     model = ProductImage
     extra = 1
     readonly_fields = ("image_preview", )
@@ -108,14 +109,14 @@ class ProductSpecificationForm(forms.ModelForm):
         self.fields['key'].widget = DatalistWidget(datalist=all_keys)
 
 
-class ProductSpecificationInline(admin.TabularInline):
+class ProductSpecificationInline(TabularInline):
     model = ProductSpecification
     form = ProductSpecificationForm
     extra = 1
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(ModelAdmin):
     list_display = ("name", "slug", "is_active")
     list_filter = ("is_active", )
     search_fields = ("name", "description")
@@ -136,7 +137,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ModelAdmin):
     list_display = (
         "primary_thumbnail",
         "title",

@@ -1,5 +1,7 @@
 from typing import Any
-from django.contrib import admin, messages
+from django.contrib import admin
+from unfold.admin import ModelAdmin, TabularInline, StackedInline
+from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
@@ -13,7 +15,7 @@ admin.site.unregister(Group)
 
 
 @admin.register(Group)
-class CustomGroupAdmin(admin.ModelAdmin):
+class CustomGroupAdmin(ModelAdmin):
     form = CustomGroupAdminForm
     change_form_template = "admin/custom_group_change_form.html"
 
@@ -34,7 +36,7 @@ class CustomGroupAdmin(admin.ModelAdmin):
 
 
 @admin.register(ContactInquiry)
-class ContactInquiryAdmin(admin.ModelAdmin):
+class ContactInquiryAdmin(ModelAdmin):
     form = ContactInquiryAdminForm
 
     list_display = (

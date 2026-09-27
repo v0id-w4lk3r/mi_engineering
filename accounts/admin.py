@@ -1,12 +1,13 @@
 from typing import Any
 from django.contrib import admin
+from unfold.admin import ModelAdmin, TabularInline, StackedInline
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from accounts.models import User
 
 
 @admin.register(User)
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(BaseUserAdmin, ModelAdmin):
     list_display = (
         "username",
         "email",

@@ -70,24 +70,24 @@ wheels = [
 ]
 
 [[package]]
-name = "django-jazzmin"
-version = "3.0.5"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "django" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/15/e4/17cd62e80c4876088bc5f8bca24446586a62eca386c82755894408751a44/django_jazzmin-3.0.5.tar.gz", hash = "sha256:7e39b029bddbb60f3aaf9897bd009f39f8f2bdc8a7d86beed1e943706dd79692", size = 2509734, upload-time = "2026-06-25T21:05:52.699Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/23/40/892f4c922c92d0d2b8ca5f96f556c5dc04d19ea2ea717910d8bbf2dc23fc/django_jazzmin-3.0.5-py3-none-any.whl", hash = "sha256:578fb1fc0a1b7e3b8472d2692ace60b1584ccd937c3828e2c9a89bdf94067f94", size = 2581722, upload-time = "2026-06-25T21:05:50.948Z" },
-]
-
-[[package]]
 name = "django-meta"
 version = "2.5.1"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/b7/a3/4cf42f67c44e193db994aad15732aedce1e94e94ab21dcfe93e233b1cf40/django_meta-2.5.1.tar.gz", hash = "sha256:0699e585444d59286c25bc301b865e56814e2473a069cd1046840669204cec2a", size = 29308, upload-time = "2026-02-17T10:33:29.162Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f2/3d/d839a42f52187c05abe9b8e517a98a71baff5241222dfb36792d2818c8c6/django_meta-2.5.1-py2.py3-none-any.whl", hash = "sha256:35941347c39fa69139cdede3fe39f408330eb586819c7a9c4610991479e1ae57", size = 27935, upload-time = "2026-02-17T10:33:28.124Z" },
+]
+
+[[package]]
+name = "django-unfold"
+version = "0.108.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/48/30/f539fe86cd247d9468f84ec21468fd3ae91f5215e0f0c3264a600cc34cdb/django_unfold-0.108.0.tar.gz", hash = "sha256:f791e6b3ca8a6f84da3a9bdc09ea8f6269194f317fcd2b871bb123c815fa557a", size = 1163440, upload-time = "2026-09-24T07:27:27.342Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9a/cb/29cd61b8ff07602eb2c9966f298e5da05ef510f99efa46487d15a1529b55/django_unfold-0.108.0-py3-none-any.whl", hash = "sha256:6cb928bc0d9a9487075334084f738c44729b36e6c6fd0b9bfbdd6a504c1e827d", size = 1291690, upload-time = "2026-09-24T07:27:25.784Z" },
 ]
 
 [[package]]
@@ -109,8 +109,8 @@ dependencies = [
     { name = "django-ckeditor-5" },
     { name = "django-environ" },
     { name = "django-htmx" },
-    { name = "django-jazzmin" },
     { name = "django-meta" },
+    { name = "django-unfold" },
     { name = "gunicorn" },
     { name = "pillow" },
     { name = "psycopg", extra = ["binary"] },
@@ -125,8 +125,8 @@ requires-dist = [
     { name = "django-ckeditor-5", specifier = ">=0.2.20" },
     { name = "django-environ", specifier = ">=0.14.0" },
     { name = "django-htmx", specifier = ">=1.29.0" },
-    { name = "django-jazzmin", specifier = ">=3.0.5" },
     { name = "django-meta", specifier = ">=2.5.1" },
+    { name = "django-unfold", specifier = ">=0.108.0" },
     { name = "gunicorn", specifier = ">=26.2.0" },
     { name = "pillow", specifier = ">=12.3.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.3.4" },

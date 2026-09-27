@@ -1,6 +1,7 @@
 from typing import Any
 from django import forms
 from django.contrib import admin
+from unfold.admin import ModelAdmin, TabularInline, StackedInline
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
@@ -15,14 +16,14 @@ from .models import (
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(ModelAdmin):
     list_display = ("name", "slug", "display_order")
     prepopulated_fields = {"slug": ("name",)}
     list_editable = ("display_order",)
     search_fields = ("name",)
 
 
-class BaseGalleryAdmin(admin.ModelAdmin):
+class BaseGalleryAdmin(ModelAdmin):
     """
     Base admin class for all media types. Hides the media_type field
     and forces the correct one upon save.
