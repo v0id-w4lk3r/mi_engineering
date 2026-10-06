@@ -11,7 +11,6 @@ from django.urls import reverse
 
 from home.admin import ContactInquiryAdmin
 from home.forms.admin_forms import CustomGroupAdminForm
-from home.forms.contact_forms import ContactForm
 from home.models import ContactInquiry
 
 UserModel = get_user_model()

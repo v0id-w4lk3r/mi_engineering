@@ -204,7 +204,6 @@ class GalleryCertificateTests(TestCase):
 
     def test_admin_document_form_can_mark_certificate(self):
         from gallery.admin import GalleryDocumentForm
-        from gallery.models import GalleryDocument
 
         form_data = {
             "title": "EN 10204 3.1 Mill Certificate",

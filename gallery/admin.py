@@ -1,7 +1,7 @@
 from typing import Any
 from django import forms
 from django.contrib import admin
-from unfold.admin import ModelAdmin, TabularInline, StackedInline
+from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 

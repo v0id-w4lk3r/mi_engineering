@@ -1,5 +1,5 @@
 from django.contrib import admin
-from unfold.admin import ModelAdmin, TabularInline, StackedInline
+from unfold.admin import ModelAdmin, TabularInline
 from django.utils.html import format_html
 
 from .models import Category, Product, ProductImage, ProductSpecification, Application, Standard, Material
@@ -70,7 +70,6 @@ class ProductImageInline(TabularInline):
 
 
 from django import forms
-from django.forms import widgets
 
 from django.utils.safestring import mark_safe
 

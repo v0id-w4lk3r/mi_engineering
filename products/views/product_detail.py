@@ -19,6 +19,18 @@ class ProductDetailView(DetailView):
         product = context.get("product")
 
         if product:
+            from home.forms import ContactForm
+            
+            initial_data = {}
+            if self.request.user.is_authenticated:
+                user = self.request.user
+                initial_data["email"] = getattr(user, "email", "")
+                initial_data["full_name"] = user.get_full_name() or user.username
+            
+            mat_name = product.display_material or ""
+            spec_notes = f" (Material: {mat_name})" if mat_name else ""
+            initial_data["message"] = f"Hi, I would like to request technical specifications and pricing for {product.title}{spec_notes}."
+            context["inquiry_form"] = ContactForm(initial=initial_data)
             from django.db.models import Count, Q, Case, When, Value, IntegerField, F
             
             material_ids = product.materials.values_list('id', flat=True)

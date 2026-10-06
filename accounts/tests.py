@@ -4,7 +4,6 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from accounts.admin import UserAdmin as CustomUserAdmin
-from accounts.models import User
 
 UserModel = get_user_model()
 

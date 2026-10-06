@@ -1,6 +1,6 @@
 from typing import Any
 from django.contrib import admin
-from unfold.admin import ModelAdmin, TabularInline, StackedInline
+from unfold.admin import ModelAdmin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from accounts.models import User

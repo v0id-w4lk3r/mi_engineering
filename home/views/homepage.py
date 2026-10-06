@@ -1,8 +1,6 @@
-from typing import TYPE_CHECKING, Any, cast
+from typing import Any, cast
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import AbstractBaseUser
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView

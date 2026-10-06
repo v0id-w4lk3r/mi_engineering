@@ -429,3 +429,26 @@ class ProductApplicationStandardMaterialDisplayTests(TestCase):
         self.assertContains(response, "17, 2nd Floor, Plot-15/17, Ratan Building, Narayan Dhuru Street, Pydhonie, Mandvi, Mumbai - 400003")
         self.assertContains(response, "Plot 222, Chhota Sonapur Compound, Maulana Shaukat Ali Road, Mumbai - 400008")
         self.assertNotContains(response, "Industrial Area Procurement Hub")
+
+    def test_product_inquiry_post_valid(self):
+        url = reverse("products:product_inquire", kwargs={"slug": self.product.slug})
+        post_data = {
+            "full_name": "Test Client",
+            "email": "test@industrialclient.com",
+            "message": "Looking for quotation for 500 pcs.",
+        }
+        response = self.client.post(url, data=post_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Inquiry Sent Successfully!")
+        self.assertContains(response, "Test Client")
+
+    def test_product_inquiry_post_invalid(self):
+        url = reverse("products:product_inquire", kwargs={"slug": self.product.slug})
+        post_data = {
+            "full_name": "",
+            "email": "invalid-email",
+            "message": "",
+        }
+        response = self.client.post(url, data=post_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Request Price &amp; Specs")
