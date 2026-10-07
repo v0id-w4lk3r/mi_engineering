@@ -112,9 +112,17 @@ STORAGES = {
 
 WHITENOISE_MANIFEST_STRICT = False
 
-# Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# Media files (configurable via environment variables)
+MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
+if not MEDIA_URL.endswith("/"):
+    MEDIA_URL += "/"
+
+_media_root_env = os.environ.get("MEDIA_ROOT") or os.environ.get("MEDIA_DIR")
+if _media_root_env:
+    _media_path = Path(_media_root_env)
+    MEDIA_ROOT = _media_path if _media_path.is_absolute() else BASE_DIR / _media_path
+else:
+    MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

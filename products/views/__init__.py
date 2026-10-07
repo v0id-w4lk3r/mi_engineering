@@ -3,7 +3,6 @@ from .product_detail import ProductDetailView
 from .application_list import ApplicationListView
 from .standard_list import StandardListView
 from .material_list import MaterialListView
-from .inquiry import ProductInquiryView
 
 __all__ = [
     "ProductListView",
@@ -11,5 +10,4 @@ __all__ = [
     "ApplicationListView",
     "StandardListView",
     "MaterialListView",
-    "ProductInquiryView",
 ]

@@ -52,6 +52,20 @@ DATABASES = {
     }
 }
 
+# Media Files Configuration (Configured via Environment Variables)
+MEDIA_URL = os.environ.get("MEDIA_URL", "/media/")
+if not MEDIA_URL.endswith("/"):
+    MEDIA_URL += "/"
+
+_prod_media_root = os.environ.get("MEDIA_ROOT") or os.environ.get("MEDIA_DIR")
+if _prod_media_root:
+    _media_path = Path(_prod_media_root)
+    MEDIA_ROOT = _media_path if _media_path.is_absolute() else BASE_DIR / _media_path
+else:
+    MEDIA_ROOT = BASE_DIR / "media"
+
+MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
+
 # Email Configuration
 EMAIL_BACKEND = os.getenv(
     "EMAIL_BACKEND",

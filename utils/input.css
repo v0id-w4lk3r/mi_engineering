@@ -17,3 +17,16 @@
   --color-brand-warning: #D97706;
   --color-brand-error: #DC2626;
 }
+
+/* HTMX Request Indicator State */
+.htmx-indicator {
+  display: none !important;
+}
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+  display: inline-flex !important;
+}
+.htmx-request .htmx-indicator-hide,
+.htmx-request.htmx-indicator-hide {
+  display: none !important;
+}

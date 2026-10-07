@@ -1,3 +1,4 @@
+import os
 import logging
 from typing import Any, Dict, List, Optional
 from django.conf import settings
@@ -12,6 +13,7 @@ def send_app_email(subject: str,
                    template_name: str,
                    context: Optional[Dict[str, Any]] = None,
                    from_email: Optional[str] = None,
+                   attachments: Optional[List[Any]] = None,
                    fail_silently: bool = False) -> bool:
     """
     Reusable email dispatch service supporting plain text & HTML templates.
@@ -21,6 +23,7 @@ def send_app_email(subject: str,
     :param template_name: Relative path to template without extension (e.g. 'emails/contact_inquiry').
     :param context: Dictionary context passed to the template renderer.
     :param from_email: Sender address (defaults to settings.DEFAULT_FROM_EMAIL).
+    :param attachments: List of file paths, (filename, content, mimetype) tuples, or file objects to attach.
     :param fail_silently: If True, suppresses exceptions and returns False on failure.
     :return: True if email dispatched successfully, False otherwise.
     """
@@ -39,6 +42,20 @@ def send_app_email(subject: str,
                                        from_email=sender,
                                        to=recipient_list)
         email.attach_alternative(html_content, "text/html")
+
+        if attachments:
+            for item in attachments:
+                if isinstance(item, str):
+                    if os.path.exists(item):
+                        email.attach_file(item)
+                elif isinstance(item, tuple):
+                    email.attach(*item)
+                elif hasattr(item, "path"):
+                    try:
+                        email.attach_file(item.path)
+                    except Exception:
+                        pass
+
         email.send(fail_silently=fail_silently)
 
         logger.info(f"Email '{subject}' successfully sent to {recipient_list}")

@@ -20,6 +20,14 @@ class ContactInquiryAdminForm(forms.ModelForm):
                     "Attachment size cannot exceed 25 MB.")
         return attachment
 
+    def clean_attachment(self):
+        attachment = self.cleaned_data.get("attachment")
+        if attachment and hasattr(attachment, "size"):
+            if attachment.size > MAX_UPLOAD_SIZE:
+                raise forms.ValidationError(
+                    "Attachment size cannot exceed 25 MB.")
+        return attachment
+
 
 class CustomGroupAdminForm(forms.ModelForm):
     """App-wise segmented permission manager form for Django Admin."""

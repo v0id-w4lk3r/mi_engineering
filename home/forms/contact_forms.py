@@ -1,13 +1,15 @@
 from django import forms
 from utils.validators import validate_not_disposable_email
-from ..models import ContactInquiry
+from ..models import ALLOWED_ATTACHMENT_EXTENSIONS, ContactInquiry
+
+MAX_ATTACHMENT_SIZE = 25 * 1024 * 1024  # 25 MB
 
 
 class ContactForm(forms.ModelForm):
 
     class Meta:
         model = ContactInquiry
-        fields = ["full_name", "email", "message"]
+        fields = ["full_name", "email", "message", "attachment"]
         widgets = {
             "full_name":
             forms.TextInput(
@@ -41,6 +43,16 @@ class ContactForm(forms.ModelForm):
                     "placeholder": (
                         "Specify dimensions, material grade, and quantity..."),
                 }),
+            "attachment":
+            forms.FileInput(
+                attrs={
+                    "id":
+                    "id_attachment",
+                    "accept": (
+                        ".xlsx,.xls,.csv,.pdf,.dwg,.dxf,.step,.stp,.iges,.igs,"
+                        ".png,.jpg,.jpeg,.webp,.zip"
+                    ),
+                }),
         }
 
     def clean_email(self) -> str:
@@ -48,3 +60,12 @@ class ContactForm(forms.ModelForm):
         if email:
             validate_not_disposable_email(email)
         return email or ""
+
+    def clean_attachment(self):
+        attachment = self.cleaned_data.get("attachment")
+        if attachment and hasattr(attachment, "size"):
+            if attachment.size > MAX_ATTACHMENT_SIZE:
+                raise forms.ValidationError(
+                    "Attachment size cannot exceed 25 MB.")
+        return attachment
+

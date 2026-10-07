@@ -115,6 +115,28 @@ class ContactInquiryAdminTests(TestCase):
                 self.assertEqual(sent_mail.to, ["procurement@example.com"])
                 self.assertEqual(len(sent_mail.attachments), 1)
 
+    def test_admin_has_attachment_and_attachment_preview(self):
+        inquiry_without = ContactInquiry.objects.create(
+            full_name="User Without File",
+            email="nofile@example.com",
+            message="No file attached",
+        )
+        self.assertFalse(self.admin.has_attachment(inquiry_without))
+        self.assertEqual(self.admin.attachment_preview(inquiry_without), "No file attached")
+
+        file_obj = SimpleUploadedFile("drawing.pdf", b"%PDF-1.4 dummy", content_type="application/pdf")
+        inquiry_with = ContactInquiry.objects.create(
+            full_name="User With File",
+            email="withfile@example.com",
+            message="File attached",
+            attachment=file_obj,
+        )
+        self.assertTrue(self.admin.has_attachment(inquiry_with))
+        preview = self.admin.attachment_preview(inquiry_with)
+        self.assertIn("drawing", preview)
+        self.assertIn(".pdf", preview)
+        self.assertIn("View / Download", preview)
+
 
 class ContactViewTests(TestCase):
     def setUp(self):
@@ -176,3 +198,94 @@ class ContactViewTests(TestCase):
         inquiry = ContactInquiry.objects.filter(email="alice@company.com").first()
         self.assertIsNotNone(inquiry)
         self.assertEqual(inquiry.user, self.user)
+
+    def test_post_contact_inquiry_with_excel_upload(self):
+        url = reverse("home:contact-us")
+        excel_file = SimpleUploadedFile(
+            "bom_quote.xlsx",
+            b"fake excel content",
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+        data = {
+            "full_name": "Charlie Engineer",
+            "email": "charlie@machinery.com",
+            "message": "Attached is our bill of materials in Excel format.",
+            "attachment": excel_file,
+        }
+        with tempfile.TemporaryDirectory() as temp_media:
+            with override_settings(MEDIA_ROOT=temp_media):
+                response = self.client.post(url, data, follow=True)
+                self.assertEqual(response.status_code, 200)
+                inquiry = ContactInquiry.objects.filter(email="charlie@machinery.com").first()
+                self.assertIsNotNone(inquiry)
+                self.assertTrue(bool(inquiry.attachment))
+                self.assertTrue(inquiry.attachment.name.endswith(".xlsx"))
+                # Check email sent with attachment to admin
+                self.assertEqual(len(mail.outbox), 2)
+                admin_email = mail.outbox[0]
+                self.assertEqual(len(admin_email.attachments), 1)
+
+    def test_post_contact_inquiry_with_drawing_upload(self):
+        url = reverse("home:contact-us")
+        drawing_file = SimpleUploadedFile(
+            "flange_blueprint.dwg",
+            b"fake cad dwg binary data",
+            content_type="application/acad",
+        )
+        data = {
+            "full_name": "Dana Drafter",
+            "email": "dana@cadworks.com",
+            "message": "Please review the attached DWG product drawing.",
+            "attachment": drawing_file,
+        }
+        with tempfile.TemporaryDirectory() as temp_media:
+            with override_settings(MEDIA_ROOT=temp_media):
+                response = self.client.post(url, data, follow=True)
+                self.assertEqual(response.status_code, 200)
+                inquiry = ContactInquiry.objects.filter(email="dana@cadworks.com").first()
+                self.assertIsNotNone(inquiry)
+                self.assertTrue(bool(inquiry.attachment))
+                self.assertTrue(inquiry.attachment.name.endswith(".dwg"))
+
+    def test_post_contact_inquiry_rejects_disallowed_extension(self):
+        url = reverse("home:contact-us")
+        malicious_file = SimpleUploadedFile(
+            "script.exe",
+            b"fake executable",
+            content_type="application/x-msdownload",
+        )
+        data = {
+            "full_name": "Eve Hacker",
+            "email": "eve@security.com",
+            "message": "Here is a script.",
+            "attachment": malicious_file,
+        }
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.filter(email="eve@security.com").first()
+        self.assertIsNone(inquiry)
+        self.assertIn("form", response.context)
+        form = response.context["form"]
+        self.assertTrue(form.errors.get("attachment"))
+
+    def test_post_contact_inquiry_rejects_oversized_file(self):
+        url = reverse("home:contact-us")
+        huge_file = SimpleUploadedFile(
+            "large_cad.step",
+            b"0" * (26 * 1024 * 1024),
+            content_type="application/step",
+        )
+        data = {
+            "full_name": "Frank Huge",
+            "email": "frank@bigfiles.com",
+            "message": "Huge STEP model.",
+            "attachment": huge_file,
+        }
+        response = self.client.post(url, data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        inquiry = ContactInquiry.objects.filter(email="frank@bigfiles.com").first()
+        self.assertIsNone(inquiry)
+        form = response.context["form"]
+        self.assertTrue(form.errors.get("attachment"))
+        self.assertIn("25 MB", str(form.errors.get("attachment")))
+

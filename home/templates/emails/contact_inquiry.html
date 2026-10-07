@@ -56,6 +56,12 @@
           <td class="label">Email:</td>
           <td><a href="mailto:{{ email }}">{{ email }}</a></td>
         </tr>
+        {% if attachment %}
+        <tr>
+          <td class="label">Attachment:</td>
+          <td>{{ attachment.name }} (Attached to this email)</td>
+        </tr>
+        {% endif %}
       </table>
       <strong>Message:</strong>
       <div class="message-box">{{ message }}</div>

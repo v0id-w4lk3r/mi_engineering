@@ -31,6 +31,13 @@ if [ -d "$STATIC_ROOT" ]; then
     find "$STATIC_ROOT" -type f -exec chmod 644 {} +
 fi
 
+echo "Setting media files directory permissions..."
+MEDIA_ROOT=$(uv run python -c "from django.conf import settings; print(settings.MEDIA_ROOT)")
+if [ -n "$MEDIA_ROOT" ]; then
+    mkdir -p "$MEDIA_ROOT"
+    chmod -R 755 "$MEDIA_ROOT"
+fi
+
 echo "Starting Gunicorn on 127.0.0.1:${PORT}..."
 
 exec uv run gunicorn mi_engineering.wsgi:application \

@@ -49,6 +49,11 @@
       <div class="message-box">
         <strong>Your Inquiry Details:</strong>
         <p style="margin-top: 8px; margin-bottom: 0">{{ message }}</p>
+        {% if attachment %}
+        <p style="margin-top: 10px; margin-bottom: 0; font-size: 13px; color: #52525b;">
+          <strong>Uploaded File:</strong> {{ attachment.name }}
+        </p>
+        {% endif %}
       </div>
 
       <p style="margin-top: 20px">We will get back to you shortly.</p>

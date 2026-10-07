@@ -5,7 +5,6 @@ from products.views import (
     ApplicationListView,
     StandardListView,
     MaterialListView,
-    ProductInquiryView,
 )
 
 app_name = "products"
@@ -31,6 +30,5 @@ urlpatterns = [
          ProductListView.as_view(),
          name="material_product_list"),
 
-    path("<slug:slug>/inquire/", ProductInquiryView.as_view(), name="product_inquire"),
     path("<slug:slug>/", ProductDetailView.as_view(), name="product_detail"),
 ]

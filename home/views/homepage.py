@@ -70,6 +70,14 @@ class ContactView(FormView):
         raw_from = getattr(settings, "DEFAULT_FROM_EMAIL", "")
         admin_email: str = email.utils.parseaddr(raw_from)[1] or getattr(settings, "EMAIL_HOST_USER", "webmaster@localhost")
 
+        admin_attachments = []
+        if inquiry.attachment:
+            try:
+                if hasattr(inquiry.attachment, "path"):
+                    admin_attachments.append(inquiry.attachment.path)
+            except Exception:
+                pass
+
         send_app_email(
             subject=f"New Contact Inquiry: {inquiry.full_name}",
             recipient_list=[admin_email],
@@ -78,7 +86,9 @@ class ContactView(FormView):
                 "full_name": inquiry.full_name,
                 "email": inquiry.email,
                 "message": inquiry.message,
+                "attachment": inquiry.attachment,
             },
+            attachments=admin_attachments if admin_attachments else None,
             fail_silently=True,
         )
 
@@ -89,6 +99,7 @@ class ContactView(FormView):
             context={
                 "full_name": inquiry.full_name,
                 "message": inquiry.message,
+                "attachment": inquiry.attachment,
             },
             fail_silently=True,
         )

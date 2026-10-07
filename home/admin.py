@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
-from django.utils.html import strip_tags
+from django.utils.html import format_html, strip_tags
 
 from .forms import ContactInquiryAdminForm, CustomGroupAdminForm
 from .models import ContactInquiry
@@ -43,6 +43,7 @@ class ContactInquiryAdmin(ModelAdmin):
         "full_name",
         "email",
         "user_link",
+        "has_attachment",
         "created_at",
         "is_processed",
         "replied_at",
@@ -51,7 +52,12 @@ class ContactInquiryAdmin(ModelAdmin):
     search_fields = ("full_name", "email", "message", "user__username")
     ordering = ("-created_at", )
     list_editable = ("is_processed", )
-    readonly_fields = ("created_at", "replied_at", "client_info_summary")
+    readonly_fields = (
+        "created_at",
+        "replied_at",
+        "client_info_summary",
+        "attachment_preview",
+    )
 
     fieldsets = (
         (
@@ -61,7 +67,12 @@ class ContactInquiryAdmin(ModelAdmin):
             },
         ),
         ("Inquiry Content", {
-            "fields": ("message", "created_at")
+            "fields": (
+                "message",
+                "attachment",
+                "attachment_preview",
+                "created_at",
+            )
         }),
         (
             "Staff Reply Section",
@@ -75,6 +86,22 @@ class ContactInquiryAdmin(ModelAdmin):
             },
         ),
     )
+
+    @admin.display(description="Has Attachment", boolean=True)
+    def has_attachment(self, obj: ContactInquiry) -> bool:
+        return bool(obj.attachment)
+
+    @admin.display(description="Attachment Link")
+    def attachment_preview(self, obj: ContactInquiry) -> str:
+        if not obj.attachment:
+            return "No file attached"
+        file_name = obj.attachment.name.split("/")[-1]
+        return format_html(
+            '<a href="{}" target="_blank" rel="noopener noreferrer" style="color:#c62828; font-weight:600; text-decoration:underline;">'
+            'View / Download {}</a>',
+            obj.attachment.url,
+            file_name,
+        )
 
     @admin.display(description="Client Account")
     def user_link(self, obj: ContactInquiry) -> str:

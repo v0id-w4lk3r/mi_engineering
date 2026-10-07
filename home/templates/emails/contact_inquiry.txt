@@ -2,7 +2,8 @@ New Contact Inquiry Received
 
 Submitted By: {{ full_name }}
 Sender Email: {{ email }}
-
+{% if attachment %}Attachment: {{ attachment.name }}
+{% endif %}
 Message Details:
 ----------------------------------------
 {{ message }}

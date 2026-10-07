@@ -62,10 +62,13 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)
 
-urlpatterns += [
-    re_path(
-        r'^media/(?P<path>.*)$',
-        serve,
-        {'document_root': settings.MEDIA_ROOT},
-    ),
-]
+# Serve media files dynamically based on configured MEDIA_URL and MEDIA_ROOT
+media_prefix = settings.MEDIA_URL.lstrip('/')
+if not settings.MEDIA_URL.startswith(('http://', 'https://')):
+    urlpatterns += [
+        re_path(
+            rf'^{media_prefix}(?P<path>.*)$',
+            serve,
+            {'document_root': settings.MEDIA_ROOT},
+        ),
+    ]
