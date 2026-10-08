@@ -35,10 +35,12 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv("SECURE_HSTS_INCLUDE_SUBDOMAINS", "Tr
 SECURE_HSTS_PRELOAD = os.getenv("SECURE_HSTS_PRELOAD", "True").lower() in ("true", "1", "t")
 
 # Database - SQLite with concurrency timeout
-DB_DIR = Path(os.environ.get(
-    "DB_DIR",
-    BASE_DIR / "data",
-))
+_db_dir_env = os.environ.get("DB_DIR")
+if _db_dir_env:
+    _db_path = Path(_db_dir_env)
+    DB_DIR = _db_path if _db_path.is_absolute() else BASE_DIR / _db_path
+else:
+    DB_DIR = BASE_DIR / "data"
 
 DB_DIR.mkdir(parents=True, exist_ok=True)
 
