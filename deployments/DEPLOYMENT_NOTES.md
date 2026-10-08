@@ -85,6 +85,7 @@ The production configuration reads variables loaded from `/var/deployments/.env`
 Ensure the web service user and group `www-data` own the deployment directory:
 ```bash
 sudo chown -R www-data:www-data /var/deployments
+sudo chown -R www-data:www-data /var/data/
 ```
 
 ### Step 2: Sync Deployment Configs

@@ -8,13 +8,13 @@ Type=simple
 User=www-data
 Group=www-data
 
-WorkingDirectory=/var/deployments
+WorkingDirectory=/var/deployment/mi_engineering
 
-Environment="PATH=/var/deployments/.venv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="PATH=/var/deployment/mi_engineering/.venv/bin:/usr/local/bin:/usr/bin:/bin"
 Environment="PORT=8000"
 Environment="GUNICORN_TIMEOUT=120"
 
-ExecStart=/var/deployments/entrypoint.sh
+ExecStart=/var/deployment/mi_engineering
 
 Restart=always
 RestartSec=5
