@@ -281,7 +281,7 @@ The Python version used by the project is defined in:
 Copy the example environment file:
 
 ```bash
-cp .example.env .env
+cp example.env .env
 ```
 
 Update the values inside `.env` for your environment.
@@ -289,22 +289,10 @@ Update the values inside `.env` for your environment.
 Example:
 
 ```dotenv
-SECRET_KEY=your-secret-key
-
+ENV=dev
+DJANGO_SECRET_KEY=your-secret-key
+DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1
-
-DB_NAME=mi_engineering
-DB_USER=mi_engineering
-DB_PASSWORD=your-database-password
-DB_HOST=localhost
-DB_PORT=5432
-
-EMAIL_HOST=smtp.example.com
-EMAIL_PORT=587
-EMAIL_HOST_USER=noreply@example.com
-EMAIL_HOST_PASSWORD=your-email-password
-
-DEFAULT_FROM_EMAIL=M.I. Engineering Works <noreply@example.com>
 ```
 
 > Never commit the actual `.env` file to Git.
@@ -320,7 +308,8 @@ mi_engineering/settings/
 ├── __init__.py
 ├── base.py
 ├── dev.py
-└── prod.py
+├── prod.py
+└── unfold.py
 ```
 
 ### `base.py`
@@ -333,7 +322,7 @@ Contains development-specific configuration such as:
 
 * `DEBUG = True`
 * Local hosts
-* Development database
+* SQLite development database
 * Console email backend
 
 ### `prod.py`
@@ -341,10 +330,42 @@ Contains development-specific configuration such as:
 Contains production-specific configuration such as:
 
 * `DEBUG = False`
-* PostgreSQL
-* HTTPS security
-* Secure cookies
-* Production email configuration
+* SQLite production database in configurable `DB_DIR`
+* HTTPS security & HSTS headers
+* Secure session and CSRF cookies
+* WhiteNoise static file serving
+* Production SMTP email configuration
+* Gunicorn execution via entrypoint script
+
+---
+
+## Production Deployment
+
+The project includes ready-to-use production server configurations under [`deployments/`](deployments/):
+
+* **Nginx Configuration**: [`deployments/miengineeringworks.in.conf`](deployments/miengineeringworks.in.conf) (handles reverse proxy to Gunicorn on port 8000, static file caching, and Certbot SSL certificates).
+* **Systemd Service**: [`deployments/mi_engineering.service`](deployments/mi_engineering.service) (manages Gunicorn via `entrypoint.sh`).
+* **Deployment Guide & Operations Runbook**: [`deployments/DEPLOYMENT_NOTES.md`](deployments/DEPLOYMENT_NOTES.md) (architecture overview, system permissions, SSL setup, routine releases, and log streaming).
+
+### Quick Deploy Checklist
+
+```bash
+# 1. Copy deployment configs
+sudo mkdir -p /mnt/deployments
+sudo cp -r deployments/* /mnt/deployments/
+
+# 2. Configure Nginx
+sudo cp /mnt/deployments/miengineeringworks.in.conf /etc/nginx/sites-available/
+sudo ln -sf /etc/nginx/sites-available/miengineeringworks.in.conf /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+
+# 3. Configure and start systemd service
+sudo cp /mnt/deployments/mi_engineering.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now mi_engineering.service
+```
+
+For full setup and operational instructions, see [`deployments/DEPLOYMENT_NOTES.md`](deployments/DEPLOYMENT_NOTES.md).
 
 ---
 
