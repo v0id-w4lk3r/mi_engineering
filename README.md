@@ -350,17 +350,13 @@ The project includes ready-to-use production server configurations under [`deplo
 ### Quick Deploy Checklist
 
 ```bash
-# 1. Copy deployment configs
-sudo mkdir -p /mnt/deployments
-sudo cp -r deployments/* /mnt/deployments/
-
-# 2. Configure Nginx
-sudo cp /mnt/deployments/miengineeringworks.in.conf /etc/nginx/sites-available/
+# 1. Configure Nginx
+sudo cp /var/deployments/deployments/miengineeringworks.in.conf /etc/nginx/sites-available/
 sudo ln -sf /etc/nginx/sites-available/miengineeringworks.in.conf /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 
-# 3. Configure and start systemd service
-sudo cp /mnt/deployments/mi_engineering.service /etc/systemd/system/
+# 2. Configure and start systemd service
+sudo cp /var/deployments/deployments/mi_engineering.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now mi_engineering.service
 ```

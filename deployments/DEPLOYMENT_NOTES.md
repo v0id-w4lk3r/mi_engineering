@@ -23,7 +23,7 @@ This guide details the complete deployment architecture, environment configurati
                       ┌────────────────────────────────────────┐
                       │          Gunicorn (via systemd)        │
                       │  Unit: mi_engineering.service          │
-                      │  Working Dir: /var/webhost/mi_engineering│
+                      │  Working Dir: /var/deployments         │
                       │  Entrypoint: ./entrypoint.sh            │
                       └──────────────────┬─────────────────────┘
                                          │
@@ -42,21 +42,21 @@ This guide details the complete deployment architecture, environment configurati
 
 | Component | Path / Location | Description |
 | :--- | :--- | :--- |
-| **Project Root** | `/var/webhost/mi_engineering` | Deployment application codebase |
-| **Deployments Backup** | `/mnt/deployments/` | Backup / staging directory for configs |
+| **Project Root** | `/var/deployments` | Deployment application codebase |
+| **Deployment Configs** | `/var/deployments/deployments/` | Service & server configuration files |
 | **Nginx Config** | `/etc/nginx/sites-available/miengineeringworks.in.conf` | VirtualHost config |
 | **Nginx Enabled** | `/etc/nginx/sites-enabled/miengineeringworks.in.conf` | Symlink to sites-available |
 | **Systemd Service** | `/etc/systemd/system/mi_engineering.service` | Daemon unit file |
-| **Static Files** | `/var/webhost/mi_engineering/staticfiles/` | Collected static files served by Nginx |
-| **Media Files** | `/var/webhost/mi_engineering/media/` | User uploaded images & files |
-| **Database** | `/var/webhost/mi_engineering/data/db.sqlite3` | Production SQLite database file |
+| **Static Files** | `/var/deployments/staticfiles/` | Collected static files served by Nginx |
+| **Media Files** | `/var/deployments/media/` | User uploaded images & files |
+| **Database** | `/var/deployments/data/db.sqlite3` | Production SQLite database file |
 | **SSL Certificates** | `/etc/letsencrypt/live/miengineeringworks.in/` | Let's Encrypt certificates managed by Certbot |
 
 ---
 
 ## 3. Environment Variables Reference (`.env`)
 
-The production configuration reads variables loaded from `/var/webhost/mi_engineering/.env`:
+The production configuration reads variables loaded from `/var/deployments/.env`:
 
 | Key | Example / Default Value | Purpose |
 | :--- | :--- | :--- |
@@ -66,8 +66,8 @@ The production configuration reads variables loaded from `/var/webhost/mi_engine
 | `ALLOWED_HOSTS` | `miengineeringworks.in,www.miengineeringworks.in,localhost,127.0.0.1` | Host header validation |
 | `CSRF_TRUSTED_ORIGINS` | `https://miengineeringworks.in,https://www.miengineeringworks.in` | Trusted origins for CSRF POST forms |
 | `SECURE_SSL_REDIRECT` | `True` | Forces HTTPS redirects |
-| `DB_DIR` | `/var/webhost/mi_engineering/data` | Directory where `db.sqlite3` is kept |
-| `MEDIA_ROOT` | `/var/webhost/mi_engineering/media` | Target directory for media uploads |
+| `DB_DIR` | `/var/deployments/data` | Directory where `db.sqlite3` is kept |
+| `MEDIA_ROOT` | `/var/deployments/media` | Target directory for media uploads |
 | `MEDIA_URL` | `/media/` | URL prefix for media assets |
 | `EMAIL_BACKEND` | `django.core.mail.backends.smtp.EmailBackend` | Mail backend |
 | `EMAIL_HOST` | `smtp.gmail.com` | SMTP host |
@@ -82,25 +82,19 @@ The production configuration reads variables loaded from `/var/webhost/mi_engine
 ## 4. Initial Setup & Installation Steps
 
 ### Step 1: User & Permissions Setup
-Ensure the deployment user `syn` and webhost group exist:
+Ensure the web service user and group `www-data` own the deployment directory:
 ```bash
-sudo groupadd -f webhost
-sudo usermod -aG webhost syn
-sudo chown -R syn:webhost /var/webhost/mi_engineering
+sudo chown -R www-data:www-data /var/deployments
 ```
 
 ### Step 2: Sync Deployment Configs
 ```bash
-# Backup/Store configs in /mnt/deployments
-sudo mkdir -p /mnt/deployments
-sudo cp -r /var/webhost/mi_engineering/deployments/* /mnt/deployments/
-
 # Copy systemd unit file
-sudo cp /mnt/deployments/mi_engineering.service /etc/systemd/system/mi_engineering.service
+sudo cp /var/deployments/deployments/mi_engineering.service /etc/systemd/system/mi_engineering.service
 sudo systemctl daemon-reload
 
 # Copy Nginx server block
-sudo cp /mnt/deployments/miengineeringworks.in.conf /etc/nginx/sites-available/miengineeringworks.in.conf
+sudo cp /var/deployments/deployments/miengineeringworks.in.conf /etc/nginx/sites-available/miengineeringworks.in.conf
 sudo ln -sf /etc/nginx/sites-available/miengineeringworks.in.conf /etc/nginx/sites-enabled/
 ```
 
@@ -129,7 +123,7 @@ sudo systemctl restart mi_engineering.service
 When pulling code updates or deploying a new release:
 
 ```bash
-cd /var/webhost/mi_engineering
+cd /var/deployments
 
 # 1. Pull latest code
 git pull origin main
@@ -171,8 +165,8 @@ sudo tail -f /var/log/nginx/access.log
    - Check if the Gunicorn service is running: `sudo systemctl status mi_engineering.service`
    - Check if port 8000 is open: `ss -tulpn | grep 8000`
 2. **Static files 404 or 403 Forbidden**:
-   - Verify permissions on `/var/webhost/mi_engineering/staticfiles/` (`chmod 755` for directories, `chmod 644` for files).
-   - Ensure Nginx worker user (`nginx` or `www-data`) has read permissions through all parent directories.
+   - Verify permissions on `/var/deployments/staticfiles/` (`chmod 755` for directories, `chmod 644` for files).
+   - Ensure Nginx worker user (`www-data`) has read permissions through all parent directories.
 3. **Database locked (SQLite)**:
    - Make sure only the Gunicorn workers are writing to the database file.
    - `prod.py` has an SQLite timeout set to 20 seconds.

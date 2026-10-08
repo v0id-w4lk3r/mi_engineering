@@ -5,16 +5,16 @@ After=network.target
 [Service]
 Type=simple
 
-User=syn
-Group=webhost
+User=www-data
+Group=www-data
 
-WorkingDirectory=/var/webhost/mi_engineering
+WorkingDirectory=/var/deployments
 
-Environment="PATH=/home/syn/.local/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="PATH=/var/deployments/.venv/bin:/usr/local/bin:/usr/bin:/bin"
 Environment="PORT=8000"
 Environment="GUNICORN_TIMEOUT=120"
 
-ExecStart=/var/webhost/mi_engineering/entrypoint.sh
+ExecStart=/var/deployments/entrypoint.sh
 
 Restart=always
 RestartSec=5

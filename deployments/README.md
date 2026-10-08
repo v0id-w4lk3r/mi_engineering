@@ -4,28 +4,24 @@ This directory contains the deployment configuration files for MI Engineering.
 
 ## Files
 
-- [`miengineeringworks.in.conf`](file:///home/syn/code/work/mi_engineering/deployments/miengineeringworks.in.conf): Nginx reverse proxy and SSL configuration.
-- [`mi_engineering.service`](file:///home/syn/code/work/mi_engineering/deployments/mi_engineering.service): Systemd service configuration for running Gunicorn via `entrypoint.sh`.
+- [`miengineeringworks.in.conf`](miengineeringworks.in.conf): Nginx reverse proxy and SSL configuration.
+- [`mi_engineering.service`](mi_engineering.service): Systemd service configuration for running Gunicorn via `entrypoint.sh`.
 
 ## Setup Instructions
 
 ### 1. Copy or Symlink Deployment Files to System Paths
 
-To link or copy files to the system directories:
+When deployed at `/var/deployments`:
 
 ```bash
-# Target deployment folder (if using /mnt/deployments/)
-sudo mkdir -p /mnt/deployments
-sudo cp -r deployments/* /mnt/deployments/
-
 # Nginx configuration
-sudo cp /mnt/deployments/miengineeringworks.in.conf /etc/nginx/sites-available/
+sudo cp /var/deployments/deployments/miengineeringworks.in.conf /etc/nginx/sites-available/
 sudo ln -sf /etc/nginx/sites-available/miengineeringworks.in.conf /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 
 # Systemd service
-sudo cp /mnt/deployments/mi_engineering.service /etc/systemd/system/
+sudo cp /var/deployments/deployments/mi_engineering.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now mi_engineering.service
 ```
