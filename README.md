@@ -341,27 +341,36 @@ Contains production-specific configuration such as:
 
 ## Production Deployment
 
-The project includes ready-to-use production server configurations under [`deployments/`](deployments/):
+The project includes comprehensive, automated production deployment suites supporting both **Fedora Server** and **Ubuntu Server** under [`deploy/`](deploy/README.md):
 
-* **Nginx Configuration**: [`deployments/miengineeringworks.in.conf`](deployments/miengineeringworks.in.conf) (handles reverse proxy to Gunicorn on port 8000, static file caching, and Certbot SSL certificates).
-* **Systemd Service**: [`deployments/mi_engineering.service`](deployments/mi_engineering.service) (manages Gunicorn via `entrypoint.sh`).
-* **Deployment Guide & Operations Runbook**: [`deployments/DEPLOYMENT_NOTES.md`](deployments/DEPLOYMENT_NOTES.md) (architecture overview, system permissions, SSL setup, routine releases, and log streaming).
+* **[Fedora Server Guide](deploy/fedora/README.md)**: DNF packaging, firewalld, SELinux enforcing mode, and systemd.
+* **[Ubuntu Server Guide](deploy/ubuntu/README.md)**: APT packaging, UFW, AppArmor, and systemd.
+* **[Troubleshooting Guide](deploy/TROUBLESHOOTING.md)**: Diagnosis and recovery for Gunicorn, permissions, SSL, and SELinux.
+* **[Security & Operations Runbook](deploy/SECURITY.md)**: Process sandboxing, backups, and zero-downtime rollback strategies.
 
-### Quick Deploy Checklist
+### Architecture Highlights
+* **Primary Deployment Path**: `/var/deployment/mi_engineering`
+* **Static Assets**: `/var/deployment/mi_engineering/staticfiles`
+* **Media Assets**: `/var/data/media`
+* **Database**: `/var/db/db.sqlite3`
+* **Service Identity**: `syn:webhost`
+* **Loopback Reverse Proxy**: Gunicorn on `127.0.0.1:8000` via Nginx (HTTP/2, SSL termination)
 
+### Quick Automated Deployment
+
+**On Fedora Server:**
 ```bash
-# 1. Configure Nginx
-sudo cp /var/deployments/deployments/miengineeringworks.in.conf /etc/nginx/sites-available/
-sudo ln -sf /etc/nginx/sites-available/miengineeringworks.in.conf /etc/nginx/sites-enabled/
-sudo nginx -t && sudo systemctl reload nginx
-
-# 2. Configure and start systemd service
-sudo cp /var/deployments/deployments/mi_engineering.service /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable --now mi_engineering.service
+sudo bash deploy/fedora/install.sh
+sudo bash deploy/fedora/deploy.sh admin@miengineeringworks.in
 ```
 
-For full setup and operational instructions, see [`deployments/DEPLOYMENT_NOTES.md`](deployments/DEPLOYMENT_NOTES.md).
+**On Ubuntu Server:**
+```bash
+sudo bash deploy/ubuntu/install.sh
+sudo bash deploy/ubuntu/deploy.sh admin@miengineeringworks.in
+```
+
+For full setup notes and configuration templates, see [`deploy/README.md`](deploy/README.md) and [`deployments/DEPLOYMENT_NOTES.md`](deployments/DEPLOYMENT_NOTES.md).
 
 ---
 

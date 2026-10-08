@@ -103,6 +103,7 @@ venv.bak/
 .env
 .env.*
 !.example.env
+!.env.example
 main.env
 
 
